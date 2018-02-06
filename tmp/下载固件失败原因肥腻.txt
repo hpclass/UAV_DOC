@@ -1,0 +1,4 @@
+1. 显示参数错误
+
+发现问题： 可能是因为擦除的时候，有的数据没有擦除成功导致的.
+ERROR: bootloader reports INVALID OPERATION

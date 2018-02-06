@@ -1,0 +1,650 @@
+
+１．can分析
+
+recv_cnt:2, recv_valid_cnt=1
+recv_cnt:4, recv_valid_cnt=2
+recv_cnt:6, recv_valid_cnt=3
+packet tail error
+00,02,07,04,06,00,
+fe,ef,00,02,07,04,06,00,
+packet tail error
+00,02,07,04,06,00,fe,ef,00,02,07,04,06,00,
+recv_cnt:16, recv_valid_cnt=4
+recv_cnt:18, recv_valid_cnt=5
+packet tail error
+00,02,07,04,06,00,fe,ef,00,02,07,04,06,00,
+recv_cnt:24, recv_valid_cnt=6
+recv_cnt:26, recv_valid_cnt=7
+packet tail error
+00,02,07,04,06,00,fe,ef,00,02,07,04,06,00,
+recv_cnt:34, recv_valid_cnt=8
+packet tail error
+00,02,07,04,06,00,fe,ef,00,02,07,04,06,00,
+recv_cnt:42, recv_valid_cnt=9
+recv_cnt:44, recv_valid_cnt=10
+packet tail error
+00,02,07,04,06,00,fe,ef,00,02,07,04,06,00,
+recv_cnt:50, recv_valid_cnt=11
+
+
+nsh> squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,27,00,00,a5,26,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,27,00,00,a5,26,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,27,00,00,a5,26,ef,fe,
+//8packet
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,27,00,00,a5,26,ef,fe,
+
+//OK
+=
+fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 0a,2b,00,00,c4,53,ef,fe,
+
+
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+_squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+dsquence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+rsquence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+vsquence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+ squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+ssquence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+squence=0, len = 8: fe,ef,00,02,07,04,06,00,
+squence=0, len = 8: 00,44,00,00,35,8c,ef,fe,
+
+//error 1time
+recv_cnt:2, recv_valid_cnt=1, cur_time: 13886166
+recv_cnt:4, recv_valid_cnt=2, cur_time: 13898210
+recv_cnt:6, recv_valid_cnt=3, cur_time: 13910254
+packet tail error, mem: fe,ef,00,02,07,04,06,00,fe,ef,00,02,07,04,06,00,
+recv_cnt:10, recv_valid_cnt=4, cur_time: 13934358
+recv_cnt:12, recv_valid_cnt=5, cur_time: 13946452
+recv_cnt:14, recv_valid_cnt=6, cur_time: 13958443
+recv_cnt:16, recv_valid_cnt=7, cur_time: 13970538
+recv_cnt:18, recv_valid_cnt=8, cur_time: 13982538
+recv_cnt:20, recv_valid_cnt=9, cur_time: 14000582
+recv_cnt:22, recv_valid_cnt=10, cur_time: 14018660
+recv_cnt:24, recv_valid_cnt=11, cur_time: 14036740
+recv_cnt:26, recv_valid_cnt=12, cur_time: 14054806
+recv_cnt:28, recv_valid_cnt=13, cur_time: 14072942
+recv_cnt:30, recv_valid_cnt=14, cur_time: 14090945
+recv_cnt:32, recv_valid_cnt=15, cur_time: 14109033
+recv_cnt:34, recv_valid_cnt=16, cur_time: 14127103
+recv_cnt:36, recv_valid_cnt=17, cur_time: 14145174
+recv_cnt:38, recv_valid_cnt=18, cur_time: 14157204
+recv_cnt:40, recv_valid_cnt=19, cur_time: 14175250
+recv_cnt:42, recv_valid_cnt=20, cur_time: 14193313
+recv_cnt:44, recv_valid_cnt=21, cur_time: 14211393
+recv_cnt:46, recv_valid_cnt=22, cur_time: 14229456
+recv_cnt:48, recv_valid_cnt=23, cur_time: 14247521
+recv_cnt:50, recv_valid_cnt=24, cur_time: 14265591
+recv_cnt:52, recv_valid_cnt=25, cur_time: 142836
+
+
+//qian 8packet: ok
+error: 1time
+
+buf stop
+
+cv_cnt:3134, recv_valid_cnt=1566, diff_time: 18016
+_recv_cnt:3136, recv_valid_cnt=1567, diff_time: 18068
+recv_cnt:3138, recv_valid_cnt=1568, diff_time: 18079
+recv_cnt:3140, recv_valid_cnt=1569, diff_time: 18101
+recv_cnt:3142, recv_valid_cnt=1570, diff_time: 18057
+recv_cnt:3144, recv_valid_cnt=1571, diff_time: 18074
+recv_cnt:3146, recv_valid_cnt=1572, diff_time: 18074
+recv_cnt:3148, recv_valid_cnt=1573, diff_time: 18079
+recv_cnt:3150, recv_valid_cnt=1574, diff_time: 18072
+recv_cnt:3152, recv_valid_cnt=1575, diff_time: 18101
+recv_cnt:3154, recv_valid_cnt=1576, diff_time: 18077
+recv_cnt:3156, recv_valid_cnt=1577, diff_time: 17996
+recv_cnt:3158, recv_valid_cnt=1578, diff_time: 18060
+recv_cnt:3160, recv_valid_cnt=1579, diff_time: 18081
+recv_cnt:3162, recv_valid_cnt=1580, diff_time: 18083
+recv_cnt:3164, recv_valid_cnt=1581, diff_time: 12036
+Drecv_cnt:3166, recv_valid_cnt=1582, diff_time: 18128
+recv_cnt:3168, recv_valid_cnt=1583, diff_time: 18027
+recv_cnt:3170, recv_valid_cnt=1584, diff_time: 18079
+recv_cnt:3172, recv_valid_cnt=1585, diff_time: 18091
+recv_cnt:3174, recv_valid_cnt=1586, diff_time: 18057
+recv_cnt:3176, recv_valid_cnt=1587, diff_time: 18063
+recv_cnt:3178, recv_valid_cnt=1588, diff_time: 18046
+recv_cnt:3180, recv_valid_cnt=1589, diff_time: 18060
+recv_cnt:3182, recv_valid_cnt=1590, diff_time: 18069
+recv_cnt:3184, recv_valid_cnt=1591, diff_time: 18077
+recv_cnt:3186, recv_valid_cnt=1592, diff_time: 18072
+recv_cnt:3188, recv_valid_cnt=1593, diff_time: 18076
+recv_cnt:3190, recv_valid_cnt=1594, diff_time: 18063
+recv_cnt:3192, recv_valid_cnt=1595, diff_time: 18086
+recv_cnt:3194, recv_valid_cnt=1596, diff_time: 18100
+recv_cnt:3196, recv_valid_cnt=1597, diff_time: 18043
+recv_cnt:3198, recv_valid_cnt=1598, diff_time: 18066
+recv_cnt:3200, recv_valid_cnt=1599, diff_time: 18070
+recv_cnt:3202, recv_valid_cnt=1600, diff_time: 18050
+recv_cnt:3204, recv_valid_cnt=1601, diff_time: 18080
+recv_cnt:3206, recv_valid_cnt=1602, diff_time: 18076
+recv_cnt:3208, recv_valid_cnt=1603, diff_time: 18066
+recv_cnt:3210, recv_valid_cnt=1604, diff_time: 18136
+recv_cnt:3212, recv_valid_cnt=1605, diff_time: 18019
+recv_cnt:3214, recv_valid_cnt=1606, diff_time: 18091
+recv_cnt:3216, recv_valid_cnt=1607, diff_time: 18073
+recv_cnt:3218, recv_valid_cnt=1608, diff_time: 18070
+recv_cnt:3220, recv_valid_cnt=1609, diff_time: 18058
+recv_cnt:3222, recv_valid_cnt=1610, diff_time: 18037
+Rrecv_cnt:3224, recv_valid_cnt=1611, diff_time: 18132
+recv_cnt:3226, recv_valid_cnt=1612, diff_time: 18022
+recv_cnt:3228, recv_valid_cnt=1613, diff_time: 18086
+recv_cnt:3230, recv_valid_cnt=1614, diff_time: 18070
+recv_cnt:3232, recv_valid_cnt=1615, diff_time: 18079
+recv_cnt:3234, recv_valid_cnt=1616, diff_time: 18092
+recv_cnt:3236, recv_valid_cnt=1617, diff_time: 18071
+recv_cnt:3238, recv_valid_cnt=1618, diff_time: 18096
+recv_cnt:3240, recv_valid_cnt=1619, diff_time: 18079
+recv_cnt:3242, recv_valid_cnt=1620, diff_time: 18062
+recv_cnt:3244, recv_valid_cnt=1621, diff_time: 18059
+recv_cnt:3246, recv_valid_cnt=1622, diff_time: 18048
+recv_cnt:3248, recv_valid_cnt=1623, diff_time: 18082
+Vrecv_cnt:3250, recv_valid_cnt=1624, diff_time: 18081
+recv_cnt:3252, recv_valid_cnt=1625, diff_time: 18105
+recv_cnt:3254, recv_valid_cnt=1626, diff_time: 18098
+recv_cnt:3256, recv_valid_cnt=1627, diff_time: 18039
+recv_cnt:3258, recv_valid_cnt=1628, diff_time: 18083
+recv_cnt:3260, recv_valid_cnt=1629, diff_time: 18073
+recv_cnt:3262, recv_valid_cnt=1630, diff_time: 18076
+recv_cnt:3264, recv_valid_cnt=1631, diff_time: 18050
+recv_cnt:3266, recv_valid_cnt=1632, diff_time: 18049
+recv_cnt:3268, recv_valid_cnt=1633, diff_time: 18069
+recv_cnt:3270, recv_valid_cnt=1634, diff_time: 18124
+recv_cnt:3272, recv_valid_cnt=1635, diff_time: 18043
+recv_cnt:3274, recv_valid_cnt=1636, diff_time: 18072
+recv_cnt:3276, recv_valid_cnt=1637, diff_time: 18079
+recv_cnt:3278, recv_valid_cnt=1638, diff_time: 18077
+recv_cnt:3280, recv_valid_cnt=1639, diff_time: 12052
+recv_cnt:3282, recv_valid_cnt=1640, diff_time: 18095
+recv_cnt:3284, recv_valid_cnt=1641, diff_time: 18085
+recv_cnt:3286, recv_valid_cnt=1642, diff_time: 18163
+recv_cnt:3288, recv_valid_cnt=1643, diff_time: 17941
+ recv_cnt:3290, recv_valid_cnt=1644, diff_time: 18062
+recv_cnt:3292, recv_valid_cnt=1645, diff_time: 18078
+recv_cnt:3294, recv_valid_cnt=1646, diff_time: 18078
+recv_cnt:3296, recv_valid_cnt=1647, diff_time: 18090
+recv_cnt:3298, recv_valid_cnt=1648, diff_time: 18094
+recv_cnt:3300, recv_valid_cnt=1649, diff_time: 18043
+recv_cnt:3302, recv_valid_cnt=1650, diff_time: 18085
+recv_cnt:3304, recv_valid_cnt=1651, diff_time: 18075
+recv_cnt:3306, recv_valid_cnt=1652, diff_time: 18095
+recv_cnt:3308, recv_valid_cnt=1653, diff_time: 18063
+recv_cnt:3310, recv_valid_cnt=1654, diff_time: 18080
+recv_cnt:3312, recv_valid_cnt=1655, diff_time: 18035
+recv_cnt:3314, recv_valid_cnt=1656, diff_time: 18077
+recv_cnt:3316, recv_valid_cnt=1657, diff_time: 18080
+recv_cnt:3318, recv_valid_cnt=1658, diff_time: 18058
+recv_cnt:3320, recv_valid_cnt=1659, diff_time: 18127
+Srecv_cnt:3322, recv_valid_cnt=1660, diff_time: 18012
+recv_cnt:3324, recv_valid_cnt=1661, diff_time: 18096
+recv_cnt:3326, recv_valid_cnt=1662, diff_time: 18051
+recv_cnt:3328, recv_valid_cnt=1663, diff_time: 18075
+recv_cnt:3330, recv_valid_cnt=1664, diff_time: 18046
+recv_cnt:3332, recv_valid_cnt=1665, diff_time: 18052
+recv_cnt:3334, recv_valid_cnt=1666, diff_time: 18123
+recv_cnt:3336, recv_valid_cnt=1667, diff_time: 18011
+recv_cnt:3338, recv_valid_cnt=1668, diff_time: 18082
+recv_cnt:3340, recv_valid_cnt=1669, diff_time: 18058
+recv_cnt:3342, recv_valid_cnt=1670, diff_time: 18123
+recv_cnt:3344, recv_valid_cnt=1671, diff_time: 18107
+recv_cnt:3346, recv_valid_cnt=1672, diff_time: 17996
+recv_cnt:3348, recv_valid_cnt=1673, diff_time: 18074
+recv_cnt:3350, recv_valid_cnt=1674, diff_time: 18107
+recv_cnt:3352, recv_valid_cnt=1675, diff_time: 18040
+recv_cnt:3354, recv_valid_cnt=1676, diff_time: 18045
+Trecv_cnt:3356, recv_valid_cnt=1677, diff_time: 18063
+recv_cnt:3358, recv_valid_cnt=1678, diff_time: 18079
+recv_cnt:3360, recv_valid_cnt=1679, diff_time: 18080
+recv_cnt:3362, recv_valid_cnt=1680, diff_time: 18064
+recv_cnt:3364, recv_valid_cnt=1681, diff_time: 18125
+recv_cnt:3366, recv_valid_cnt=1682, diff_time: 18038
+recv_cnt:3368, recv_valid_cnt=1683, diff_time: 18089
+recv_cnt:3370, recv_valid_cnt=1684, diff_time: 18078
+recv_cnt:3372, recv_valid_cnt=1685, diff_time: 18088
+recv_cnt:3374, recv_valid_cnt=1686, diff_time: 18036
+recv_cnt:3376, recv_valid_cnt=1687, diff_time: 18045
+Orecv_cnt:3378, recv_valid_cnt=1688, diff_time: 18101
+recv_cnt:3380, recv_valid_cnt=1689, diff_time: 18031
+recv_cnt:3382, recv_valid_cnt=1690, diff_time: 18075
+Precv_cnt:3384, recv_valid_cnt=1691, diff_time: 18066
+recv_cnt:3386, recv_valid_cnt=1692, diff_time: 18065
+recv_cnt:3388, recv_valid_cnt=1693, diff_time: 18062
+recv_cnt:3390, recv_valid_cnt=1694, diff_time: 18065
+recv_cnt:3392, recv_valid_cnt=1695, diff_time: 18115
+recv_cnt:3394, recv_valid_cnt=1696, diff_time: 18037
+recv_cnt:3396, recv_valid_cnt=1697, diff_time: 18043
+recv_cnt:3398, recv_valid_cnt=1698, diff_time: 18036
+recv_cnt:3400, recv_valid_cnt=1699, diff_time: 18056
+recv_cnt:3402, recv_valid_cnt=1700, diff_time: 12055
+recv_cnt:3404, recv_valid_cnt=1701, diff_time: 18140
+recv_cnt:3406, recv_valid_cnt=1702, diff_time: 18012
+recv_cnt:3408, recv_valid_cnt=1703, diff_time: 18065
+recv_cnt:3410, recv_valid_cnt=1704, diff_time: 18075
+recv_cnt:3412, recv_valid_cnt=1705, diff_time: 18090
+recv_cnt:3414, recv_valid_cnt=1706, diff_time: 18123
+
+nsh: CAN_DRV: command not found
+nsh> recv_cnt:3416, recv_valid_cnt=1707, diff_time: 18022
+recv_cnt:3418, recv_valid_cnt=1708, diff_time: 18080
+recv_cnt:3420, recv_valid_cnt=1709, diff_time: 18050
+recv_cnt:3422, recv_valid_cnt=1710, diff_time: 18037
+recv_cnt:3424, recv_valid_cnt=1711, diff_time: 18072
+recv_cnt:3426, recv_valid_cnt=1712, diff_time: 18074
+recv_cnt:3428, recv_valid_cnt=1713, diff_time: 18110
+recv_cnt:3430, recv_valid_cnt=1714, diff_time: 18027
+recv_cnt:3432, recv_valid_cnt=1715, diff_time: 18080
+recv_cnt:3434, recv_valid_cnt=1716, diff_time: 18107
+recv_cnt:3436, recv_valid_cnt=1717, diff_time: 18043
+recv_cnt:3438, recv_valid_cnt=1718, diff_time: 18095
+recv_cnt:3440, recv_valid_cnt=1719, diff_time: 18062
+recv_cnt:3442, recv_valid_cnt=1720, diff_time: 18045
+recv_cnt:3444, recv_valid_cnt=1721, diff_time: 18046
+recv_cnt:3446, recv_valid_cnt=1722, diff_time: 18080
+recv_cnt:3448, recv_valid_cnt=1723, diff_time: 18087
+recv_cnt:3450, recv_valid_cnt=1724, diff_time: 18070
+recv_cnt:3452, recv_valid_cnt=1725, diff_time: 18069
+recv_cnt:3454, recv_valid_cnt=1726, diff_time: 18074
+recv_cnt:3456, recv_valid_cnt=1727, diff_time: 18139
+recv_cnt:3458, recv_valid_cnt=1728, diff_time: 18012
+recv_cnt:3460, recv_valid_cnt=1729, diff_time: 18075
+recv_cnt:3462, recv_valid_cnt=1730, diff_time: 18081
+recv_cnt:3464, recv_valid_cnt=1731, diff_time: 18100
+recv_cnt:3466, recv_valid_cnt=1732, diff_time: 18002
+recv_cnt:3468, recv_valid_cnt=1733, diff_time: 18070
+recv_cnt:3470, recv_valid_cnt=1734, diff_time: 18080
+recv_cnt:3472, recv_valid_cnt=1735, diff_time: 18127
+recv_cnt:3474, recv_valid_cnt=1736, diff_time: 18009
+recv_cnt:3476, recv_valid_cnt=1737, diff_time: 18106
+recv_cnt:3478, recv_valid_cnt=1738, diff_time: 18072
+recv_cnt:3480, recv_valid_cnt=1739, diff_time: 18081
+recv_cnt:3482, recv_valid_cnt=1740, diff_time: 18137
+recv_cnt:3484, recv_valid_cnt=1741, diff_time: 18051
+recv_cnt:3486, recv_valid_cnt=1742, diff_time: 18011
+recv_cnt:3488, recv_valid_cnt=1743, diff_time: 18046
+recv_cnt:3490, recv_valid_cnt=1744, diff_time: 18079
+recv_cnt:3492, recv_valid_cnt=1745, diff_time: 18080
+recv_cnt:3494, recv_valid_cnt=1746, diff_time: 18090
+recv_cnt:3496, recv_valid_cnt=1747, diff_time: 18047
+recv_cnt:3498, recv_valid_cnt=1748, diff_time: 18065
+recv_cnt:3500, recv_valid_cnt=1749, diff_time: 18078
+recv_cnt:3502, recv_valid_cnt=1750, diff_time: 18054
+recv_cnt:3504, recv_valid_cnt=1751, diff_time: 18079
+recv_cnt:3506, recv_valid_cnt=1752, diff_time: 18122
+recv_cnt:3508, recv_valid_cnt=1753, diff_time: 17994
+recv_cnt:3510, recv_valid_cnt=1754, diff_time: 18057
+recv_cnt:3512, recv_valid_cnt=1755, diff_time: 18091
+recv_cnt:3514, recv_valid_cnt=1756, diff_time: 18073
+recv_cnt:3516, recv_valid_cnt=1757, diff_time: 18067
+recv_cnt:3518, recv_valid_cnt=1758, diff_time: 18083
+recv_cnt:3520, recv_valid_cnt=1759, diff_time: 12086
+recv_cnt:3522, recv_valid_cnt=1760, diff_time: 18046
+recv_cnt:3524, recv_valid_cnt=1761, diff_time: 18078
+recv_cnt:3526, recv_valid_cnt=1762, diff_time: 18083
+recv_cnt:3528, recv_valid_cnt=1763, diff_time: 18140
+recv_cnt:3530, recv_valid_cnt=1764, diff_time: 17997
+recv_cnt:3532, recv_valid_cnt=1765, diff_time: 18074
+recv_cnt:3534, recv_valid_cnt=1766, diff_time: 18038
+recv_cnt:3536, recv_valid_cnt=1767, diff_time: 18098
+recv_cnt:3538, recv_valid_cnt=1768, diff_time: 18087
+recv_cnt:3540, recv_valid_cnt=1769, diff_time: 18066
+recv_cnt:3542, recv_valid_cnt=1770, diff_time: 18079
+recv_cnt:3544, recv_valid_cnt=1771, diff_time: 18075
+recv_cnt:3546, recv_valid_cnt=1772, diff_time: 18112
+recv_cnt:3548, recv_valid_cnt=1773, diff_time: 18095
+recv_cnt:3550, recv_valid_cnt=1774, diff_time: 18032
+recv_cnt:3552, recv_valid_cnt=1775, diff_time: 18045
+recv_cnt:3554, recv_valid_cnt=1776, diff_time: 18049
+recv_cnt:3556, recv_valid_cnt=1777, diff_time: 18065
+recv_cnt:3558, recv_valid_cnt=1778, diff_time: 18106
+recv_cnt:3560, recv_valid_cnt=1779, diff_time: 18049
+recv_cnt:3562, recv_valid_cnt=1780, diff_time: 18075
+recv_cnt:3564, recv_valid_cnt=1781, diff_time: 18083
+recv_cnt:3566, recv_valid_cnt=1782, diff_time: 18067
+recv_cnt:3568, recv_valid_cnt=1783, diff_time: 18109
+recv_cnt:3570, recv_valid_cnt=1784, diff_time: 18054
+
+nsh> recv_cnt:3572, recv_valid_cnt=1785, diff_time: 18146
+recv_cnt:3574, recv_valid_cnt=1786, diff_time: 17988
+recv_cnt:3576, recv_valid_cnt=1787, diff_time: 18062
+recv_cnt:3578, recv_valid_cnt=1788, diff_time: 18055
+recv_cnt:3580, recv_valid_cnt=1789, diff_time: 18073
+recv_cnt:3582, recv_valid_cnt=1790, diff_time: 18081
+recv_cnt:3584, recv_valid_cnt=1791, diff_time: 18063
+recv_cnt:3586, recv_valid_cnt=1792, diff_time: 18084
+recv_cnt:3588, recv_valid_cnt=1793, diff_time: 18094
+recv_cnt:3590, recv_valid_cnt=1794, diff_time: 18093
+recv_cnt:3592, recv_valid_cnt=1795, diff_time: 18063
+recv_cnt:3594, recv_valid_cnt=1796, diff_time: 18074
+recv_cnt:3596, recv_valid_cnt=1797, diff_time: 18070
+recv_cnt:3598, recv_valid_cnt=1798, diff_time: 18036
+recv_cnt:3600, recv_valid_cnt=1799, diff_time: 18075
+recv_cnt:3602, recv_valid_cnt=1800, diff_time: 18070
+recv_cnt:3604, recv_valid_cnt=1801, diff_time: 18067
+recv_cnt:3606, recv_valid_cnt=1802, diff_time: 18117
+recv_cnt:3608, recv_valid_cnt=1803, diff_time: 18036
+recv_cnt:3610, recv_valid_cnt=1804, diff_time: 18083
+recv_cnt:3612, recv_valid_cnt=1805, diff_time: 18081
+recv_cnt:3614, recv_valid_cnt=1806, diff_time: 18080
+recv_cnt:3616, recv_valid_cnt=1807, diff_time: 18073
+recv_cnt:3618, recv_valid_cnt=1808, diff_time: 18042
+Crecv_cnt:3620, recv_valid_cnt=1809, diff_time: 18071
+recv_cnt:3622, recv_valid_cnt=1810, diff_time: 18053
+recv_cnt:3624, recv_valid_cnt=1811, diff_time: 18112
+recv_cnt:3626, recv_valid_cnt=1812, diff_time: 18020
+recv_cnt:3628, recv_valid_cnt=1813, diff_time: 18078
+recv_cnt:3630, recv_valid_cnt=1814, diff_time: 18118
+recv_cnt:3632, recv_valid_cnt=1815, diff_time: 18030
+recv_cnt:3634, recv_valid_cnt=1816, diff_time: 18148
+recv_cnt:3636, recv_valid_cnt=1817, diff_time: 18011
+recv_cnt:3638, recv_valid_cnt=1818, diff_time: 12062
+recv_cnt:3640, recv_valid_cnt=1819, diff_time: 18043
+recv_cnt:3642, recv_valid_cnt=1820, diff_time: 18087
+recv_cnt:3644, recv_valid_cnt=1821, diff_time: 18081
+recv_cnt:3646, recv_valid_cnt=1822, diff_time: 18036
+recv_cnt:3648, recv_valid_cnt=1823, diff_time: 18085
+recv_cnt:3650, recv_valid_cnt=1824, diff_time: 18101
+recv_cnt:3652, recv_valid_cnt=1825, diff_time: 18107
+recv_cnt:3654, recv_valid_cnt=1826, diff_time: 18013
+recv_cnt:3656, recv_valid_cnt=1827, diff_time: 18075
+recv_cnt:3658, recv_valid_cnt=1828, diff_time: 18067
+recv_cnt:3660, recv_valid_cnt=1829, diff_time: 18082
+recv_cnt:3662, recv_valid_cnt=1830, diff_time: 18047
+recv_cnt:3664, recv_valid_cnt=1831, diff_time: 18045
+recv_cnt:3666, recv_valid_cnt=1832, diff_time: 18078
+recv_cnt:3668, recv_valid_cnt=1833, diff_time: 18077
+recv_cnt:3670, recv_valid_cnt=1834, diff_time: 18072
+recv_cnt:3672, recv_valid_cnt=1835, diff_time: 18078
+recv_cnt:3674, recv_valid_cnt=1836, diff_time: 18084
+recv_cnt:3676, recv_valid_cnt=1837, diff_time: 18091
+recv_cnt:3678, recv_valid_cnt=1838, diff_time: 18086
+recv_cnt:3680, recv_valid_cnt=1839, diff_time: 18106
+recv_cnt:3682, recv_valid_cnt=1840, diff_time: 18041
+recv_cnt:3684, recv_valid_cnt=1841, diff_time: 18046
+Arecv_cnt:3686, recv_valid_cnt=1842, diff_time: 18085
+recv_cnt:3688, recv_valid_cnt=1843, diff_time: 18050
+recv_cnt:3690, recv_valid_cnt=1844, diff_time: 18118
+recv_cnt:3692, recv_valid_cnt=1845, diff_time: 18033
+recv_cnt:3694, recv_valid_cnt=1846, diff_time: 18074
+recv_cnt:3696, recv_valid_cnt=1847, diff_time: 18141
+recv_cnt:3698, recv_valid_cnt=1848, diff_time: 18001
+recv_cnt:3700, recv_valid_cnt=1849, diff_time: 18103
+recv_cnt:3702, recv_valid_cnt=1850, diff_time: 18074
+recv_cnt:3704, recv_valid_cnt=1851, diff_time: 18040
+recv_cnt:3706, recv_valid_cnt=1852, diff_time: 18045
+recv_cnt:3708, recv_valid_cnt=1853, diff_time: 18045
+recv_cnt:3710, recv_valid_cnt=1854, diff_time: 18139
+recv_cnt:3712, recv_valid_cnt=1855, diff_time: 18001
+recv_cnt:3714, recv_valid_cnt=1856, diff_time: 18069
+recv_cnt:3716, recv_valid_cnt=1857, diff_time: 18063
+recv_cnt:3718, recv_valid_cnt=1858, diff_time: 18071
+Nrecv_cnt:3720, recv_valid_cnt=1859, diff_time: 18070
+recv_cnt:3722, recv_valid_cnt=1860, diff_time: 18083
+recv_cnt:3724, recv_valid_cnt=1861, diff_time: 18079
+recv_cnt:3726, recv_valid_cnt=1862, diff_time: 18078
+recv_cnt:3728, recv_valid_cnt=1863, diff_time: 18045
+recv_cnt:3730, recv_valid_cnt=1864, diff_time: 18046
+recv_cnt:3732, recv_valid_cnt=1865, diff_time: 18082
+recv_cnt:3734, recv_valid_cnt=1866, diff_time: 18079
+recv_cnt:3736, recv_valid_cnt=1867, diff_time: 18103
+recv_cnt:3738, recv_valid_cnt=1868, diff_time: 18027
+recv_cnt:3740, recv_valid_cnt=1869, diff_time: 18078
+recv_cnt:3742, recv_valid_cnt=1870, diff_time: 18077
+recv_cnt:3744, recv_valid_cnt=1871, diff_time: 18085
+recv_cnt:3746, recv_valid_cnt=1872, diff_time: 18081
+recv_cnt:3748, recv_valid_cnt=1873, diff_time: 18073
+recv_cnt:3750, recv_valid_cnt=1874, diff_time: 18045
+recv_cnt:3752, recv_valid_cnt=1875, diff_time: 18045
+recv_cnt:3754, recv_valid_cnt=1876, diff_time: 18104
+recv_cnt:3756, recv_valid_cnt=1877, diff_time: 18046
+recv_cnt:3758, recv_valid_cnt=1878, diff_time: 12054
+recv_cnt:3760, recv_valid_cnt=1879, diff_time: 18072
+
+
+３．　注意事项:
+
+1)  主程序程序延时是5ms，　因为每次接收２个包数据.
+2)　　

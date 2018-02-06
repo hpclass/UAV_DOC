@@ -1,0 +1,3 @@
+发现硬件溢出的问题:
+[boot] Fault Log info File No 3 Length 3257 flags:0x01 state:0
+[boot] Fault Logged on 2000-01-01-00:20:35 - Valid

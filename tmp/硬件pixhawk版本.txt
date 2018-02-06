@@ -1,0 +1,16 @@
+px4 v1.7是第一个版本
+
+V1.6是公开版本
+
+CONFIG_STM32_STM32F427=y
+
+#
+# Board Selection
+#
+CONFIG_ARCH_BOARD_PX4FMU_V4=y
+CONFIG_ARCH_BOARD="px4fmu-v4"
+
+# Board Selection
+#
+CONFIG_ARCH_BOARD_PX4FMU_V4PRO=y
+CONFIG_ARCH_BOARD="px4fmu-v4pro"

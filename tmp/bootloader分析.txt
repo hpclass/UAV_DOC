@@ -1,0 +1,64 @@
+px4fmuv5_bl:$(MAKEFILE_LIST) $(LIBOPENCM3)
+	make -f Makefile.f7 TARGET_HW=PX4_FMU_V5 LINKER_FILE=stm32f7.ld TARGET_FILE_NAME=$@
+
+展开:
+make -f Makefile.f7
+	linux默认会找“GNUmakefile”、“makef ile”、“Makefile“进行编译
+make -f file...
+    make会自动编译文件Makefile.f7
+	
+TARGET_HW=PX4_FMU_V5 LINKER_FILE=stm32f7.ld TARGET_FILE_NAME=$@
+	传递的参数：
+  
+下面是给 Makefile.f7传递的参数  
+TARGET_HW=PX4_FMU_V5
+   目标
+LINKER_FILE=stm32f7.ld
+   链接脚本
+TARGET_FILE_NAME=$@
+   目标文件: $@ 表示所有   
+
+   
+   
+JTAGCONFIG ?= interface/olimex-jtag-tiny.cfg
+#JTAGCONFIG ?= interface/jtagkey-tiny.cfg
+
+# 5 seconds / 5000 ms default delay
+PX4_BOOTLOADER_DELAY	?= 5000
+
+SRCS		 = $(COMMON_SRCS) main_f7.c
+
+FLAGS		+= -g -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-sp-d16 \
+       -DTARGET_HW_$(TARGET_HW) \
+       -DSTM32F4 \
+       -T$(LINKER_FILE) \
+		   -L$(LIBOPENCM3)/lib \
+		   -lopencm3_stm32f4 \
+        $(EXTRAFLAGS)
+
+ELF		 = $(TARGET_FILE_NAME).elf
+BINARY		 = $(TARGET_FILE_NAME).bin
+
+all:		$(ELF) $(BINARY)  
+
+//2个文件
+px4fmuv5_bl.elf
+px4fmuv5_bl.bin
+
+$(ELF):		$(SRCS) $(MAKEFILE_LIST)
+	$(CC) -o $@ $(SRCS) $(FLAGS)
+	
+	
+px4fmuv5_bl.elf	：
+   
+
+$(BINARY):	$(ELF)
+	$(OBJCOPY) -O binary $(ELF) $(BINARY)
+解析后  
+    $(OBJCOPY) -O binary px4fmuv5_bl.elf px4fmuv5_bl.bin
+
+#upload: all flash flash-bootloader
+upload: all flash-bootloader
+
+flash-bootloader:
+	$(OPENOCD) --search ../px4_bootloader -f $(JTAGCONFIG) -f stm32f4x.cfg -c init -c "reset halt" -c "flash write_image erase $(BINARY) 0x08000000" -c "reset run" -c shutdown

@@ -1,0 +1,44 @@
+常用工具的安装
+
+1. git-gui
+说明:   
+ git-gui是git的操作的图形界面
+
+安装方法: 
+ sudo apt-get install git-gui
+
+２．screen 
+说明: linux下的串口终端工具
+
+安装方法：
+  sudo apt-get install screen
+
+3. meld
+说明：　
+　　meld是１个文件对比，文件夹对比的软件
+
+安装方法是
+  sudo apt-get install meld 
+
+
+4. sublime text 3
+
+说明: 
+  sublime text 3是代码编辑器
+
+安装方法:
+  sudo add-apt-repository ppa:webupd8team/sublime-text-3
+  sudo apt-get update 
+  sudo apt-get install sublime-text-installer
+
+
+5. 固件下载
+git clone ssh://yg0103@192.168.1.252/opt/.repositories/theone-mc.git
+
+
+6. lantern在ubuntu下的安装方法
+$sudo dpkg -i lantern-installer-beta-64-bit.deb
+
+
+
+

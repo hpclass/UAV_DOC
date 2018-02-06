@@ -1,0 +1,21 @@
+问题１：　校准的结构体没有更改
+ers/adis16448/CMakeFiles/drivers__adis16448.dir/adis16448.cpp.obj -c ../src/drivers/adis16448/adis16448.cpp
+../src/drivers/adis16448/adis16448.cpp:234:28: error: field '_gyro_scale' has incomplete type 'gyro_calibration_s'
+  struct gyro_calibration_s _gyro_scale;
+  
+问题２: 构造函数传入的变量的数据类型没有强制转化                          ^
+../src/drivers/adis16448/adis16448.cpp: In constructor 'ADIS16448::ADIS16448(int, const char*, const char*, const char*, uint32_t, Rotation)':
+../src/drivers/adis16448/adis16448.cpp:515:70: error: invalid conversion from 'uint32_t {aka unsigned int}' to 'spi_dev_e' [-fpermissive]
+  _controller_latency_perf(perf_alloc_once(PC_ELAPSED, "ctrl_latency"))
+
+
+问题3: 出现的原因，官方的orb已经更新
+../src/drivers/adis16448/adis16448.cpp: In member function 'int ADIS16448::measure()':
+../src/drivers/adis16448/adis16448.cpp:1573:6: error: 'struct sensor_accel_s' has no member named 'device_id'
+  arb.device_id = _device_id.devid;
+      ^
+compilation terminated due to -Wfatal-errors.
+[6/27] Building CXX object src/drivers/mpu6000/CMakeFiles/drivers__mpu6000.dir/mpu6000.cpp.obj
+ninja: build stopped: subcommand failed.
+Makefile:132: recipe for target 'theone' failed
+make: *** [theone] Error 1

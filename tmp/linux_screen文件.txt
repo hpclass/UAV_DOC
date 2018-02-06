@@ -1,0 +1,2 @@
+sudo apt-get install screen
+screen /dev/ttyACM0 BAUDRATE 8N1

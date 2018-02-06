@@ -1,0 +1,29 @@
+fPX4打开USB console
+1、 修改Firmware\nuttx-configs\px4fmu-v1\nsh\defconfig CONFIG_NO_SERIAL_CONSOLE=y
+CONFIG_CDCACM_CONSOLE=y
+# CONFIG_DEV_CONSOLE=y
+# CONFIG_USART1_SERIAL_CONSOLE=y
+2、 修改rcS文件
+2.1 注释掉sercon,否则会出现下面的错误
+sercon: ERROR: Failed to create the CDC/ACM serial device: 17
+# Start CDC/ACM serial driver
+#
+# sercon
+2.2 注释掉 nshterm /dev/ttyACM0 &，否则nsh会出现字符乱的问题，有人说这是因为nuttx在启动时会自动启动一个nshterm, 所有这里是重复了，会互相干扰。 像下面的例子 nsh> help (enter)
+nsh: hl: command not found
+nsh> (enter)
+nsh: ep: command not found
+But if I type
+nsh> hheellpp (enter)
+help usage: help [-v] [<cmd>]
+# Try to get an USB console
+# nshterm /dev/ttyACM0 &
+2.3 这里我讲mavlink侦听在ttyS0的串口
+# Start MAVLink on port: ttyS0
+echo "[init] mavlink start $MAVLINK_FLAGS" >> $LOG_FILE
+set MAVLINK_FLAGS "-r 1000 -d /dev/ttyS0"
+mavlink start $MAVLINK_FLAGS
+这里对PX4的串口做个说明： 
+?
+?
+? USB –/dev/ttyACM0 USART1 – /dev/ttyS0 USART2 – /dev/ttyS1 UART5 – /dev/ttyS2 UART6 – /dev/ttyS3

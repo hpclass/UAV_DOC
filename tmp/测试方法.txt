@@ -1,0 +1,8 @@
+echo $LOG_FILE
+/dev/null 
+
+nsh> echo $MODE
+autostart 
+
+如果nsh脚本启动不能查看命令，那么就要保存好环境变量
+

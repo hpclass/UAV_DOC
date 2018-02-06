@@ -1,0 +1,112 @@
+macro(<name> [arg1 [arg2 [arg3 ...]]])
+  COMMAND1(ARGS ...)
+  COMMAND2(ARGS ...)
+  ...
+endmacro(<name>)
+
+
+
+//编译nuttx
+
+	# nuttx build and export
+	add_custom_command(
+		OUTPUT ${nuttx_export_stamp}
+			${nuttx_export_dir}/include/nuttx/config.h
+		COMMAND ${RM} -rf ${nuttx_export_dir}
+		COMMAND ${MAKE} ${nuttx_build_options} --no-print-directory -C ${nuttx_build_src}/nuttx -r CONFIG_ARCH_BOARD=${CONFIG} export ${nuttx_build_output}
+		COMMAND cmake -E touch ${nuttx_export_stamp}
+		DEPENDS nuttx_configure_${CONFIG}
+		WORKING_DIRECTORY ${PX4_BINARY_DIR}/${CONFIG}
+		COMMENT "Building NuttX for ${CONFIG} with ${config_nuttx_config}"
+		${nuttx_build_uses_terminal})
+
+
+从更新记录看顶层的CMakelist的是on 21 Nov(11) 2016 
+
+nuttx7.18的移植是2016-12-13
+
+
+yangang@ubuntu:~/work/px4_src_proj/firmware/firmwar-tmp/Firmware$ git submodule sync --recursive 
+Synchronizing submodule url for 'NuttX'
+Synchronizing submodule url for 'Tools/gencpp'
+Synchronizing submodule url for 'Tools/genmsg'
+Synchronizing submodule url for 'Tools/jMAVSim'
+Synchronizing submodule url for 'Tools/jMAVSim/jMAVlib'
+Synchronizing submodule url for 'Tools/sitl_gazebo'
+Synchronizing submodule url for 'cmake/cmake_hexagon'
+Synchronizing submodule url for 'mavlink/include/mavlink/v1.0'
+Synchronizing submodule url for 'mavlink/include/mavlink/v2.0'
+Synchronizing submodule url for 'src/drivers/gps/devices'
+Synchronizing submodule url for 'src/lib/DriverFramework'
+Synchronizing submodule url for 'src/lib/DriverFramework/cmake/cmake_hexagon'
+Synchronizing submodule url for 'src/lib/DriverFramework/dspal'
+Synchronizing submodule url for 'src/lib/DriverFramework/dspal/test/cmake_hexagon'
+Synchronizing submodule url for 'src/lib/ecl'
+Synchronizing submodule url for 'src/lib/ecl/matrix'
+Synchronizing submodule url for 'src/lib/matrix'
+Synchronizing submodule url for 'src/modules/uavcan/libuavcan'
+Synchronizing submodule url for 'src/modules/uavcan/libuavcan/dsdl'
+Synchronizing submodule url for 'src/modules/uavcan/libuavcan/libuavcan/dsdl_compiler/pyuavcan'
+Synchronizing submodule url for 'src/modules/uavcan/libuavcan/libuavcan/dsdl_compiler/pyuavcan/dsdl'
+Synchronizing submodule url for 'unittests/googletest'
+yangang@ubuntu:~/work/px4_src_proj/firmware/firmwar-tmp/Firmware$ git submodule update --init --recursive
+warning: no common commits
+remote: Counting objects: 329, done.
+remote: Total 329 (delta 0), reused 0 (delta 0), pack-reused 329
+Receiving objects: 100% (329/329), 46.30 KiB | 44.00 KiB/s, done.
+Resolving deltas: 100% (141/141), done.
+From https://github.com/PX4/PX4NuttX
+ * [new branch]      cmake      -> origin/cmake
+ * [new branch]      last_beta  -> origin/last_beta
+ * [new branch]      last_master -> origin/last_master
+ * [new branch]      last_nuttx_next -> origin/last_nuttx_next
+ * [new branch]      nuttx_next_cmake_update -> origin/nuttx_next_cmake_update
+ + a537415...a2d1a17 upstream   -> origin/upstream  (forced update)
+ * [new branch]      upstream_446 -> origin/upstream_446
+ * [new branch]      upstream_kinetis -> origin/upstream_kinetis
+ * [new branch]      upstream_last -> origin/upstream_last
+ * [new branch]      upstream_logging -> origin/upstream_logging
+Submodule path 'NuttX': checked out '44ad7e224c1ef17911ab8b4101fd624ad9ee4177'
+Submodule 'NxWidgets' (https://github.com/PX4-NuttX/NxWidgets.git) registered for path 'NxWidgets'
+Submodule 'apps' (https://github.com/PX4-NuttX/apps.git) registered for path 'apps'
+Submodule 'misc/tools' (https://github.com/PX4-NuttX/tools.git) registered for path 'misc/tools'
+Submodule 'nuttx' (https://github.com/PX4-NuttX/nuttx.git) registered for path 'nuttx'
+Cloning into 'NxWidgets'...
+remote: Counting objects: 4395, done.
+remote: Total 4395 (delta 0), reused 0 (delta 0), pack-reused 4395
+Receiving objects: 100% (4395/4395), 1.32 MiB | 476.00 KiB/s, done.
+Resolving deltas: 100% (3607/3607), done.
+Checking connectivity... done.
+Submodule path 'NuttX/NxWidgets': checked out '275a9281b1c782912b7bb02ff033d0713171f8b8'
+Cloning into 'apps'...
+remote: Counting objects: 32062, done.
+remote: Total 32062 (delta 0), reused 0 (delta 0), pack-reused 32062
+Receiving objects: 100% (32062/32062), 6.15 MiB | 1.13 MiB/s, done.
+Resolving deltas: 100% (26142/26142), done.
+Checking connectivity... done.
+Submodule path 'NuttX/apps': checked out 'bfec325aded112dbad1194494e53c11ef4713ae3'
+Cloning into 'misc/tools'...
+remote: Counting objects: 14321, done.
+remote: Total 14321 (delta 0), reused 0 (delta 0), pack-reused 14321
+Receiving objects: 100% (14321/14321), 4.94 MiB | 1.42 MiB/s, done.
+Resolving deltas: 100% (11231/11231), done.
+Checking connectivity... done.
+Submodule path 'NuttX/misc/tools': checked out '5ed6d86a6b2990314abf440e6c50e8f3bb3ae031'
+Cloning into 'nuttx'...
+remote: Counting objects: 346181, done.
+remote: Total 346181 (delta 0), reused 0 (delta 0), pack-reused 346181
+Receiving objects: 100% (346181/346181), 83.48 MiB | 1.28 MiB/s, done.
+Resolving deltas: 100% (265410/265410), done.
+Checking connectivity... done.
+Submodule path 'NuttX/nuttx': checked out '8b81cf5c7ece0c228eaaea3e9d8e667fc4d21a06'
+Submodule path 'src/drivers/gps/devices': checked out '17c654714256fea21af042f77136a765a872cc64'
+Submodule path 'src/lib/DriverFramework': checked out '60599774544343fb0a51913bcbb38fe0188ac1c4'
+Submodule path 'src/lib/DriverFramework/dspal': checked out 'cb7753929c1fae217177c0acf644f761bbea0aa3'
+Submodule path 'src/lib/ecl': checked out '9618adb542f94d72ce1821d074dd8b2577fc7d3d'
+Submodule path 'src/modules/uavcan/libuavcan': checked out 'e031a0e93f723ce2a1eb86b365d6529bb57bb7c2'
+yangang@ubuntu:~/work/px4_src_proj/firmware/firmwar-tmp/Firmware$ 
+yangang@ubuntu:~/work/px4_src_proj/firmware/firmwar-tmp/Firmware$ 
+yangang@ubuntu:~/work/px4_src_proj/firmware/firmwar-tmp/Firmware$ 
+
+
+版本切换，子模块切换不顺畅的问题，

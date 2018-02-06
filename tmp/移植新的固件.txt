@@ -1,0 +1,54 @@
+1. 编译新的固件出现的错误
+CMake Error at /usr/share/cmake-3.4/Modules/FindPackageHandleStandardArgs.cmake:148 (message):
+  couldn't find python module jinja2:
+ couldn't find python module jinja2:
+
+  		
+
+  for debian systems try: 		
+
+  	sudo apt-get install python-jinja2 		
+
+  or for all other OSs/debian: 		
+
+  	pip install jinja2
+
+   (missing:  PY_JINJA2) 
+Call Stack (most recent call first):
+  /usr/share/cmake-3.4/Modules/FindPackageHandleStandardArgs.cmake:388 (_FPHSA_FAILURE_MESSAGE)
+  cmake/common/px4_base.cmake:1295 (find_package_handle_standard_args)
+  CMakeLists.txt:276 (px4_find_python_module)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/yangang/work/px4/Firmware/build_px4fmu-v2_default/CMakeFiles/CMakeOutput.log".
+/bin/sh: 1: cd: can't cd to /home/yangang/work/px4/Firmware/build_px4fmu-v2_default
+Makefile:145: recipe for target 'px4fmu-v2_default' failed
+make: *** [px4fmu-v2_default] Error 2
+
+解决方法：
+sudo apt-get install python-jinja2
+输入密码
+
+1. USB端口
+CONFIG_CDCACM_VENDORID=0x26ac
+CONFIG_CDCACM_PRODUCTID=0x0011
+CONFIG_CDCACM_VENDORSTR="3D Robotics"
+CONFIG_CDCACM_PRODUCTSTR="PX4 FMU v2.x"
+
+
+1. 创建目标
+Scanning dependencies of target nuttx_copy_px4nucleoF767ZI-v1
+[  3%] Copying NuttX for px4nucleoF767ZI-v1 with nsh
+
+编译信息：
+arm-none-eabi-gcc.exe: note: valid arguments to '-mcpu=' are: arm1020e arm1020t arm1022e arm1026ej-s 
+arm10e arm10tdmi arm1136j-s arm1136jf-s arm1156t2-s arm1156t2f-s arm1176jz-s arm1176jzf-s arm2 arm250 
+arm3 arm6 arm60 arm600 arm610 arm620 arm7 arm70 arm700 arm700i arm710 arm7100 arm710c arm710t arm720 
+arm720t arm740t arm7500 arm7500fe arm7d arm7di arm7dm arm7dmi arm7m arm7tdmi arm7tdmi-s arm8 arm810 
+arm9 arm920 arm920t arm922t arm926ej-s arm940t arm946e-s arm966e-s arm968e-s arm9e arm9tdmi cortex-a15 
+cortex-a5 cortex-a7 cortex-a8 cortex-a9 cortex-m0 cortex-m0plus cortex-m1 cortex-m3 cortex-m4 cortex-r4 
+cortex-r4f cortex-r5 cortex-r7 ep9312 fa526 fa606te fa626 fa626te fa726te fmp626 generic-armv7-a iwmmxt 
+iwmmxt2 mpcore mpcorenovfp native strongarm strongarm110 strongarm1100 strongarm1110 xscale
+
+

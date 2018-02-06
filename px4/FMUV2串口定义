@@ -1,0 +1,7 @@
+
+ttyS0   串口1   IO_RX
+ttyS1   串口2   TELEM1
+ttyS2   串口3   TELEM2
+ttyS3   串口4   GPS
+ttyS4   串口5   NSH
+ttyS5   串口6   ?

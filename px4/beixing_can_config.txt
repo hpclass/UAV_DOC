@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+unsigned long CrcGen_STM32(unsigned long data[], unsigned long size)
+{
+	unsigned long i,j,temp,crc = 0xFFFFFFFF;
+	for(i=0; i<size; i++)
+	{
+	temp = data[i];
+	for(j=0; j<32; j++)
+	{
+	if( (crc ^ temp) & 0x80000000 )
+	{
+	crc = 0x04C11DB7 ^ (crc<<1);
+	}
+	else
+	{
+	crc <<=1;
+	}
+	temp<<=1;
+	}
+	}
+	return crc;
+}
+
+void main(int argc, char＊ argv[])
+{
+	unsigned char extid_code = 0x02;
+    unsigned int extid = 0x01020304;
+    
+    unsigned char send_buf[16];
+    
+	memset (send_buf, 0x00, sizeof(send_buf));
+    
+	send_buf[0] = 0xAA;
+	send_buf[1] = 0x55;
+	send_buf[2] = 0xF7;
+
+    send_buf[3] = extid_code;
+	send_buf[4] = (extid >> 24) & 0xff;
+	send_buf[5] = (extid >> 16) & 0xff;
+    send_buf[6] = (extid >> 8) & 0xff;
+	send_buf[7] = (extid >> 0) & 0xff;
+
+	send_buf[11] = 0x05;
+	send_buf[14] = 0x66;
+ 
+    unsigned long crc = 0;
+
+
+	unsigned int checksum=0;
+    
+	if (argc < 3) {
+	
+		//return ;
+	}
+    
+    unsigned int start_pos = 0;
+	unsigned int stop_pos = 0;
+
+	//start_pos = atoi(argv[1]);
+	//stop_pos  = atoi(argv[2]);
+
+    start_pos = 0;
+	stop_pos  = sizeof(send_buf) - 1 ;
+
+	for (int i = start_pos; i < stop_pos; i++) {
+		checksum += send_buf[i];
+		printf("send_bufbuf[%d] = 0x%x\r\n", i, send_buf[i]);
+	} 
+
+	printf("checksum = 0x%04x,low = 0x%x\r\n", checksum, checksum & 0x00ff);
+
+}
+

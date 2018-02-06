@@ -1,0 +1,100 @@
+Radio4463Init 
+ -> Hard_Resrt( ) ;                                  // 硬件复位
+ -> si446x_configuration_init(const u8* pSetPropCmd) // 配置参数
+   -> len = sizeof(Radio_Configuration_Data_Array);  //972字节
+  
+
+ 
+main()
+  -> systerm_Init( ) ;  
+    -> GPIO_Configuration( );
+    -> NVIC_Configuration( );  
+    
+    -> TIMER_Init( ) ;
+	  ->     TIM_Cmd(TIM2, ENABLE);
+	  ->     TIM_Cmd(TIM3, ENABLE);
+	  ->     TIM_Cmd(TIM4, ENABLE);
+
+  while (*pSetPropCmd != 0x00)
+  {
+        numOfBytes = *pSetPropCmd++;
+        if (numOfBytes > 16u) { return SI446X_COMMAND_ERROR;} //分包处理，根据长度 
+		for (col = 0u; col < numOfBytes; col++)
+        {
+            Pro2Cmd[col] = *pSetPropCmd;
+            pSetPropCmd++;
+        }
+	  
+typedef struct
+{
+    const u8   *Radio_ConfigurationArray;    //配置参数数组
+    u8   Radio_ChannelNumber;
+    u8   Radio_PacketLength;
+    u8   Radio_State_After_Power_Up;
+    u16  Radio_Delay_Cnt_After_Reset;
+    u8   Radio_CustomPayload[RADIO_MAX_PACKET_LENGTH];
+} tRadioConfiguration;
+
+#define RADIO_CONFIGURATION_DATA { \
+                            Radio_Configuration_Data_Array,                            \
+                            RADIO_CONFIGURATION_DATA_CHANNEL_NUMBER,                   \
+                            RADIO_CONFIGURATION_DATA_RADIO_PACKET_LENGTH,              \
+                            RADIO_CONFIGURATION_DATA_RADIO_STATE_AFTER_POWER_UP,       \
+                            RADIO_CONFIGURATION_DATA_RADIO_DELAY_CNT_AFTER_RESET       \
+                            }
+							
+//配置参数数组：
+							
+#define RADIO_CONFIGURATION_DATA_ARRAY { \
+        SI446X_PATCH_CMDS, \
+        0x07, RF_POWER_UP, \
+        0x08, RF_GPIO_PIN_CFG, \
+        0x06, RF_GLOBAL_XO_TUNE_2, \
+        0x05, RF_GLOBAL_CONFIG_1, \
+        0x07, RF_INT_CTL_ENABLE_3, \
+        0x08, RF_FRR_CTL_A_MODE_4, \
+        0x0D, RF_PREAMBLE_TX_LENGTH_9, \
+        0x0A, RF_SYNC_CONFIG_6, \
+        0x10, RF_PKT_CRC_CONFIG_12, \
+        0x10, RF_PKT_RX_THRESHOLD_12, \
+        0x10, RF_PKT_FIELD_3_CRC_CONFIG_12, \
+        0x10, RF_PKT_RX_FIELD_1_CRC_CONFIG_12, \
+        0x09, RF_PKT_RX_FIELD_4_CRC_CONFIG_5, \
+        0x08, RF_PKT_CRC_SEED_31_24_4, \
+        0x10, RF_MODEM_MOD_TYPE_12, \
+        0x05, RF_MODEM_FREQ_DEV_0_1, \
+        0x10, RF_MODEM_TX_RAMP_DELAY_12, \
+        0x10, RF_MODEM_BCR_NCO_OFFSET_2_12, \
+        0x07, RF_MODEM_AFC_LIMITER_1_3, \
+        0x05, RF_MODEM_AGC_CONTROL_1, \
+        0x10, RF_MODEM_AGC_WINDOW_SIZE_12, \
+        0x0E, RF_MODEM_RAW_CONTROL_10, \
+        0x06, RF_MODEM_RAW_SEARCH2_2, \
+        0x06, RF_MODEM_SPIKE_DET_2, \
+        0x05, RF_MODEM_RSSI_MUTE_1, \
+        0x09, RF_MODEM_DSA_CTRL1_5, \
+        0x10, RF_MODEM_CHFLT_RX1_CHFLT_COE13_7_0_12, \
+        0x10, RF_MODEM_CHFLT_RX1_CHFLT_COE1_7_0_12, \
+        0x10, RF_MODEM_CHFLT_RX2_CHFLT_COE7_7_0_12, \
+        0x09, RF_PA_MODE_5, \
+        0x0B, RF_SYNTH_PFDCP_CPFF_7, \
+        0x10, RF_MATCH_VALUE_1_12, \
+        0x0C, RF_FREQ_CONTROL_INTE_8, \
+        0x00 \
+ }
+ 
+u8 bApi_SendCommand(u8 bCmdLength, u8 *pbCmdData)           // 发送数据 
+u8 bSpi_SendDataGetResp(u8 bDataOutLength, u8 *pbDataOut)   // 接收数据，发送0xff
+	->  pbDataOut[bCnt] = bSPI_ReadDataByte( );             // 接收数据   
+	
+	
+'\b' (0x08) //每个包是8字节
+if (radio_comm_SendCmdGetResp(numOfBytes, Pro2Cmd, 0, 0) != 0x00)
+radio_comm_SendCmdGetResp(u8 cmdByteCount, u8* pCmdData,    //发送n个数据
+                          u8 respByteCount, u8* pRespData)  
+
+
+						  
+						  97
+						  
+//发送和接收是连续的，中间是不连续.

@@ -1,0 +1,77 @@
+sn: 0032002c3036511633383533
+chip: 10006451
+family: STM32F7[6|7]x
+revision: A
+flash 2064384
+
+
+WARNING: #####Firmware not suitable for this board (board_type=50 board_id=50)
+
+fw = firmware(args.firmware)
+// 得到1个对象
+
+class firmware(object):
+ ->fw = firmware(args.firmware)
+ 
+ % (fw.property('board_id'), fw.property('board_revision'), fw.property('image_size'))
+ 
+def property(self, propname):
+	return self.desc[propname]
+	
+self.desc[board_id]	:
+
+[YG-DEBUG] path = /home/yangang/work/stm32f7/Firmware/build_px4fmu-v5_default/src/firmware/nuttx/px4fmu-v5_default.px4
+
+f = open(path, "r")
+     print("[YG-DEBUG] path = %s" %path)
+	 -> 
+	 
+	 
+desc['board_id']	= int(args.board_id) //文件
+args = parser.parse_args()
+
+
+3. 固件可以输出文件: 
+Loaded firmware for (0x)32,0, size: 1176444 bytes, waiting for the bootloader...
+
+发现的端口是: bootloade文件
+Found board 34,0 bootloader rev 5 on /dev/serial/by-id/pci-3D_Robotics_PX4_BL_FMU_v5.x_0-if00
+
+
+切换分支之前：
+error: Your local changes to the following files would be overwritten by checkout:
+	ROMFS/px4fmu_common/init.d/rcS
+	Tools/px_uploader.py
+	cmake/configs/nuttx_px4fmu-v5_default.cmake
+	nuttx-configs/px4fmu-v5/include/board.h
+	nuttx-configs/px4fmu-v5/nsh/defconfig
+	nuttx-configs/px4nucleoF767ZI-v1/nsh/defconfig
+	src/drivers/boards/px4nucleoF767ZI-v1/px4nucleo_led.c
+Please, commit your changes or stash them before you can switch branches.
+Aborting
+
+nucleo是0x5a:
+Loaded firmware for 5a,0, size: 1176676 bytes, waiting for the bootloader...
+
+cd /home/yangang/work/stm32f7/Firmware/build_px4nucleoF767ZI-v1_default/src/firmware/nuttx && 
+/usr/bin/python /home/yangang/work/stm32f7/Firmware/Tools/px_mkfw.py 
+--prototype      /home/yangang/work/stm32f7/Firmware/Images/px4nucleoF767ZI-v1.prototype 
+--git_identity   /home/yangang/work/stm32f7/Firmware 
+--parameter_xml  /home/yangang/work/stm32f7/Firmware/build_px4nucleoF767ZI-v1_default/parameters.xml 
+--airframe_xml   /home/yangang/work/stm32f7/Firmware/build_px4nucleoF767ZI-v1_default/airframes.xml 
+--image          /home/yangang/work/stm32f7/Firmware/build_px4nucleoF767ZI-v1_default/src/firmware/nuttx/firmware_nuttx.bin 
+输出文件到px4nucleoF767ZI-v1_default.px4
+> /home/yangang/work/stm32f7/Firmware/build_px4nucleoF767ZI-v1_default/src/firmware/nuttx/px4nucleoF767ZI-v1_default.px4
+
+加载1个文件：
+
+/usr/bin/python /home/yangang/work/stm32f7/Firmware/Tools/px_uploader.py
+--port "/dev/serial/by-id/*_PX4_*,/dev/serial/by-id/usb-3D_Robotics*,/dev/serial/by-id/usb-The_Autopilot*,/dev/serial/by-id/usb-Bitcraze*,/dev/serial/by-id/pci-3D_Robotics*,/dev/serial/by-id/pci-Bitcraze*" 
+/home/yangang/work/stm32f7/Firmware/build_px4nucleoF767ZI-v1_default/src/firmware/nuttx/px4nucleoF767ZI-v1_default.px4
+
+输入文件
+
+
+下载失败的问题：
+1. ubuntu没有连接上
+2. 在应用启动后, usb启动失败，但是重新上电会出现usb端口

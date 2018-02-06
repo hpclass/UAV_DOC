@@ -1,0 +1,52 @@
+  Nuttx仅仅是1个os，Px4使用这个Nuttx, Nuttx并不是px4组织开发的.
+  Nuttx内核的配置都是Nuttx/nuttx下配置的
+
+nuttx下使用make menuconfig配置
+-------------------------------------------------------------------------------------------------------------------------------
+1. 下载文件kconfig-frontends安装包
+   http://ymorin.is-a-geek.org/projects/kconfig-frontends
+   网页出现字符 “2013-11-09: 3.12.0.0 has been released (xz, bz2) ,点击 "bz2"的字符
+     出现下载的窗口到window下.
+   mkdir ../tools
+   复制kconfig-frontends-3.12.0.0.tar下到tools目录下
+ 
+   注意:  编译kconfig-frontends会需要依赖gperf，先安装 
+        sudo apt-get install gperf
+        cd kconfig-frontends-3.12.0.0
+        ./configure
+        make 
+        sudo make install
+        
+        cd nuttx/tools
+        ./configure.sh   ../configs/stm32f4discovery/usbnsh
+        cd ..
+        make menuconfig
+        
+2. 出现的错误
+  kconfig-mconf: error while loading shared libraries: libkconfig-parser-3.12.0.so: cannot open shared object file: No such file or directory
+  Makefile.unix:697: recipe for target 'menuconfig' failed
+  make: *** [menuconfig] Error 127
+  
+  解决方法:
+  sudo ln -s /usr/local/lib/libkconfig-parser-3.12.0.so /lib/libkconfig-parser-3.12.0.so
+  
+3. 在nuttx目录下
+   make menuconfig
+   就可以正常显示了配置界面了
+  
+
+
+ 
+ 
+       
+        
+        
+        
+          
+   
+   
+   
+   
+   
+   
+   

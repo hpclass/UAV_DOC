@@ -1,0 +1,13 @@
+创建分支:下载子模块Submodule
+
+Submodule path 'src/modules/uavcan/libuavcan/libuavcan/dsdl_compiler/pyuavcan/dsdl': checked out 'fd12483ddd4e58242d61d74a163e7aeaa1e0f466'
+Cloning into 'unittests/googletest'...
+remote: Counting objects: 7500, done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 7500 (delta 1), reused 0 (delta 0), pack-reused 7497
+Receiving objects: 100% (7500/7500), 2.52 MiB | 271.00 KiB/s, done.
+Resolving deltas: 100% (5567/5567), done.
+Checking connectivity... done.
+Submodule path 'unittests/googletest': checked out 'c99458533a9b4c743ed51537e25989ea55944908'
+
+

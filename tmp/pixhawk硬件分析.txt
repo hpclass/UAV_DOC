@@ -1,0 +1,6 @@
+1. FMU和pixhawk不一定能通用
+
+1. FMU-v是固件的版本, pixhawk是硬件版本
+FMUv2.x (Pixhawk and Pixfalcon)
+说明
+

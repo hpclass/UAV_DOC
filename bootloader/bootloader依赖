@@ -1,0 +1,10 @@
+#
+# Paths to common dependencies
+#
+export BL_BASE          ?= $(wildcard .)
+export LIBOPENCM3       ?= $(wildcard libopencm3)
+
+在Makefile中制定一些依赖
+$(LIBOPENCM3): checksubmodules
+        make -C $(LIBOPENCM3) lib
+

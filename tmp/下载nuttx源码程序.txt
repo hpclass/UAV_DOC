@@ -1,0 +1,177 @@
+
+
+1.   下载px4源码
+--------------------------------------------------------------------------------------
+mkdir -p ~/src
+cd ~/src
+git clone https://github.com/PX4/Firmware.git
+cd Firmware
+git submodule update --init --recursive
+cd ..
+
+下载信息:
+yangang@ubuntu:~$ cd nuttx/source/
+yangang@ubuntu:~/nuttx/source$ ls
+yangang@ubuntu:~/nuttx/source$ git clone https://github.com/PX4/Firmware.git
+Cloning into 'Firmware'...
+remote: Counting objects: 214497, done.
+remote: Compressing objects: 100% (426/426), done.
+remote: Total 214497 (delta 279), reused 13 (delta 13), pack-reused 214058
+Receiving objects: 100% (214497/214497), 85.29 MiB | 1.19 MiB/s, done.
+Resolving deltas: 100% (159727/159727), done.
+Checking connectivity... done.
+
+2.  编译源码
+--------------------------------------------------------------------------------------
+
+set(config_module_list
+	#
+	# Board support modules
+	#cmake/configs/nuttx_px4fmu-v2_default.cmake
+	drivers/monitor
+        drivers/serial_drv
+	drivers/device
+	drivers/stm32
+	drivers/stm32/adc
+	drivers/stm32/tone_alarm
+	drivers/led
+	drivers/px4fmu
+	drivers/px4io
+	drivers/boards/px4fmu-v2
+	drivers/rgbled
+	drivers/mpu6000
+	drivers/mpu9250
+	drivers/lsm303d
+	drivers/l3gd20
+	drivers/hmc5883
+	drivers/ms5611
+	drivers/mb12xx
+	drivers/srf02
+	drivers/sf0x
+	drivers/sf10a
+	drivers/ll40ls
+	drivers/trone
+	drivers/gps
+	drivers/pwm_out_sim
+	drivers/hott
+	drivers/hott/hott_telemetry
+	drivers/hott/hott_sensors
+	drivers/blinkm
+	drivers/airspeed
+	drivers/ets_airspeed
+
+Nuttx是基于Makefile的，Nuttx操作系统源码在Firmware/NuttX下
+px4源码基本都在Firmware/src下，
+
+
+
+[ 12%] Built target drivers__stm32
+[ 14%] Built target drivers__device
+[ 14%] Built target drivers__stm32__adc
+[ 15%] Built target drivers__stm32__tone_alarm
+[ 16%] Built target drivers__led
+[ 17%] Built target drivers__px4fmu
+[ 19%] Built target drivers__px4io
+[ 21%] Built target drivers__boards__px4fmu-v2
+[ 21%] Built target drivers__rgbled
+[ 21%] Built target drivers__mpu6000
+[ 22%] Built target drivers__mpu9250
+[ 23%] Built target drivers__lsm303d
+[ 23%] Built target drivers__l3gd20
+[ 24%] Built target drivers__hmc5883
+[ 25%] Built target drivers__ms5611
+[ 25%] Built target drivers__mb12xx
+[ 26%] Built target drivers__sf10a
+[ 26%] Built target drivers__srf02
+[ 27%] Built target drivers__sf0x
+[ 27%] Built target libuavcan_dsdlc
+[ 28%] Built target drivers__trone
+[ 29%] Built target drivers__gps
+[ 30%] Built target drivers__ll40ls
+[ 30%] Built target drivers__pwm_out_sim
+[ 31%] Built target drivers__blinkm
+[ 32%] Built target drivers__hott__hott_sensors
+[ 32%] Built target drivers__hott__hott_telemetry
+[ 33%] Built target drivers__hott
+[ 33%] Built target drivers__ets_airspeed
+[ 35%] Built target drivers__frsky_telemetry
+[ 34%] Built target drivers__meas_airspeed
+[ 35%] Built target drivers__airspeed
+[ 36%] Built target drivers__gimbal
+[ 36%] Built target drivers__oreoled
+[ 36%] Built target modules__sensors
+[ 37%] Built target drivers__pwm_input
+[ 37%] Built target systemcmds__mixer
+[ 38%] Built target drivers__imu_ext
+[ 38%] Built target systemcmds__bl_update
+[ 38%] Built target systemcmds__param
+[ 39%] Built target systemcmds__perf
+[ 40%] Built target systemcmds__reboot
+[ 41%] Built target systemcmds__pwm
+[ 41%] Built target systemcmds__esc_calib
+[ 41%] Built target systemcmds__top
+[ 42%] Built target systemcmds__nshterm
+[ 43%] Built target systemcmds__config
+[ 44%] Built target systemcmds__mtd
+[ 44%] Built target systemcmds__dumpfile
+[ 45%] Built target systemcmds__ver
+[ 48%] Built target modules__commander
+[ 50%] Built target modules__gpio_led
+[ 54%] Built target modules__navigator
+[ 57%] Built target modules__mavlink
+[ 58%] Built target platforms__nuttx
+[ 58%] Built target modules__ekf2
+[ 59%] Built target modules__land_detector
+[ 60%] Built target modules__mc_att_control
+[ 60%] Built target modules__mc_pos_control
+[ 61%] Built target modules__sdlog2
+[ 62%] Built target modules__param
+[ 64%] Built target modules__systemlib__mixer
+[ 65%] Built target modules__dataman
+[ 67%] Built target modules__controllib
+[ 70%] Built target modules__uORB
+[ 71%] Built target lib__mathlib
+[ 71%] Built target lib__mathlib__math__filter
+[ 71%] Built target lib__external_lgpl
+[ 72%] Built target lib__geo
+[ 72%] Built target lib__geo_lookup
+[ 78%] Built target lib__ecl
+[ 79%] Built target lib__conversion
+[ 80%] Built target lib__launchdetection
+[ 81%] Built target lib__terrain_estimation
+[ 82%] Built target lib__runway_takeoff
+[ 82%] Built target fw_io
+[ 83%] Built target platforms__nuttx__px4_layer
+[ 84%] Built target romfs
+[ 92%] Built target modules__systemlib
+[ 96%] Built target uavcan
+[ 97%] Built target uavcan_stm32_driver
+[100%] Built target modules__uavcan
+
+
+px4_add_module(
+	MODULE drivers__serial_drv
+	MAIN serial_drv
+	STACK 3000
+	COMPILE_FLAGS
+		-Os
+	SRCS
+		serial_drv.cpp
+	DEPENDS
+		platforms__common
+	)
+
+cmake 格式:
+
+px4_add_module(
+	MODULE 上一级目录__驱动名字
+	MAIN 主函数名
+	STACK 堆栈字节数
+	COMPILE_FLAGS
+		-Os  编译flag
+	SRCS
+		serial_drv.cpp   原文件
+	DEPENDS
+		platforms__common   依赖
+	)
+

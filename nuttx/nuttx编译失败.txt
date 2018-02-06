@@ -1,0 +1,593 @@
+[  3%] Built target xml_gen
+make[4]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.
+make[4]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.
+make[4]: warning: -jN forced in submake: disabling jobserver mode.
+make[4]: warning: -jN forced in submake: disabling jobserver mode.
+make[4]: *** [arch/arm/src/board] Error 1
+make[4]: *** Waiting for unfinished jobs....
+CMakeFiles/nuttx_export_px4fmu-v2.dir/build.make:75: recipe for target 'px4fmu-v2.export' failed
+make[3]: *** [px4fmu-v2.export] Error 2
+CMakeFiles/Makefile2:586: recipe for target 'CMakeFiles/nuttx_export_px4fmu-v2.dir/all' failed
+make[2]: *** [CMakeFiles/nuttx_export_px4fmu-v2.dir/all] Error 2
+make[2]: *** Waiting for unfinished jobs....
+make[6]: *** No rule to make target 'context'.  Stop.
+make[5]: *** [context] Error 2
+make[7]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.
+/bin/sh: 1: /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/tools/mkdeps.sh: not found
+make[5]: *** [.depend] Error 127
+gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+gcc: error: unrecognized command line option ‘-mthumb’
+make[5]: *** [clock_gettime.o] Error 1
+make[5]: *** Waiting for unfinished jobs....
+gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+gcc: error: unrecognized command line option ‘-mthumb’
+make[5]: *** [clock_settime.o] Error 1
+gcc: error: unrecognized command line option ‘-mthumb’
+make[5]: *** [clock_initialize.o] Error 1
+/bin/sh: 1: /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/tools/mkdeps.sh: not found
+make[5]: *** [.depend] Error 127
+/bin/sh: 1: /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/tools/mkdeps.sh: not found
+make[5]: *** [.depend] Error 127
+make[4]: *** [sched/libsched.a] Error 2
+make[4]: *** Waiting for unfinished jobs....
+gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+gcc: error: unrecognized command line option ‘-mthumb’
+/bin/sh: 1: /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/tools/mkdeps.sh: not found
+make[6]: *** [.depend] Error 127
+make[5]: *** [.depend] Error 2
+make[6]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.
+/bin/sh: 1: /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/tools/mkdeps.sh: not found
+make[6]: *** [.depend] Error 127
+make[5]: *** [platform_depend] Error 2
+make[5]: *** Waiting for unfinished jobs....
+make[7]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.
+/bin/sh: 1: /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/tools/mkdeps.sh: not found
+make[5]: *** [.depend] Error 127
+/bin/sh: 1: /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/tools/mkdeps.sh: not found
+make[5]: *** [.depend] Error 127
+/bin/sh: 1: /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/tools/mkdeps.sh: not found
+make[5]: *** [.depend] Error 127
+/bin/sh: 1: /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/tools/mkdeps.sh: not found
+make[5]: *** [.depend] Error 127
+/bin/sh: 1: /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/tools/mkdeps.sh: not found
+make[5]: *** [.depend] Error 127
+make[4]: *** [pass2dep] Error 2
+make[4]: *** wait: No child processes.  Stop.
+src/modules/px4iofirmware/CMakeFiles/nuttx_export_px4io-v2.dir/build.make:74: recipe for target 'px4io-v2.export' failed
+make[3]: *** [px4io-v2.export] Error 2
+CMakeFiles/Makefile2:5455: recipe for target 'src/modules/px4iofirmware/CMakeFiles/nuttx_export_px4io-v2.dir/all' failed
+make[2]: *** [src/modules/px4iofirmware/CMakeFiles/nuttx_export_px4io-v2.dir/all] Error 2
+Makefile:160: recipe for target 'all' failed
+make[1]: *** [all] Error 2
+Makefile:166: recipe for target 'px4fmu-v2_default' failed
+make: *** [px4fmu-v2_default] Error 2
+
+
+
+make[2]: Nothing to be done for 'clean'.
+make[2]: Leaving directory '/home/yangang/work/px4_src_proj/firmware/theone-mc/NuttX/nuttx/net'
+make[2]: Entering directory '/home/yangang/work/px4_src_proj/firmware/theone-mc/NuttX/nuttx/crypto'
+make[2]: Nothing to be done for 'clean'.
+make[2]: Leaving directory '/home/yangang/work/px4_src_proj/firmware/theone-mc/NuttX/nuttx/crypto'
+make[2]: Entering directory '/home/yangang/work/px4_src_proj/firmware/theone-mc/NuttX/nuttx/tools'
+make[2]: Leaving directory '/home/yangang/work/px4_src_proj/firmware/theone-mc/NuttX/nuttx/tools'
+make[1]: Leaving directory '/home/yangang/work/px4_src_proj/firmware/theone-mc/NuttX/nuttx'
+
+
+编译失败百度
+波阿妈ｕｏｉ送
+
+
+之前编译的错误信息:
+----------------------------------------
+Configuring NuttX for px4io-v2
+[  5%] Generating px4fmu-v2.export
+make[4]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.
+Configuring NuttX for px4fmu-v2
+make[4]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.
+gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+gcc: error: unrecognized command line option ‘-mthumb’
+gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+gcc: error: unrecognized command line option ‘-mthumb’
+gcc: error: unrecognized command line option ‘-mfpu=fpv4-sp-d16’
+gcc: error: unrecognized command line option ‘-mfloat-abi=hard’
+[  5%] Built target libuavcan_dsdlc
+gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+gcc: error: unrecognized command line option ‘-mthumb’
+gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+gcc: error: unrecognized command line option ‘-mthumb’
+gcc: error: unrecognized command line option ‘-mfpu=fpv4-sp-d16’
+gcc: error: unrecognized command line option ‘-mfloat-abi=hard’
+
+解决方法是: 
+cp ~/work/px4_src_proj/firmware/Firmware/nuttx-configs/px4io-v2/ ./ -rf
+修改配置文件
+
+
+//px4_io有问题
+
+bin/sh: 1: /home/yangang/work/px4_src_proj/firmware/theone-mc-tmp1/theone-mc/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/tools/mkdeps.sh: not found
+make[5]: *** [.depend] Error 127
+
+发现mkdeps有问题
+
+NuttX/nuttx/configs/teensy-3.x/nsh/Make.defs:56:  MKDEP = $(TOPDIR)/tools/mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/configs/teensy-3.x/usbnsh/Make.defs:56:  MKDEP = $(TOPDIR)/tools/mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/configs/open1788/nsh/Make.defs:50:  MKDEP = $(TOPDIR)$(DELIM)tools$(DELIM)mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/configs/open1788/nxlines/Make.defs:50:  MKDEP = $(TOPDIR)$(DELIM)tools$(DELIM)mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/configs/open1788/knsh/Make.defs:51:  MKDEP = $(TOPDIR)$(DELIM)tools$(DELIM)mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/configs/sure-pic32mx/nsh/Make.defs:50:  MKDEP = $(TOPDIR)/tools/mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/configs/sure-pic32mx/usbnsh/Make.defs:50:  MKDEP = $(TOPDIR)/tools/mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/configs/xtrs/ostest/Make.defs:133:  MKDEP = $(TOPDIR)\tools\mkdeps.exe --winnative
+NuttX/nuttx/configs/xtrs/nsh/Make.defs:133:  MKDEP = $(TOPDIR)\tools\mkdeps.exe --winnative
+NuttX/nuttx/configs/xtrs/pashello/Make.defs:133:  MKDEP = $(TOPDIR)\tools\mkdeps.exe --winnative
+NuttX/nuttx/configs/olimex-efm32g880f128-stk/nsh/Make.defs:52:  MKDEP = $(TOPDIR)/tools/mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/configs/ez80f910200kitg/ostest/Make.defs:257:  #MKDEP = $(TOPDIR)\tools\mkdeps.exe --winnative
+NuttX/nuttx/configs/qemu-i486/ostest/Make.defs:60:  MKDEP = $(TOPDIR)/tools/mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/configs/qemu-i486/ostest/Make.defs:108:MKDEP = $(TOPDIR)/tools/mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/configs/qemu-i486/nsh/Make.defs:60:  MKDEP = $(TOPDIR)/tools/mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/configs/qemu-i486/nsh/Make.defs:108:MKDEP = $(TOPDIR)/tools/mkdeps$(HOSTEXEEXT)
+NuttX/nuttx/ReleaseNotes:3409:        tools/mkdeps.bat, tools/mkdeps.c, tools/link.bat, unlink.bat, and
+NuttX/nuttx/ReleaseNotes:10442:      - tools/mkdeps.c:  Extended/fixed support for --winpath option.
+
+
+//这句话很牛逼
+make clean >> /dev/null
+
+
+//先创建链硬件链接
+No .version file found, creating one
+No .version file found, creating one
+LN: include/arch to arch/arm/include
+LN: include/arch to arch/arm/include
+LN: include/arch/board to /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4fmu-v2/NuttX/nuttx/configs/px4fmu-v2/include
+LN: include/arch/board to /home/yangang/work/px4_src_proj/firmware/Firmware/build_px4fmu-v2_default/px4io-v2/NuttX/nuttx/configs/px4io-v2/include
+
+
+
+// 包含顶层文件
+include ${TOPDIR}/.config
+include ${TOPDIR}/tools/Config.mk
+include $(TOPDIR)/PX4_Warnings.mk
+include $(TOPDIR)/PX4_Config.mk
+
+#
+# We only support building with the ARM bare-metal toolchain from
+# https://launchpad.net/gcc-arm-embedded on Windows, Linux or Mac OS.
+#
+CONFIG_ARMV7M_TOOLCHAIN := GNU_EABI${HOST_OS_FIRST_LETTER}
+
+include ${TOPDIR}/arch/arm/src/armv7-m/Toolchain.defs
+
+CC                       = $(CROSSDEV)gcc
+CXX                      = $(CROSSDEV)g++
+CPP                      = $(CROSSDEV)gcc -E
+LD                       = $(CROSSDEV)ld
+AR                       = $(CROSSDEV)ar rcs
+NM                       = $(CROSSDEV)nm
+OBJCOPY                  = $(CROSSDEV)objcopy
+OBJDUMP                  = $(CROSSDEV)objdump
+
+MAXOPTIMIZATION          = -Os
+ARCHCPUFLAGS             = -mcpu=cortex-m4 \
+                           -mthumb \
+                           -march=armv7e-m \
+                           -mfpu=fpv4-sp-d16 \
+                           -mfloat-abi=hard
+
+
+//仅仅包含这个文件
+include ${TOPDIR}/.config
+include ${TOPDIR}/tools/Config.mk
+include ${TOPDIR}/arch/arm/src/armv7-m/Toolchain.defs
+
+
+//theone
+include ${TOPDIR}/.config
+include ${TOPDIR}/tools/Config.mk
+
+#
+# We only support building with the ARM bare-metal toolchain from
+# https://launchpad.net/gcc-arm-embedded on Windows, Linux or Mac OS.
+#
+CONFIG_ARMV7M_TOOLCHAIN := GNU_EABI
+
+include ${TOPDIR}/arch/arm/src/armv7-m/Toolchain.defs
+
+//
+set(nuttx_build_output ">nuttx_build.log")
+
+
+CMakeLists.txt:196:px4_add_git_submodule(TARGET git_gencpp PATH "Tools/gencpp")
+CMakeLists.txt:381:	DEPENDS git_genmsg git_gencpp prebuild_targets
+
+//t
+Traceback (most recent call last):
+  File "/home/yangang/work/px4_src_proj/firmware/theone-mc-tmp/theone-mc/Tools/px_update_git_header.py", line 28, in <module>
+    cwd='mavlink/include/mavlink/v2.0', stderr=subprocess.STDOUT).decode('utf-8').strip()
+
+
+.gitsubmodule中
+删除了.tool gool
+修改了．nuttx的路径
+
+
+Submodule path 'Tools/jMAVSim': checked out 'c608c8bf602791e137786295d967eb506307ae1d'
+Submodule path 'Tools/sitl_gazebo': checked out '3512ec89592feb6b14c791a09cc3476146f0de24'
+Submodule path 'src/drivers/gps/devices': checked out '25b335b78d209cdfdbb996355e4b8cb7f9ad4538'
+Submodule path 'src/lib/DriverFramework': checked out '1d84eeb4b5988b5f207a491680d830f4ceffeb84'
+Submodule path 'src/lib/ecl': checked out '453bde73f836e677bbe038d6f1514dc23d8caa20'
+Submodule path 'src/modules/uavcan/libuavcan': checked out 'dcbb573972f80343ee68eed743506ac09605de3b'
+
+当目录不对的时候，要更新子模块的, 按下u.
+
+
+/home/yangang/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/bin/ld: firmware_nuttx section `.data' will not fit in region `flash'
+/home/yangang/gcc-arm-none-eabi-5_4-2016q2/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/bin/ld: region `flash' overflowed by 612 bytes
+collect2: error: ld returned 1 exit status
+src/firmware/nuttx/CMakeFiles/firmware_nuttx.dir/build.make:176: recipe for target 'src/firmware/nuttx/firmware_nuttx' failed
+make[3]: *** [src/firmware/nuttx/firmware_nuttx] Error 1
+CMakeFiles/Makefile2:6772: recipe for target 'src/firmware/nuttx/CMakeFiles/firmware_nuttx.dir/all' failed
+make[2]: *** [src/firmware/nuttx/CMakeFiles/firmware_nuttx.dir/all] Error 2
+Makefile:160: recipe for target 'all' failed
+make[1]: *** [all] Error 2
+Makefile:145: recipe for target 'px4fmu-v2_default' failed
+make: *** [px4fmu-v2_default] Error 2
+
+d5059efddeb83d3c475340629eb641aa6d6cb7e4
+
+//20170126
+链接错误　5ede0ace17be24d0f470302f8b68dfeae9cc6374
+
+编译成功
+0f33ca1ecca16379770335f141b8089d671769e3
+
+commit 0f33ca1ecca16379770335f141b8089d671769e3
+Author: David Sidrane <david_s5@nscdg.com>
+Date:   Fri Jan 27 03:06:24 2017 -1000
+
+    tap-v1 Increased IRQ Stack Size
+
+
+//add FMUV5 :20161213   
+bca8767981833b24f37f9e494e786e14092af03c
+
+
+//也可以
+0f33ca1ecca16379770335f141b8089d671769e3
+
+
+M	src/lib/DriverFramework
+
+cdd472f722951f9d779af57003f6d4148fdff80b
+
+也可以
+//
+bc72b8161f743a85896a1e646d97305d755b212e
+
+//有个添加有uavcan就没有足够的空间的了
+0cc034ee15e4be1f96cd8c851a475bff4a26397d
+
+
+//肖哥改的．
+function(px4_add_git_submodule)
+        px4_parse_function_args(
+                NAME px4_add_git_submodule
+                ONE_VALUE TARGET PATH
+                REQUIRED TARGET PATH
+                ARGN ${ARGN})
+        string(REPLACE "/" "_" NAME ${PATH})
+
+        
+        add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/git_init_${NAME}.stamp
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                #COMMAND git submodule init ${PATH}
+                #COMMAND touch ${CMAKE_BINARY_DIR}/git_init_${NAME}.stamp
+                #DEPENDS ${CMAKE_SOURCE_DIR}/.gitmodules
+                )
+        add_custom_target(${TARGET}
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                #COMMAND git submodule update --recursive ${PATH}
+                DEPENDS ${CMAKE_BINARY_DIR}/git_init_${NAME}.stamp
+                )
+endfunction()
+
+
+px4_add_git_submodule(TARGET git_nuttx PATH "NuttX")
+　　　
+path = Tools/genmsg
+        url = https://github.com/ros/genmsg.git
+
+生成的后字符串
+
+NAME　：　git_init_Tools_genmsg.stamp //名字
+
+
+
+Scanning dependencies of target ver_gen
+Scanning dependencies of target git_gencpp
+Scanning dependencies of target git_nuttx
+Scanning dependencies of target git_genmsg
+[  0%] Generating git_init_Tools_gencpp.stamp
+[  0%] Generating git_init_Tools_genmsg.stamp
+[  0%] Generating git hash header
+[  0%] Generating git_init_NuttX.stamp
+[  0%] Built target git_gencpp
+[  0%] Built target git_nuttx
+[  0%] Built target git_genmsg
+Scanning dependencies of target git_uavcan
+Scanning dependencies of target git_matrix
+Scanning dependencies of target git_mavlink
+[  0%] Generating git_init_mavlink_include_mavlink_v1.0.stamp
+[  0%] Generating git_init_src_lib_matrix.stamp
+[  1%] Generating git_init_src_modules_uavcan_libuavcan.stamp
+[  1%] Built target ver_gen
+[  1%] Built target git_matrix
+[  1%] Built target git_mavlink
+[  1%] Built target git_uavcan
+Scanning dependencies of target mixer_gen
+Scanning dependencies of target git_ecl
+Scanning dependencies of target xml_gen
+
+
+//先是这１０个目标
+px4_add_git_submodule(TARGET git_genmsg PATH "Tools/genmsg")
+px4_add_git_submodule(TARGET git_gencpp PATH "Tools/gencpp")
+px4_add_git_submodule(TARGET git_mavlink PATH "mavlink/include/mavlink/v1.0")
+px4_add_git_submodule(TARGET git_gtest PATH "unittets/gtest")
+px4_add_git_submodule(TARGET git_uavcan PATH "src/modules/uavcan/libuavcan")
+px4_add_git_submodule(TARGET git_nuttx PATH "NuttX")
+#px4_add_git_submodule(TARGET git_dspal PATH "src/lib/dspal")
+#px4_add_git_submodule(TARGET git_jmavsim PATH "Tools/jMAVSim")
+#px4_add_git_submodule(TARGET git_gazebo PATH "Tools/sitl_gazebo")
+px4_add_git_submodule(TARGET git_matrix PATH "src/lib/matrix")
+
+
+生成２个文件
+px4_generate_parameters_xml(OUT parameters.xml BOARD ${BOARD})
+px4_generate_airframes_xml(OUT airframes.xml BOARD ${BOARD})
+
+
+
+//最后的px4fmuv2中的uavcan是取消编译的
+PX4_BINARY_DIR : 
+
+PX4_SOURCE_DIR: 
+
+
+c++11.patch          fix_CRTSCTS-define.patch    math.h.patch             silence-jobserver-warnings.patch
+ctype_cctype_.patch  Fixed-Shadow-wanings.patch  nsh_parse.patch          static_asset-fix.patch
+export_insitu.patch  fixStdint.patch             serial_dma_hotfix.patch  wip_inflight_to_upstream.patch
+
+
+patch -p0 < nuttx-patches1/c++11.patch
+patch -p0 < nuttx-patches1/fix_CRTSCTS-define.patch
+patch -p0 < nuttx-patches1/math.h.patch
+patch -p0 < nuttx-patches1/silence-jobserver-warnings.patch
+
+patch -p0 < nuttx-patches1/ctype_cctype_.patch
+patch -p0 < nuttx-patches1/Fixed-Shadow-wanings.patch
+patch -p0 < nuttx-patches1/nsh_parse.patch
+patch -p0 < nuttx-patches1/static_asset-fix.patch
+
+patch -p0 < nuttx-patches1/export_insitu.patch
+patch -p0 < nuttx-patches1/fixStdint.patch
+patch -p0 < nuttx-patches1/serial_dma_hotfix.patch
+patch -p0 < nuttx-patches1/wip_inflight_to_upstream.patch
+
+
+patch -R -p0 < nuttx-patches1/c++11.patch
+patch -R -p0 < nuttx-patches1/fix_CRTSCTS-define.patch
+patch -R -p0 < nuttx-patches1/math.h.patch
+p
+
+atch -R -p0 < nuttx-patches1/silence-jobserver-warnings.patch
+
+patch -R -p0 < nuttx-patches1/ctype_cctype_.patch
+patch -R -p0 < nuttx-patches1/Fixed-Shadow-wanings.patch
+patch -R -p0 < nuttx-patches1/nsh_parse.patch
+patch -R -p0 < nuttx-patches1/static_asset-fix.patch
+
+patch -R -p0 < nuttx-patches1/export_insitu.patch
+patch -R -p0 < nuttx-patches1/fixStdint.patch
+patch -R -p0 < nuttx-patches1/serial_dma_hotfix.patch
+patch -R -p0 < nuttx-patches1/wip_inflight_to_upstream.patch
+
+
+//iofirmware中才会出现这个问题
+-set(nuttx_export_dir ${PX4_BINARY_DIR}/${config_io_board}/NuttX/nuttx-export)
++set(nuttx_export_dir ${PX4_BINARY_DIR}/${config_io_board}/NuttX/nuttx/nuttx-export)
+
+
+    # patch
+    add_custom_target(__nuttx_patch_${CONFIG})
+    file(GLOB nuttx_patches RELATIVE ${CMAKE_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/nuttx-patches/*.patch)
+    foreach(patch ${nuttx_patches})
+        string(REPLACE "/" "_" patch_name "${patch}-${CONFIG}")
+        message(STATUS "nuttx-patch: ${patch}")
+        add_custom_command(OUTPUT nuttx_patch_${patch_name}.stamp
+            COMMAND ${PATCH} -p0 -N  < ${CMAKE_SOURCE_DIR}/${patch}
+            COMMAND ${TOUCH} nuttx_patch_${patch_name}.stamp
+            DEPENDS ${DEPENDS}
+            )
+        add_custom_target(nuttx_patch_${patch_name}
+            DEPENDS nuttx_patch_${patch_name}.stamp)
+        add_dependencies(nuttx_patch nuttx_patch_${patch_name})
+    endforeach()
+　　　　　　
+
+-- nuttx-patch: nuttx-patches/fix_CRTSCTS-define.patch
+CMake Error at cmake/nuttx/px4_impl_nuttx.cmake:211 (add_dependencies):
+  Cannot add target-level dependencies to non-existent target "nuttx_patch".
+
+//add target
+add_custom_target(__nuttx_patch_${CONFIG})
+
+//
+__nuttx_patch_px4fmu-v2
+
+// IO define
+set(config_io_board
+        px4io-v2
+        )
+
+
+// io nuttx
+px4_os_prebuild_targets(OUT io_prebuild_targets
+        BOARD ${config_io_board}
+        THREADS ${THREADS})
+
+
+//bin
+src/modules/px4iofirmware/
+adc.c           controls.c  i2c.c      nuttx_copy_px4io-v2.stamp    protocol.h  px4io.h   px4io-v2.bin  safety.c  serial.c
+CMakeLists.txt  dsm.c       mixer.cpp  nuttx_export_px4io-v2.stamp  px4io.c     px4io-v2  registers.c   sbus.c
+
+
+if (config_io_board)
+    add_subdirectory(src/modules/px4iofirmware)
+endif()
+
+make[1]: Entering directory '/home/yangang/work/nuttx_proj/tmp_nuttx1/apps-7.18'
+make[2]: Entering directory '/home/yangang/work/nuttx_proj/tmp_nuttx1/apps-7.18/platform'
+
+
+o binfmt_dumpmodule.o
+CC:  empty.c
+AR:   empty.o
+[ 11%] Built target nuttx_export_px4io-v2
+Scanning dependencies of target io_prebuild_targets
+[ 11%] Built target io_prebuild_targets
+Scanning dependencies of target px4io-v2
+[ 12%] Building C object src/modules/px4iofirmware/CMakeFiles/px4io-v2.dir/dsm.c.obj
+[ 12%] Building C object src/modules/px4iofirmware/CMakeFiles/px4io-v2.dir/px4io.c.obj
+[ 12%] Building C object src/modules/px4iofirmware/CMakeFiles/px4io-v2.dir/controls.c.obj
+[ 12%] Building C object src/modules/px4iofirmware/CMakeFiles/px4io-v2.dir/adc.c.obj
+In file included from /home/yangang/work/px4_src_proj/firmware/theone-mc-tmp2/theone-mc/src/modules/px4iofirmware/dsm.c:42:0:
+/home/yangang/work/px4_src_proj/firmware/theone-mc-tmp2/theone-mc/src/platforms/px4_config.h:44:26: fatal error: nuttx/config.h: No such file or directory
+In file included from /home/yangang/work/px4_src_proj/firmware/theone-mc-tmp2/theone-mc/src/modules/px4iofirmware/controls.c:40:0:
+/home/yangang/work/px4_src_proj/firmware/theone-mc-tmp2/theone-mc/src/platforms/px4_config.h:44:26: fatal error: nuttx/config.h: No such file or directory
+compilation terminated.
+In file included from /home/yangang/work/px4_src_proj/firmware/theone-mc-tmp2/theone-mc/src/modules/px4iofirmware/adc.c:39:0:
+/home/yangang/work/px4_src_proj/firmware/theone-mc-tmp2/theone-mc/src/platforms/px4_config.h:44:26: fatal error: nuttx/config.h: No such file or directory
+compilation terminated.
+compilation terminated.
+
+
+//error
+[  3%] Copying NuttX for px4io-v2 with nsh
+[  3%] Copying NuttX for px4fmu-v2 with 
+
+
+//px4 fmuv2
+CC:  libbuiltin/libbuiltin_getname.c
+CC:  libbuiltin/libbuiltin_isavail.c
+AR:   binfmt_globals.o binfmt_register.o binfmt_unregister.o binfmt_loadmodule.o binfmt_unloadmodule.o binfmt_execmodule.o binfmt_exec.o binfmt_copyargv.o binfmt_dumpmodule.o builtin.o libbuiltin_getname.o libbuiltin_isavail.o
+CC:  empty.c
+AR:   empty.o
+
+[  8%] Built target nuttx_export_px4fmu-v2
+Scanning dependencies of target prebuild_targets
+[  8%] Built target prebuild_targets
+[  8%] Generating uORB topic headers
+[  9%] Generating uORB topic sources
+[  9%] Generating uORB topic multi headers for nuttx
+Scanning dependencies of target msg_gen
+
+
+
+binfs                  fs_fdopen.c             fs_inodeaddref.c   fs_lseek.c            fs_readdir.c              fs_stat.c                   Kconfig
+fat                    fs_filedup2.c           fs_inode.c         fs_mkdir.c            fs_registerblockdriver.c  fs_statfs.c                 Makefile
+fs_closeblockdriver.c  fs_filedup.c            fs_inodefind.c     fs_mount.c            fs_registerdriver.c       fs_syslog.c                 mmap
+fs_close.c             fs_files.c              fs_inoderelease.c  fs_openblockdriver.c  fs_rename.c               fs_umount.c                 nfs
+fs_closedir.c          fs_findblockdriver.c    fs_inoderemove.c   fs_open.c             fs_rewinddir.c            fs_unlink.c                 nxffs
+fs_dup2.c              fs_foreachinode.c       fs_inodereserve.c  fs_opendir.c          fs_rmdir.c                fs_unregisterblockdriver.c  romfs
+fs_dup.c               fs_foreachmountpoint.c  fs_internal.h      fs_poll.c             fs_seekdir.c              fs_unregisterdriver.c       smartfs
+fs_fcntl.c             fs_fsync.c              fs_ioctl.c         fs_read.c             fs_select.c               fs_write.c
+
+
+
+１.查看配置信息
+user.name=yangang123
+user.email=320054593@qq.com
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+core.worktree=../../../../../NuttX/nuttx
+remote.origin.url=https://github.com/PX4-NuttX/nuttx.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.master.remote=origin
+branch.master.merge=refs/heads/master
+
+
+２．　
+remote: Counting objects: 21242, done.
+remote: Compressing objects: 100% (773/773), done.
+remote: Total 21242 (delta 9948), reused 10433 (delta 9848), pack-reused 10613
+Receiving objects: 100% (21242/21242), 7.62 MiB | 829.00 KiB/s, done.
+Resolving deltas: 100% (16203/16203), completed with 1735 local objects.
+From https://github.com/PX4-NuttX/nuttx
+   8ee54e8..345ea95  upstream   -> origin/upstream
+   8ee54e8..94eadc1  upstream_kinetis -> origin/upstream_kinetis
+ * [new tag]         list       -> list
+ * [new tag]         nuttx-7.11 -> nuttx-7.11
+ * [new tag]         nuttx-7.12 -> nuttx-7.12
+ * [new tag]         nuttx-7.13 -> nuttx-7.13
+ * [new tag]         nuttx-7.14 -> nuttx-7.14
+ * [new tag]         nuttx-7.15 -> nuttx-7.15
+ * [new tag]         nuttx-7.16 -> nuttx-7.16
+ * [new tag]         nuttx-7.17 -> nuttx-7.17
+ * [new tag]         nuttx-7.18 -> nuttx-7.18
+ * [new tag]         nuttx-7.19 -> nuttx-7.19
+ * [new tag]         upstream_7.18+ -> upstream_7.18+
+ * [new tag]         nuttx-7.20 -> nuttx-7.20
+ * [new tag]         nuttx-7.21 -> nuttx-7.21
+You are not currently on a branch. Please specify which
+branch you want to merge with. See git-pull(1) for details.
+
+    git pull <remote> <branch>
+
+３．
+nuttx-7.20
+nuttx-7.21
+nuttx-7.3
+nuttx-7.4
+nuttx-7.5
+nuttx-7.6
+nuttx-7.7
+nuttx-7.8
+nuttx-7.9
+upstream_7.18+
+
+4. 
+ git branch 
+* (HEAD detached at 8b81cf5)
+  master
+
+//可以切换到某个分支
+
+
+px4_os_add_flags(
+	BOARD ${config_io_board}
+	C_FLAGS c_flags
+	CXX_FLAGS cxx_flags
+	EXE_LINKER_FLAGS exe_linker_flags
+	INCLUDE_DIRS include_dirs
+	LINK_DIRS link_dirs
+	DEFINITIONS definitions)
+
+增加了新的属性，必须添加，否则就报错
+
+	px4_os_add_flags(
+	BOARD ${config_io_board}
+	C_FLAGS c_flags
+	CXX_FLAGS cxx_flags
+	OPTIMIZATION_FLAGS optimization_flags
+	EXE_LINKER_FLAGS exe_linker_flags
+	INCLUDE_DIRS include_dirs
+	LINK_DIRS link_dirs
+	DEFINITIONS definitions)
+

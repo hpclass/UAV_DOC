@@ -1,0 +1,43 @@
+1. fucture: cortex M7的固件
+
+nuttx-configs/px4nfmu-v5/scripts/script.ld
+
+MEMORY
+{
+    itcm  (rwx) : ORIGIN = 0x00208000, LENGTH = 2016K
+    flash (rx)  : ORIGIN = 0x08008000, LENGTH = 2016K  // ------------------
+    dtcm  (rwx) : ORIGIN = 0x20000000, LENGTH = 128K
+    sram1 (rwx) : ORIGIN = 0x20020000, LENGTH = 368K
+    sram2 (rwx) : ORIGIN = 0x2007c000, LENGTH = 16K
+}
+
+2. 开发nucleo-f767zi的固件
+
+nuttx-configs/px4nucleoF767ZI-v1/scripts/script.ld
+/
+ * When booting from FLASH, FLASH memory is aliased to address 0x0000:0000
+ * where the code expects to begin execution by jumping to the entry point in
+ * the 0x0800:0000 address range.
+ */
+
+MEMORY
+{
+    itcm  (rwx) : ORIGIN = 0x00200000, LENGTH = 2048K
+    flash (rx)  : ORIGIN = 0x08000000, LENGTH = 2048K   // ------------------
+    dtcm  (rwx) : ORIGIN = 0x20000000, LENGTH = 128K
+    sram1 (rwx) : ORIGIN = 0x20020000, LENGTH = 368K
+    sram2 (rwx) : ORIGIN = 0x2007c000, LENGTH = 16K
+}
+
+3. 修改链接脚本的地址：px4nucleoF767ZI
+
+MEMORY
+{
+    itcm  (rwx) : ORIGIN = 0x00200000, LENGTH = 2048K
+    flash (rx)  : ORIGIN = 0x08008000, LENGTH = 2048K   // ------------------
+    dtcm  (rwx) : ORIGIN = 0x20000000, LENGTH = 128K
+    sram1 (rwx) : ORIGIN = 0x20020000, LENGTH = 368K
+    sram2 (rwx) : ORIGIN = 0x2007c000, LENGTH = 16K
+}
+
+4. 对于usb的产品id,最好和bootloader设置一直

@@ -1,0 +1,142 @@
+stm32cube工程:
+
+#include "stm32f1xx_hal.h"  //包含HAL层
+
+#include "stm32f1xx.h" // 中配置
+
+#if defined (USE_HAL_DRIVER)
+ #include "stm32f1xx_hal.h"
+#endif /* USE_HAL_DRIVER */
+
+  HAL_OK       = 0x00,
+  HAL_ERROR    = 0x01,   //错误
+  HAL_BUSY     = 0x02,
+  HAL_TIMEOUT  = 0x03
+  
+  
+  
+CanTxMsgTypeDef        TxMessage;
+CanRxMsgTypeDef        RxMessage;
+CAN_FilterConfTypeDef  sFilterConfig;
+
+int fputc(int ch,FILE *f)
+{
+	uint8_t temp[1]={ch};
+	HAL_UART_Transmit(&huart1,temp,1,2);
+	return(ch);
+}
+
+void can_send_init()
+{	
+    hcan.pTxMsg = &TxMessage;   // ·￠?í?o3???
+	hcan.pRxMsg = &RxMessage;   // ?óê??o3???
+
+	
+    printf("**** This is CAN test program ****\r\n\r\n");
+
+	hcan.pTxMsg->StdId = 0x12;
+	hcan.pTxMsg->RTR = CAN_RTR_DATA;
+	hcan.pTxMsg->IDE = CAN_ID_STD;
+	hcan.pTxMsg->DLC = 8;
+	hcan.pTxMsg->Data[0] = 1;
+	hcan.pTxMsg->Data[1] = 2;
+	hcan.pTxMsg->Data[2] = 3;
+	hcan.pTxMsg->Data[3] = 4;
+	hcan.pTxMsg->Data[4] = 5;
+	hcan.pTxMsg->Data[5] = 6;
+	hcan.pTxMsg->Data[6] = 7;
+	hcan.pTxMsg->Data[7] = 8;
+	
+
+  sFilterConfig.FilterNumber = 0;
+  sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+  sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+  sFilterConfig.FilterIdHigh = 0x0000;
+  sFilterConfig.FilterIdLow = 0x0000;
+  sFilterConfig.FilterMaskIdHigh = 0x0000;
+  sFilterConfig.FilterMaskIdLow = 0x0000;
+  sFilterConfig.FilterFIFOAssignment = 0;
+  sFilterConfig.FilterActivation = ENABLE;
+  sFilterConfig.BankNumber = 14;
+
+#if 0
+  if (HAL_CAN_ConfigFilter(&hcan, &sFilterConfig) != HAL_OK)
+  {
+    /* Filter configuration Error */
+    Error_Handler();
+  }
+#endif 
+}
+
+void HAL_CAN_RxCpltCallback(CAN_HandleTypeDef* hcan)
+{
+  
+  printf("recv id = 0x%x",  hcan->pRxMsg->StdId);
+  printf("recv len = 0x%x", hcan->pRxMsg->DLC);
+ 
+  /* Receive */
+  if (HAL_CAN_Receive_IT(hcan, CAN_FIFO0) != HAL_OK)
+  {
+    /* Reception Error */
+    Error_Handler();
+  }
+ 
+  printf("recvied again\r\n");
+}
+
+void can_send_message(void)
+{
+     if(++hcan.pTxMsg->Data[0] >= 10)
+	 {
+		hcan.pTxMsg->Data[0]= 0;
+	 }	
+	 
+	 printf("send data = %d\r\n", hcan.pTxMsg->Data[0]);
+	 
+}
+
+void loopback_test(void)
+{
+	  int i = 0;
+	  
+	  can_send_message();	
+  	  
+	
+	  if(HAL_CAN_Transmit(&hcan, 10) != HAL_OK)    // ×èè?·￠?í
+	  {
+		   /* Transmition Error */
+		   Error_Handler();
+	  }
+	  
+#if 0   //YG ×èè??￡ê?
+	  if(HAL_CAN_Receive(&hcan, CAN_FIFO0, 50) != HAL_OK)    // ×èè?·￠?í
+	  {
+		   /* Transmition Error */
+		   Error_Handler();
+	  }
+	  printf("recv StdId = 0x%x\r\n",  hcan.pRxMsg->StdId);
+	  printf("recv dlc   = %d\r\n",   hcan.pRxMsg->DLC);
+	  printf("recv dlc   = ");
+	  for ( i = 0; i < 8; i++)
+	  {
+		  printf("%02d - ", hcan.pRxMsg->Data[i]);
+	  }
+	  printf("\r\n");
+#endif 
+	  
+	  HAL_Delay(1000);
+}
+
+#define STM32FXXX_DEBUG
+#define CAN_DEBUG_EN  1                             // ?a??CAN?D??
+
+#ifdef STM32FXXX_DEBUG
+#define STM32FXXX_PLATFORM_DIAG printf
+#define STM32FXXX_DEBUGF(debug, msg)  do {\
+					if (debug) {\
+						STM32FXXX_PLATFORM_DIAG msg;\
+					} \
+				}while(0)
+#else
+#define STM32FXXX_DEBUGF(debug, msg)
+#endif

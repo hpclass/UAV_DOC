@@ -1,0 +1,16 @@
+
+硬件分析:
+  FMU-V1:  pixhawk v1
+  FMU-V2:  pixhawk v1
+  FMU-V3:  pixhwak v2  : http://www.proficnc.com/
+  FMU-V4:  pixhwak v3 pro
+
+
+  Pixhawk v1 Hardware
+  _________________________________________________
+  FMUv1 & FMUv2 boards
+  
+
+  Pixhawk v2 Hardware
+  _________________________________________________
+  FMUv3 board (and IMUv3 + PSMv3 support components)

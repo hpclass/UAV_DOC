@@ -1,0 +1,41 @@
+1. 关于cortex M7的编译版本问题:
+
+https://github.com/PX4/Firmware/issues/5650
+
+
+2. USBPRODUCTID必须和defconfg一直，否则会出错
+
+#!nsh
+#
+# PX4FMU startup script.
+#
+# NOTE: environment variable references:
+#    If the dollar sign ('$') is followed by a left bracket ('{') then the
+#    variable name is terminated with the right bracket character ('}').
+#    Otherwise, the variable name goes to the end of the argument.
+#
+#
+# NOTE: COMMENT LINES ARE REMOVED BEFORE STORED IN ROMFS.
+#
+# UART mapping on FMUv1/2/3/4:
+#
+# UART1			/dev/ttyS0		IO debug
+# USART2		/dev/ttyS1		TELEM1 (flow control)
+# USART3		/dev/ttyS2		TELEM2 (flow control)
+# UART4
+# UART7							CONSOLE
+# UART8							SERIAL4
+#
+#
+# UART mapping on FMUv5:
+#
+# UART1			/dev/ttyS0		GPS
+# USART2		/dev/ttyS1		TELEM1 (flow control)
+# USART3		/dev/ttyS2		TELEM2 (flow control)
+# UART4			/dev/ttyS3		?
+# USART6		/dev/ttyS4		TELEM3 (flow control)
+# UART7			/dev/ttyS5		?
+# UART8			/dev/ttyS6		CONSOLE
+
+
+

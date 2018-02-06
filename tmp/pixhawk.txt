@@ -1,0 +1,16 @@
+1. 硬件配置
+
+BUILD   lib/stm32/f0
+BUILD   lib/stm32/f1
+BUILD   lib/stm32/f2
+BUILD   lib/stm32/f4
+BUILD   lib/stm32/f7
+
+生成的动态库
+AR      libopencm3_stm32f0.a
+AR      libopencm3_stm32f1.a
+AR      libopencm3_stm32f2.a
+AR      libopencm3_stm32f3.a
+AR      libopencm3_stm32f4.a
+AR      libopencm3_stm32f7.a
+

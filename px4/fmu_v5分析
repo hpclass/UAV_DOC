@@ -1,0 +1,255 @@
+1.  orb_check是阻塞还是非阻塞
+fd = open(argv[1], O_RDWR); //打开设置
+if (fd != -1) {    //打开设备成功，说明有usb串口终端输入数据.
+	close(armed_fd); 
+	break;
+}
+
+open失败的原因有那些:
+
+
+perror: 标准错误
+
+
+O_APPEND: 从文件的末尾写数据
+
+可以查看正在运行hello. 
+USER        PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+yangang   99293  0.0  0.0   4224   628 pts/23   S+   09:50   0:00 ./hello
+yangang   99294  0.2  0.2  27280  5976 pts/24   Ss   09:50   0:00 bash
+yangang   99307  0.0  0.1  22672  2860 pts/24   R+   09:50   0:00 ps -aux
+
+
+S处于休眠状态，静止状态；
+s进程的领导者（在它之下有子进程）；
++位于后台的进程组
+R正在运行，在可中断队列中
+D无法中断的休眠状态（通常io的进程）
+
+CONFIG_STM32F7_USART1=y
+CONFIG_STM32F7_USART2=y
+CONFIG_STM32F7_USART3=y
+# CONFIG_STM32F7_UART4 is not set
+# CONFIG_STM32F7_UART5 is not set
+CONFIG_STM32F7_USART6=y
+CONFIG_STM32F7_UART7=y
+CONFIG_STM32F7_UART8=y
+
+# CONFIG_USART1_SERIAL_CONSOLE is not set
+# CONFIG_USART2_SERIAL_CONSOLE is not set
+# CONFIG_USART3_SERIAL_CONSOLE is not set
+# CONFIG_USART6_SERIAL_CONSOLE is not set
+# CONFIG_UART7_SERIAL_CONSOLE is not set
+CONFIG_UART8_SERIAL_CONSOLE=y
+
+
+
+#define GPIO_USART1_RX   GPIO_USART1_RX_2    /* PB7[CN11-21] CONFLICT w/ BLUE LED*/
+#define GPIO_USART1_TX   GPIO_USART1_TX_2    /* PB6[CN12-17] */
+
+
+#define GPIO_USART2_RX   GPIO_USART2_RX_2   /* PD6[CN11-43]  */
+#define GPIO_USART2_TX   GPIO_USART2_TX_2   /* PD5[CN11-41]  */
+#define GPIO_USART2_RTS  GPIO_USART2_RTS_2  /* PD4[CN11-39]  */
+#define GPIO_USART2_CTS  GPIO_USART2_CTS_2  /* PD3[CN11-40]  */
+
+#define GPIO_USART3_RX   GPIO_USART3_RX_3   /* PD9[CN11-69]  */      这里串口3
+#define GPIO_USART3_TX   GPIO_USART3_TX_3   /* PD8[CN12-10]  */
+#define GPIO_USART3_RTS  GPIO_USART3_RTS_2  /* PD12[CN12-43] */
+#define GPIO_USART3_CTS  GPIO_USART3_CTS_2  /* PD11[CN12-45] */
+#if !defined(CONFIG_STM32F7_CAN1) && defined(CONFIG_STM32F7_UART4)
+#  define GPIO_UART4_RX    GPIO_UART4_RX_4    /* PD0[CN11-57]  */
+#  define GPIO_UART4_TX    GPIO_UART4_TX_4    /* PD1[CN11-55]  */
+#endif
+#define GPIO_USART6_RX   GPIO_USART6_RX_2   /* PG9[CN11-63]  */
+#define GPIO_USART6_TX   GPIO_USART6_TX_2   /* PG14[CN12-61] */
+#define GPIO_USART6_RTS  GPIO_USART6_RTS_2  /* PG8[CN12-66]  */
+#define GPIO_USART6_CTT  GPIO_USART6_CTS_2  /* PG15[CN11-64  */
+
+#define GPIO_UART7_RX    GPIO_UART7_RX_2    /* PF6[CN11-9]  */
+#define GPIO_UART7_TX    GPIO_UART7_TX_1    /* PE8[CN12-40]  */
+
+/* USART8:
+ *
+ * This configurations assume that you are connecting to the Morpho connector
+ * with the serial interface with the adaptor's RX on pin CN11 pin 64 and
+ * TX on pin CN11 pin 61
+ *
+ * USART8: has no remap
+ *
+ *      GPIO_UART7_RX                          PE0[CN12-64]
+ *      GPIO_UART7_TX                          PE1[CN11-61]
+ */
+
+
+//之前的
+void	start(const char *uart_path, bool fake_gps, bool enable_sat_info);
+
+// 现在的接口
+void
+start(const char *path, gps_driver_mode_t mode, GPSHelper::Interface interface, bool fake_gps, bool enable_sat_info,
+      int gps_num)
+
+#define GPS_DEFAULT_UART_PORT "/dev/ttyS0" /* UART1 on FMUv5 */ 
+
+//没有定义串口3,就定义是现在的.
+#ifndef GPS_DEFAULT_UART_PORT
+#define GPS_DEFAULT_UART_PORT "/dev/ttyS3"
+#endif
+
+// gps启动
+gps start 
+
+
+C++中的enum和enum class 
+enum class
+
+enum class的发明就是为了避免这种强制转换的。你应该把要求整型或者字符串的函数的参数类型也改成enum class，这样你传错了值的时候编译器可以检查出来。
+
+制定获取的那个枚举中的数据
+enum class Color{black,white,red};
+
+int main()
+{
+  Color c = Color::black;
+}
+
+
+
+const unsigned baudrates[] = {9600, 38400, 19200, 57600, 115200, 230400}; //全不行，肯定是230400
+
+如果行,可能是38400
+
+WARN  [gps] GPS 1:
+WARN  [gps] protocol: ASHTECH
+WARN  [gps] port: /dev/ttyS2, baudrate: 38400, status: NOT OK
+WARN  [gps] sat info: disabled, noise: 0, jamming detected: NO
+
+gps的进程出现这样的问题:
+ 9 220 FIFO     Task    --- Invalid            00000000   1372    776  56.5%  gps 1
+ 14 100 FIFO     Task    --- Waiting  Signal    00000000   1172    544  46.4%  gps stop
+
+//tcget
+int tcgetattr(int fd, FAR struct termios *termiosp)
+{
+  return ioctl(fd, TCGETS, (unsigned long)termiosp);
+}
+
+
+//通过arg进行ioctrl数据的传递
+ switch (cmd)
+        {
+#ifdef CONFIG_SERIAL_TERMIOS
+          case TCGETS:
+          {
+            struct termios *termiosp = (struct termios*)arg;
+
+            if (!termiosp)
+              {
+                ret = -EINVAL;
+                break;
+              }
+
+            /* and update with flags from this layer */
+
+            termiosp->c_iflag = dev->tc_iflag;
+            termiosp->c_oflag = dev->tc_oflag;
+            termiosp->c_lflag = dev->tc_lflag;
+          }
+
+          break;
+
+        case TCSETS:
+          {
+            struct termios *termiosp = (struct termios*)arg;
+
+            if (!termiosp)
+              {
+                ret = -EINVAL;
+                break;
+              }
+
+            /* update the flags we keep at this layer */
+
+            dev->tc_iflag = termiosp->c_iflag;
+            dev->tc_oflag = termiosp->c_oflag;
+            dev->tc_lflag = termiosp->c_lflag;
+          }
+
+          break;
+
+
+//测试串口是否可以使用的测试程序.
+
+1. 通杀所有的串口测试程序
+2. 关闭orb的数据传递. 使用1个宏,进行屏蔽
+
+
+3.c++构造函数的数据初始化必须按照顺序初始化
+MONITOR_DRV::MONITOR_DRV(const char *uart_path, int baudrate):
+        _baudrate(baudrate),
+                _orb_class_instance(-1),
+        _monitor_drv_topic(nullptr),
+        _buffer_idx(0),
+        _flip(0),      
+        _task(-1),
+        _task_should_exit(false) ,
+         _timeoutCnt(0),
+        _SendFailCnt(0)
+        {
+
+输入的命令必须有提示:正确或者错误
+
+
+        _monitor_drv_topic = orb_advertise_multi(ORB_ID(monitor_info), &report,
+                                                 &_orb_class_instance, ORB_PRIO_HIGH);
+
+//返回_orb_class_instance
+//返回 _monitor_drv_topic
+
+
+cmake ../Firmware/ -G "CodeBlocks - Unix Makefiles" 
+构建:
+打印信息:
+-- PX4 VERSION: v1.6.0rc1-407-gb311ed1
+-- CONFIG: posix-sitl-default
+-- CMAKE_INSTALL_PREFIX: /usr
+-- CMAKE_MODULE_PATH: /home/yangang/work/cortex_M7/firmware_0426/Firmware/cmake
+-- The CXX compiler identification is GNU 5.2.1
+-- The C compiler identification is GNU 5.2.1
+-- The ASM compiler identification is GNU
+-- Found assembler: /usr/bin/cc
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Found PythonInterp: /usr/bin/python (found version "2.7.10") 
+-- Found PY_jinja2: /usr/lib/python2.7/dist-packages/jinja2  
+-- C compiler: cc (Ubuntu 5.2.1-22ubuntu2) 5.2.1 20151010
+-- C++ compiler: c++ (Ubuntu 5.2.1-22ubuntu2) 5.2.1 20151010
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/yangang/work/cortex_M7/firmware_0426/firware_bulid
+
+
+qt:
+1. 左下角,点击出现1个窗口
+2. 上面点击文件系统.
+
+
+
+
+
+
+
+
+
+

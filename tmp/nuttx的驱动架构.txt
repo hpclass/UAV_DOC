@@ -1,0 +1,50 @@
+1. 
+struct file_operations
+{
+  /* The device driver open method differs from the mountpoint open method */
+
+  int     (*open)(FAR struct file *filep);
+
+  /* The following methods must be identical in signature and position because
+   * the struct file_operations and struct mountp_operations are treated like
+   * unions.
+   */
+
+  int     (*close)(FAR struct file *filep);
+  ssize_t (*read)(FAR struct file *filep, FAR char *buffer, size_t buflen);
+  ssize_t (*write)(FAR struct file *filep, FAR const char *buffer, size_t buflen);
+  off_t   (*seek)(FAR struct file *filep, off_t offset, int whence);
+  int     (*ioctl)(FAR struct file *filep, int cmd, unsigned long arg);
+
+  /* The two structures need not be common after this point */
+
+#ifndef CONFIG_DISABLE_POLL
+  int     (*poll)(FAR struct file *filep, struct pollfd *fds, bool setup);
+#endif
+#ifndef CONFIG_DISABLE_PSEUDOFS_OPERATIONS
+  int     (*unlink)(FAR struct inode *inode);
+#endif
+};
+
+1.  使用设备的open对应系统的open: (uart_open : open)
+int uart_register(FAR const char *path, FAR uart_dev_t *dev)
+	-> return register_driver(path, &g_serialops, 0666, dev);  //值预测=
+
+static const struct file_operations g_serialops =
+{
+  uart_open,  /* open */
+  uart_close, /* close */
+  uart_read,  /* read */
+  uart_write, /* write */
+  0,          /* seek */
+  uart_ioctl  /* ioctl */
+#ifndef CONFIG_DISABLE_POLL
+  , uart_poll /* poll */
+#endif
+#ifndef CONFIG_DISABLE_PSEUDOFS_OPERATIONS
+  , NULL      /* unlink */
+#endif
+};
+
+2. 使用Cdev注册
+

@@ -1,0 +1,205 @@
+1. linux的shell命令
+
+find 命令： 搜索是必须使用单个引号. ''
+find ./   -name 'CPack*
+find 路径 扩展  '符号'
+find [-H] [-L] [-P] [-Olevel] [-D help|tree|search|stat|rates|opt|exec] [path...] [expression]
+
+
+find ./build_theone/CMakeFiles/Progress -type f -exec ls -l {}[这里必须是空格] \;
+查找匹配的文件，并且显示文件的属性
+
+2. tar的使用
+	2.1 -C :change的意思
+	注意： 解压到1个目录必须，这个目录存在
+	作用： 解压当前压缩包到1个目录是theone  
+	tar jxf theone-mc-can1MHz-20170225.tar.bz2 -C theone
+
+
+3. 创建1个环境命令
+   declare mylove='test-set-command' 
+   set -a mylove
+   echo $mylover 
+   
+   unset mylove : 撤出环境变量
+   
+   env 
+     查看所有的环境变量
+	 
+4. -rw-rw-r--  1 yangang yangang    52 Mar 31 23:22 .gitconfig
+查看gitconfig文件发现
+[user]
+	name = yangang123
+	email = 320054593@qq.com
+
+5. history
+   !xxx : xx是号
+   !make：是最后1个具有make字符的命令行
+
+	 
+  
+6. 查看磁盘空间
+	df -h
+
+  查看当前目录的空间使用(仅仅可以查看到文件夹的空间大小)
+  du --max-depth=1 -h
+  
+  查看2级目录的空间使用(仅仅可以查看到文件夹的空间大小)
+  du --max-depth=2 -h
+
+  查看某个文件的空间
+  du xxx.tar.bz2  -h
+
+7. 卸载软件的方法
+  sudo apt-get remove --auto-remove xxxx
+  例如： 卸载stardirc软件
+
+8. locate命令
+locate命令其实是“find -name”的另一种写法，但是要比后者快得多，原因在于它不搜索具体目录，而是搜索一个数据库（/var/lib/locatedb），这个数据库中含有本地所有文件信息。
+
+
+
+9. 找到qmake
+/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
+
+
+10. 查看程序第几行，或者是前几行
+head -n 10 xxx
+查看文件xxx的前10行
+
+
+return static_cast<int>(_accel_filter_x.get_cutoff_freq());
+
+return static_cast<int>(a);
+
+a的数据类型转化成int类型
+
+
+11.  比较不同的2个文件，以列的形式进行对比
+diff命令
+-y: output in two columns
+-W：output at most NUM (default 130) print columns
+diff tmp/theone-mc/src/drivers/adxl355/adxl355.cpp tmp2/theone-mc/src/drivers/adxl355/adxl355.cpp -y -W 130
+
+
+12. 测试ssh协议是否开启
+sudo ssh yangang@127.0.0.1
+
+
+13. 设置网络地址
+  1)查看之前的网址
+  ifconfig
+  eno16777736  192.168.0.115
+   
+  2)修改网址：
+  sudo ifconfig eno16777736 192.168.2.115
+  
+  3)必须重启网卡
+  sudo ifconfig eno16777736 down
+  sudo ifconfig eno16777736 up
+
+14. 查看那个进行下的线程运行的状态。
+  ps -e 
+  查看某个线程
+  top -H -p <pid>
+  top -H -p 2582
+
+  top - 11:49:18 up 15 min,  3 users,  load average: 0.08, 0.14, 0.12
+Threads:   3 total,   0 running,   3 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  1.4 us,  0.7 sy,  0.0 ni, 97.9 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem:   2030980 total,  1635360 used,   395620 free,    65804 buffers
+KiB Swap:  2094076 total,        0 used,  2094076 free.   617072 cached Mem
+
+   PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                                       
+  2582 yangang   20   0   22916    748    660 S  0.0  0.0   0:00.00 pthread_mutex_t                               
+  2583 yangang   20   0   22916    748    660 S  0.0  0.0   0:00.00 pthread_mutex_t                               
+  2584 yangang   20   0   22916    748    660 S  0.0  0.0   0:00.00 pthread_mutex_t 
+
+  一共是3线程。
+
+function(px4_nuttx_configure)
+        px4_parse_function_args(
+                        NAME px4_nuttx_configure
+                        ONE_VALUE HWCLASS CONFIG ROMFS ROMFSROOT
+                        REQUIRED HWCLASS CONFIG
+                        ARGN ${ARGN})
+        set(config_nuttx_config ${CONFIG} PARENT_SCOPE)
+        set(config_nuttx_hw ${HWCLASS} PARENT_SCOPE)
+        if ("${ROMFS}" STREQUAL "y")
+                set(romfs_used ${ROMFS} PARENT_SCOPE)
+                if (NOT DEFINED ROMFSROOT)
+                        set(config_romfs_root px4fmu_common)
+                else()
+                        set(config_romfs_root ${ROMFSROOT})
+                endif()
+                set(HASROMFS "with ROMFS on ${config_romfs_root}")
+                set(config_romfs_root ${config_romfs_root} PARENT_SCOPE)
+        endif()
+        message(STATUS "Nuttx build for ${BOARD} on ${HWCLASS} hardware, using ${CONFIG} ${HASROMFS}")
+endfunction()
+
+
+configs/nuttx_px4fmu-v2_default.cmake:5:
+   //调用另一个文件中的set变量
+  -> set(CMAKE_TOOLCHAIN_FILE ${PX4_SOURCE_DIR}/cmake/toolchains/Toolchain-arm-none-eabi.cmake) 
+
+
+configs/nuttx_px4fmu-v2_default.cmake: 文件:
+
+include(nuttx/px4_impl_nuttx)
+
+# 调用这个函数，指定HWCLASS
+px4_nuttx_configure(HWCLASS m4 CONFIG nsh ROMFS y ROMFSROOT px4fmu_common)
+
+set(CMAKE_TOOLCHAIN_FILE ${PX4_SOURCE_DIR}/cmake/toolchains/Toolchain-arm-none-eabi.cmake)
+
+set(config_uavcan_num_ifaces 2)
+
+set(config_module_list
+
+
+加载参数文件，如果有随机RAM,就从随机RAM开始抓取，默认的是SD卡
+
+#
+# Load parameters
+#
+set PARAM_FILE /fs/microsd/params
+if mtd start
+then
+    set PARAM_FILE /fs/mtd_params
+fi
+
+
+param select $PARAM_FILE
+if param load
+then
+else
+      if param reset
+      then
+      fi
+fi
+
+int mtd_main(int argc, char *argv[])
+  -> mtd_start(partition_names_default, n_partitions_default); 
+    -> snprintf(blockname, sizeof(blockname), "/dev/mtdblock%d", i); 
+    -> ret = bchdev_register(blockname, partition_names[i], false); //注册2个mtd块
+
+随机存储和AT24C02
+
+
+#ifdef CONFIG_MTD_RAMTRON
+    ramtron_attach();
+#else
+    at24xxx_attach();
+#endif
+
+
+param_main(int argc, char *argv[])
+  -> return do_save(argv[2]);
+  -> return do_load(argv[2]);
+    -> int fd = open(param_file_name, O_RDONLY);
+    -> 
+  -> return do_import(argv[2]);
+  -> return do_show(argv[2]);
+
+

@@ -1,0 +1,4 @@
+: extra qualification 'ImuExt::' on member 'task_main_trampoline' [-fpermissive]
+  static int ImuExt::task_main_trampoline(int argc, char *argv[]);
+             ^
+compilation terminated due to -Wfatal-errors.

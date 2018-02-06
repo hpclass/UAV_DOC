@@ -1,0 +1,36 @@
+if mtd starts
+
+
+################
+set PARAM_FILE /fs/mtd_params
+
+
+#
+ drw-rw-rw-       0 microsd/
+ crw-rw-rw-       0 mtd_params
+ crw-rw-rw-       0 mtd_waypoints
+
+struct spi_dev_s *spi = px4_spibus_initialize(PX4_SPI_BUS_RAMTRON);
+
+FAR struct mtd_dev_s *ramtron_initialize(FAR struct spi_dev_s *dev)
+  //分配１个MTD设备
+ priv = (FAR struct ramtron_dev_s *)kmm_zalloc(sizeof(struct ramtron_dev_s));
+  if (priv)
+    {
+      /* Initialize the allocated structure. (unsupported methods were
+       * nullified by kmm_zalloc).
+       */
+
+      priv->mtd.erase  = ramtron_erase;
+      priv->mtd.bread  = ramtron_bread;
+      priv->mtd.bwrite = ramtron_bwrite;
+      priv->mtd.read   = ramtron_read;
+      priv->mtd.ioctl  = ramtron_ioctl;
+      priv->dev        = dev;
+
+
+mtd_dev = ramtron_initialize(spi);
+
+
+
+//

@@ -1,0 +1,61 @@
+find命令
+
+1. 分析
+find [-H] [-L] [-P] [-D debugopts] [-Olevel] [path...] [expression]
+
+find OPTIONS  EXPRESSIONS
+
+OPTIONS:  [-H] [-L] [-P] [-D debugopts] [-Olevel] 
+
+EXPRESSIONS:
+	OPTIONS
+	TESTS
+	ACTIONS
+	UNUSUAL FILENAMES
+	OPERATORS
+
+STANDARDS CONFORMANCE
+	-name  This  option  is  supported,  but POSIX conformance depends on the POSIX conformance of the system's
+              fnmatch(3) library function.  As of findutils-4.2.2, shell metacharacters  (`*',  `?'  or  `[]'  for
+              example)  will  match a leading `.', because IEEE PASC interpretation 126 requires this.   This is a
+              change from previous versions of findutils.
+
+       -type  Supported.   POSIX specifies `b', `c', `d', `l', `p', `f' and `s'.  GNU find also supports `D', rep‐
+              resenting a Door, where the OS provides these.
+
+ENVIRONMENT VARIABLES
+
+EXAMPLES
+
+2. 举出例子
+
+	1. 	在当前目录下发现一个hello.c的文件, 并且删除他
+			find ./ -name hello.c -type f -print | xargs rm -f
+
+	2.	在当前目录下发现一个*.bin的文件
+			find ./ -name hello.c -type f -print | xargs rm -f
+
+
+		*  注意: 在使用-type f的时候也必须有-name的添加
+
+	3. 	查看一天前的修改的文件
+			find ./ mtime -1 -type  f
+
+	4. 	发现1个文件名是hello3.c的文件,并且使用vi打开他
+			find   ./   -name  hello3.c   -type f   -exec   vi   {} \;
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+

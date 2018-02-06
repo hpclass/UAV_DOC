@@ -1,0 +1,214 @@
+lsm303d (3轴加速计+磁力计)
+----------------------------------------------------------
+
+3轴： 表示x, y, z的方向
+加速计的参数： 
+g: 重力引力
+
+静止： 1g ,在y轴就是1g ,如果是倾斜， x和y轴可能小于1g
+突变： 如果大于1g，突然的上升和下降
+
+水平放置： x, y, z
+
+存在一个原点坐标： 
+
+
+namespace lsm303d
+	——> lsm303d::start(external_bus, rotation, accel_range);
+		-> g_dev = new LSM303D(PX4_SPI_BUS_SENSORS, LSM303D_DEVICE_PATH_ACCEL, (spi_dev_e)PX4_SPIDEV_ACCEL_MAG, rotation); //创建1个对象
+			-> if (OK != g_dev->init()) { //初始化
+			        -> LSM303D::init()
+			        	-> _dev = px4_spibus_initialize(_bus);
+			                -> ret = probe(); //可以检测期间id
+			                -> ret = CDev::init(); //创建设备节点
+			                   -> int ret = Device::init();
+			                   -> ret = register_driver(_devname, &fops, 0666, (void *)	      this); // 注册设备驱动
+
+                                         -> SPI::transfer(uint8_t *send, uint8_t *recv, unsigned len)
+			                   -> SPI::_transfer(uint8_t *send, uint8_t *recv, unsigned len)
+math::Vector<3> gval(xin, yin, zin);
+	math::Vector<3> gval_integrated;
+	
+
+//初始化： 添加3个设备节点
+ crw-rw-rw-       0 lsm303d_accel
+ crw-rw-rw-       0 lsm303d_mag
+ crw-rw-rw-       0 mag0
+
+
+-> fd_accel = open(LSM303D_DEVICE_PATH_ACCEL, O_RDONLY);       //打开设备
+-> sz = read(fd_accel, &accel_report, sizeof(accel_report));   //读取设备
+-> warnx("accel x: \t% 9.5f\tm/s^2", (double)accel_report.x);  //打印6个数据，x,y,z, x_raw, y_raw, z_raw
+-> warnx("accel y: \t% 9.5f\tm/s^2", (double)accel_report.y);  //打印角速度
+-> warnx("accel z: \t% 9.5f\tm/s^2", (double)accel_report.z);
+-> warnx("accel x: \t%d\traw", (int)accel_report.x_raw);
+-> warnx("accel y: \t%d\traw", (int)accel_report.y_raw);
+-> warnx("accel z: \t%d\traw", (int)accel_report.z_raw);
+
+
+
+芯片手册：
+
+NRND: not recommand new design 
+
+芯片中可能有status：
+Active: 可以用
+NRND: 不建议用
+
+文件位置： src/drivers/drv_gyro.h
+
+出现4个设备节点:
+#define GYRO_BASE_DEVICE_PATH	"/dev/gyro"
+#define GYRO0_DEVICE_PATH	"/dev/gyro0"
+#define GYRO1_DEVICE_PATH	"/dev/gyro1"
+#define GYRO2_DEVICE_PATH	"/dev/gyro2"
+
+显示链表的结构：
+report queue    2/144 (2/1 @ 20028f00)
+checked_next: 3
+
+命名空间小写， 类大写.
+
+程序是1个命名空间+1个类
+
+
+class L3GD20 : public device::SPI
+
+	-> L3GD20::L3GD20(int bus, const char *path, spi_dev_e 		device, enum Rotation rotation) :
+
+	-> L3GD20::~L3GD20
+
+	-> L3GD20::init()
+
+
+namespace l3gd20
+{
+
+void	usage();
+void	start(bool external_bus, enum Rotation rotation);
+void	test();
+void	reset();
+void	info();
+void	regdump();
+void	test_error();
+
+
+//定时器去调用执行传感器,然后push
+struct hrt_call		_accel_call;
+
+class __EXPORT Device
+{
+       struct DeviceStructure {
+		enum DeviceBusType bus_type : 3;
+		uint8_t bus: 5;    // which instance of the bus type
+		uint8_t address;   // address on the bus (eg. I2C address)
+		uint8_t devtype;   // device class specific device type
+	};
+
+	union DeviceId {  //期间ID的定义
+		struct DeviceStructure devid_s;
+		uint32_t devid;
+	};
+
+类中的变量如何调用：
+是否可以直接写，访问形式是怎样
+
+SPI("LSM303D", path, bus, device, SPIDEV_MODE3,11 * 1000 * 1000）
+解析后： 
+SPI("LSM303D", /dev/lsm303d, 1, 2, SPIDEV_MODE3,11 * 1000 * 1000）
+
+protect仅仅： 父类可以改变，
+子类可以查看父类这个成员，但是不能改变
+
+
+L3GD20::start() //启动
+	-> _reports->flush(); //清空reports
+
+	hrt_call_every(&_call,
+		       1000,
+		       _call_interval - L3GD20_TIMER_REDUCTION,
+		       (hrt_callout)&L3GD20::measure_trampoline, this);
+        -> hrt_call_internal（(entry,
+			  hrt_absolute_time() + delay, //加上绝对的时间
+			  interval,
+			  callout,
+			  arg);）
+
+hrt_call_every(struct hrt_call *entry: , hrt_abstime delay, hrt_abstime interval, hrt_callout callout, void *arg)
+
+入口    ) struct hrt_call *entry:    &_call
+延时时间) hrt_abstime delay:         1000
+时间内部) hrt_abstime interval:      _call_interval - L3GD20_TIMER_REDUCTION
+回掉函数) hrt_callout callout:       (hrt_callout)&L3GD20::measure_trampoline
+当前指针) void *arg:                 this 
+
+
+int
+L3GD20::ioctl(struct file *filp, int cmd, unsigned long arg)
+	-> 
+
+类内的成员函数：如何访问类内的变量和成员函数。
+
+
+类内的成员函数：类内成员函数可以直接访问类型的变量，protect, pulic, private的变量.
+结构体的成员函数和类的成员函数的意义不一样： 结构体的成员函数仅仅是1个指针.
+
+class Student{
+public:
+    void setname(char *name);
+    void setage(int age);
+    void setscore(float score);
+    void show();
+private:
+    char *name;
+    int age;
+    float score;
+};
+
+void Student::setname(char *name){ 
+    this->name = name;  //必须添加this指针
+}
+
+本例中成员函数的参数和成员变量重名，只能通过 this 区分。以成员函数setname(char *name)为例，它的形参是name，和成员变量name重名，如果写作name = name;这样的语句，就是给形参name赋值，而不是给成员变量name赋值。
+
+子类也可以直接给父类的成员直接赋值， 也可以使用父类的指针赋值
+
+
+
+hrt_call_every(&_call, 1000, _call_interval, (hrt_callout)&MPU6000::measure_trampoline, this);
+
+等同于AP_HAL中的hal.scheduler->register_timer_process()。上述代码的意思是，HRT （high resolution timer）高精度定时器，以1000微妙的周期调用MPU6000::measure_trampoline函数。这些操作是禁止中断的，最多占用数十微妙的时间。
+上面的优先级非常高。下面的方法，是稍低优先级。
+
+work_queue(HPWORK, &_work, (worker_t)&HMC5883::cycle_trampoline, this, 1);
+
+
+//获取高精度的时间
+__EXPORT extern hrt_abstime hrt_absolute_time(void);
+
+//表现性能:
+perf_counter_t		_sample_perf;
+perf_counter_t		_errors;
+perf_counter_t		_bad_registers;
+perf_counter_t		_duplicates;
+
+transfer((uint8_t *)&raw_report, (uint8_t *)&raw_report, 	sizeof(raw_report));
+
+//检测传感器的
+#include <uORB/uORB.h>
+#include <uORB/topics/sensor_combined.h>
+#include <uORB/topics/vehicle_attitude.h>
+
+
+//定义的参数一定要对
+int32 r
+
+传感器注册:
+sensor_gyro.msg
+生成文件:
+build_px4fmu-v5_defaul/src/modules/uORB/topics/sensor_gyro.h
+
+
+
+
+

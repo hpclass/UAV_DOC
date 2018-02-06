@@ -1,0 +1,46 @@
+class MavlinkFTP : public MavlinkStream
+
+
+
+
+class Mavlink : public device::VDev
+
+
+
+//创建实例
+
+/* search for stream with specified name in supported streams list */
+for (unsigned int i = 0; streams_list[i] != nullptr; i++) {
+
+	if (strcmp(stream_name, streams_list[i]->get_name()) == 0) {
+		/* create new instance */
+		stream = streams_list[i]->new_instance(this);  //创建实例 MavlinkFTP，但是父类指向了子类。
+		stream->set_interval(interval);
+		LL_APPEND(_streams, stream);
+
+		return OK;
+	}
+}
+
+MavlinkStream *stream;
+
+
+//
+perf_print_counter(_sample_perf);
+perf_free(_txerr_perf);
+
+
+perf_print_counter_fd(int fd, perf_counter_t handle)
+{
+	if (handle == NULL) {
+		return;
+	}
+
+	switch (handle->type) {
+	case PC_COUNT:
+
+
+	
+dprintf(fd, "%s: %llu events\n",
+	_txerr_perf->name,
+	(unsigned long long)((struct perf_ctr_count *)_txerr_perf)->event_count);

@@ -1,0 +1,20 @@
+1修改地方: 
+int can_drv_main(int argc, char *argv[]) {   
+
+2修改地方: 
+extern "C" { __EXPORT int can_drv_main(int argc, char *argv[]); }
+
+3. 修改Cmake文件
+px4_add_module(
+	MODULE drivers__can_drv    //绝对路径    文件夹_文件夹
+	MAIN   can_drv                    //main函数入口
+	STACK 2000
+	COMPILE_FLAGS
+		-Os
+	SRCS
+		can_drv.cpp                       //源文件
+	DEPENDS
+		platforms__common
+	)
+
+4. 在drivers文件夹下新建文件夹can_drv

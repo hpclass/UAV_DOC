@@ -1,0 +1,2 @@
+ find ./　-name "*config.h" -type f | xargs grep "px4"
+在当前目录下查找文件是config.h的文件，在文件中查找文件路径是有px4的字符

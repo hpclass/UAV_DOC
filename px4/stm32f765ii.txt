@@ -1,0 +1,39 @@
+stm32f765II配置:
+CONFIG_STM32F7_STM32F76XX=y
+CONFIG_STM32F7_IO_CONFIG_I=y
+CONFIG_STM32F7_STM32F765XX=y
+
+#if defined(CONFIG_STM32F7_STM32F74XX) || defined(CONFIG_STM32F7_STM32F75XX)
+#    define STM32F7_SRAM1_SIZE            (240*1024)  /* 240Kb SRAM1 on AHB bus Matrix */
+#    define STM32F7_SRAM2_SIZE            (16*1024)   /* 16Kb SRAM2 on AHB bus Matrix */
+#  if defined(CONFIG_ARMV7M_HAVE_DTCM)
+#      define STM32F7_DTCM_SRAM_SIZE      (64*1024)   /* 64Kb DTCM SRAM on TCM interface */
+#  else
+#      define STM32F7_DTCM_SRAM_SIZE      (0)         /* No DTCM SRAM on TCM interface */
+#  endif
+#  if defined(CONFIG_ARMV7M_HAVE_ITCM)
+#      define STM32F7_ITCM_SRAM_SIZE      (16*1024)   /* 16Kb ITCM SRAM on TCM interface */
+#  else
+#      define STM32F7_ITCM_SRAM_SIZE      (0)         /* No ITCM SRAM on TCM interface */
+#  endif
+#elif defined(CONFIG_STM32F7_STM32F76XX) || defined(CONFIG_STM32F7_STM32F77X)
+#    define STM32F7_SRAM1_SIZE            (368*1024)  /* 368Kb SRAM1 on AHB bus Matrix */
+#    define STM32F7_SRAM2_SIZE            (16*1024)   /* 16Kb SRAM2 on AHB bus Matrix */
+#  if defined(CONFIG_ARMV7M_HAVE_DTCM)
+#      define STM32F7_DTCM_SRAM_SIZE      (128*1024)  /* 128Kb DTCM SRAM on TCM interface */
+#  else
+#      define STM32F7_DTCM_SRAM_SIZE      (0)         /* No DTCM SRAM on TCM interface */
+#  endif
+#  if defined(CONFIG_ARMV7M_HAVE_ITCM)
+#      define STM32F7_ITCM_SRAM_SIZE      (16*1024)   /* 16Kb ITCM SRAM on TCM interface */
+#  else
+#      define STM32F7_ITCM_SRAM_SIZE      (0)         /* No ITCM SRAM on TCM interface */
+#  endif
+#else
+#  error STM32 F7 chip Family not identified
+#endif
+
+
+px4nucleoF767ZI-v1/NuttX/nuttx/nuttx-export/include/arch/stm32f7/chip.h
+
+定义不同的RAM

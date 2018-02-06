@@ -1,0 +1,121 @@
+
+1. PROJECT
+添加1个工程 
+
+2. SET
+添加1个环境变量
+
+3. ADD_EXECUTABLE
+添加最后生成的可执行文件
+
+MESSAGE(STATUS "SRC_LIST " ${SRC_LIST})
+MESSAGE(STATUS "This is BINARY dir " ${HELLO_BINARY_DIR})
+MESSAGE(STATUS "This is SOURCE dir "${HELLO_SOURCE_DIR})
+
+
+调试信息:
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/yangang/work/github_proj/cmake_test/hello/hello
+
+注意：
+1. 命令的大小写都可以.
+
+
+Makefile中的文件的依赖可以是有‘/’的字符
+
+
+
+CMakeFiles/build_firmware_px4fmu-v2.dir/cmake_clean.cmake:3:  "nuttx-px4fmu-v2-default.px4"
+CMakeFiles/build_firmware_px4fmu-v2.dir/build.make:56:src/firmware/nuttx/CMakeFiles/build_firmware_px4fmu-v2: src/firmware/nuttx/nuttx-px4fmu-v2-default.px4
+CMakeFiles/build_firmware_px4fmu-v2.dir/build.make:59:src/firmware/nuttx/nuttx-px4fmu-v2-default.px4: src/firmware/nuttx/firmware_nuttx
+CMakeFiles/build_firmware_px4fmu-v2.dir/build.make:60:	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating nuttx-px4fmu-v2-default.px4"
+CMakeFiles/build_firmware_px4fmu-v2.dir/build.make:62:	cd /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/src/firmware/nuttx && /usr/bin/python /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/Tools/px_mkfw.py --prototype /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/Images/px4fmu-v2.prototype --git_identity /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc --parameter_xml /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/parameters.xml --airframe_xml /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/airframes.xml --image /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/src/firmware/nuttx/firmware_nuttx.bin > /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/src/firmware/nuttx/nuttx-px4fmu-v2-default.px4
+CMakeFiles/build_firmware_px4fmu-v2.dir/build.make:65:build_firmware_px4fmu-v2: src/firmware/nuttx/nuttx-px4fmu-v2-default.px4
+CMakeFiles/upload.dir/cmake_clean.cmake:3:  "nuttx-px4fmu-v2-default.px4"
+CMakeFiles/upload.dir/build.make:56:src/firmware/nuttx/CMakeFiles/upload: src/firmware/nuttx/nuttx-px4fmu-v2-default.px4
+CMakeFiles/upload.dir/build.make:57:	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "uploading /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/src/firmware/nuttx/nuttx-px4fmu-v2-default.px4"
+CMakeFiles/upload.dir/build.make:58:	/usr/bin/python /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/Tools/px_uploader.py --port "/dev/serial/by-id/usb-3D_Robotics*,/dev/serial/by-id/pci-3D_Robotics*" /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/src/firmware/nuttx/nuttx-px4fmu-v2-default.px4
+CMakeFiles/upload.dir/build.make:60:src/firmware/nuttx/nuttx-px4fmu-v2-default.px4: src/firmware/nuttx/firmware_nuttx
+CMakeFiles/upload.dir/build.make:61:	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating nuttx-px4fmu-v2-default.px4"
+CMakeFiles/upload.dir/build.make:63:	cd /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/src/firmware/nuttx && /usr/bin/python /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/Tools/px_mkfw.py --prototype /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/Images/px4fmu-v2.prototype --git_identity /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc --parameter_xml /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/parameters.xml --airframe_xml /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/airframes.xml --image /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/src/firmware/nuttx/firmware_nuttx.bin > /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/src/firmware/nuttx/nuttx-px4fmu-v2-default.px4
+CMakeFiles/upload.dir/build.make:66:upload: src/firmware/nuttx/nuttx-px4fmu-v2-default.px4
+cmake_install.cmake:31:  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/." TYPE FILE FILES "/home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/src/firmware/nuttx/nuttx-px4fmu-v2-default.px4")
+
+
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating nuttx-px4fmu-v2-default.px4"
+
+生成文件
+
+CMAKE_PROGRESS_1: 进度条
+
+进行下载文件
+src/firmware/nuttx/CMakeFiles/upload: src/firmware/nuttx/nuttx-px4fmu-v2-default.px4
+        @$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "uploading /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/src/firmware/nuttx/nuttx-px4fmu-v2-default.px4"
+        /usr/bin/python /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/Tools/px_uploader.py --port "/dev/serial/by-id/usb-3D_Robotics*,/dev/serial/by-id/pci-3D_Robotics*" /home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/src/firmware/nuttx/nuttx-px4fmu-v2-default.px4
+
+src/firmware/nuttx/nuttx-px4fmu-v2-default.px4: src/firmware/nuttx/firmware_nuttx
+        @$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/yangang/work/theone/theone-test/Git_IMU2/theone-mc/build_theone/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating nuttx-px4fmu-v2-default.px4
+
+
+diff --git a/Tools/wzEncrypt b/Tools/wzEncrypt
+deleted file mode 100755
+index 3eae9bf..0000000
+Binary files a/Tools/wzEncrypt and /dev/null differ
+
+
+其中一个目录中添加了wzEncrypt，另一个文件下没有这个文件就是/dev/null
+
+add_custom_command(OUTPUT ${OUT}
+ 97                 COMMAND ${OBJCOPY} -O binary ${EXE} ${EXE}.bin
+ 98                 COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/Tools/px_mkfw.py
+ 99                         --prototype ${CMAKE_SOURCE_DIR}/Images/${BOARD}.prototype
+100                         --git_identity ${CMAKE_SOURCE_DIR}
+101                         ${extra_args}
+102                         --image ${EXE}.bin > ${OUT}
+103                 COMMAND ${CMAKE_SOURCE_DIR}/Tools/wzEncrypt ${OUT}
+104                 DEPENDS ${EXE}
+105                 )
+
+添加加密文件
+
+  COMMAND ${OBJCOPY} -O binary ${EXE} ${EXE}.bin
+
+把文件${EXE}文件转换成另一个文件.bin
+
+${OBJCOPY} :是arm-linux-objcopy文件
+
+             COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/Tools/px_mkfw.py
+                        --prototype ${CMAKE_SOURCE_DIR}/Images/${BOARD}.prototype
+                        --git_identity ${CMAKE_SOURCE_DIR}
+                         ${extra_args}
+                       --image ${EXE}.bin > ${OUT}
+
+工具是 px_mkfw.py
+参数是:
+--prototype ${CMAKE_SOURCE_DIR}/Images/${BOARD}.prototype
+--git_identity ${CMAKE_SOURCE_DIR}
+	${extra_args}
+--image ${EXE}.bin
+
+输出文件是
+${OUT}
+
+
+COMMAND ${CMAKE_SOURCE_DIR}/Tools/wzEncrypt ${OUT}
+
+${CMAKE_SOURCE_DIR}/Tools/wzEncrypt 
+加密文件 
+
+
+
+
+	
+
+
+
+
+
+
+
+

@@ -1,0 +1,165 @@
+1. 发现文件：
+int ver_main(int argc, char *argv[])
+
+hwcmp ：板子的名字
+ ->px4_board_name();
+
+2. 文件
+
+调试脚本过程：
+
+1.启动脚本，仅仅打印一条信息:
+echo ""rcs start...., startting console
+
+ps之后：
+PID PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK   STACK   USED  FILLED COMMAND
+nsh: ps: no such directory: /proc
+
+1.1 注册后的设备节点: 初始化程序注册的设备节点.
+/dev:
+console
+led0
+mmcsd0
+null
+ram0
+ttyS0
+ttyS1
+ttyS2
+ttyS3
+ttyS4
+ttyS5
+ttyS6
+
+
+
+
+2. 启动虚拟串口和proc文件系统
+
+sercon: Registering CDC/ACM serial driver
+sercon: Successfully registered the CDC/ACM serial driver
+NSH exit 
+
+nsh不能启动：串口驱动可以
+
+
+
+
+3. 
+如果mavlink能够启动，那么就会关闭nsh解析
+
+if [ $MAVLINK_F == default ]
+	then
+		# Normal mode, use baudrate 57600 (default) and data rate 1000 bytes/s
+		if [ $TTYS1_BUSY == yes ]
+		then
+			# Start MAVLink on ttyS0, because FMU ttyS1 pins configured as something else
+			set MAVLINK_F "-r 1200 -d /dev/ttyS0"
+
+			# Exit from nsh to free port for mavlink
+			set EXIT_ON_END yes
+
+可以看出唯一可以让nsh结束的是mavlink
+
+4. nsh是1个进行，是系统的1个bin文件
+
+nsh:
+   1. nshlib
+   2. nsh解析脚本的能力
+   3. nsh控台的问题.
+   
+   
+5. 启动1个脚本
+up_hardfault: PANIC!!! Hard fault: 40000000
+up_assert: Assertion failed at file:armv7-m/up_hardfault.c line: 171 task: init
+up_dumpstate: sp:     20025e08
+up_dumpstate: IRQ stack:
+up_dumpstate:   base: 20025e58
+up_dumpstate:   size: 00000258
+up_dumpstate:   used: 00000130
+up_stackdump: 20025e00: 2007f430 080c7bd1 000000ab 2007e4cc 00000000 20025e30 20025e30 080c5719
+up_stackdump: 20025e20: 00000000 20025e30 080c7fa7 00000000 2007f1f0 080c7faf 080c7f8d 080d1241
+up_stackdump: 20025e40: 000000f0 2007f0fc 2007ff6f 2007f4d0 00000000 080c7f13 00000000 2007c010
+up_dumpstate: sp:     2007f1d0
+up_dumpstate: User stack:
+up_dumpstate:   base: 2007f430
+up_dumpstate:   size: 000009b4
+up_dumpstate:   used: 00000438
+up_stackdump: 2007f1c0: 00000000 00000000 00000000 080caaeb 2007f1ec 2007f1f0 2007e884 00000000
+up_stackdump: 2007f1e0: 080cee9b 00000020 00012a39 6e697456 6f6c0000 61002e2e 6d2e785f 2e6e6961
+up_stackdump: 2007f200: 0078696d 78000078 696d2e00 20070078 00000000 2007fea2 2007f274 2007f28c
+up_stackdump: 2007f220: 00000000 2007f4d0 2007ff65 ffffffff 00000000 00000000 00000002 080ca2d5
+up_stackdump: 2007f240: 6e697456 6e697456 00012a39 00000000 00000000 2007f28c 2007f4a0 00000000
+up_stackdump: 2007f260: 2007ff60 080cad39 2007ff60 2007ff65 00000000 2007ff60 00000000 2007ff60
+up_stackdump: 2007f280: 2007f330 080c3ab3 2007fe9f 2007ff60 080bc8d7 080fcb01 20027ccf 2007fe9f
+up_stackdump: 2007f2a0: 0000002f 0000002f 2007ff60 00000000 2007fc10 080bc983 2007fc10 00000002
+up_stackdump: 2007f2c0: 2007fc10 00000000 00000000 2007f330 ffffffff 080bd0b7 00000000 00000000
+up_stackdump: 2007f2e0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 2007fc10
+up_stackdump: 2007f300: 2007fe9c 00000002 00000002 2007f330 00000000 00000000 00000000 080bdb9b
+up_stackdump: 2007f320: 00000000 61004000 2007fea3 00000000 2007fe9c 2007fe9f 00000000 00000000
+up_stackdump: 2007f340: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+up_stackdump: 2007f360: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+up_stackdump: 2007f380: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+up_stackdump: 2007f3a0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+up_stackdump: 2007f3c0: 00000000 00000000 00000000 00000000 00000000 00000000 2007fc10 2007fc10
+up_stackdump: 2007f3e0: 2007fe9c 2007e848 00000000 00000000 00000000 00000000 00000000 080bcaf7
+up_stackdump: 2007f400: 2007fc10 2002481c 2007fc10 00000000 00000000 080bc4c7 00000000 080df6d1
+up_stackdump: 2007f420: 00000101 080c21a1 00000000 00000000 deadbeef 2007f43c 00000000 74696e69
+up_registerdump: R0: 2007f4d0 00000056 081070dc 7679e4dc 2007f240 2007ff6f 2007f4d0 00000000
+up_registerdump: R8: 00000000 6e697456 00012a30 2007f1f0 080bc639 2007f1d0 080caaf9 080ca776
+up_registerdump: xPSR: 21000000 BASEPRI: 000000f0 CONTROL: 00000000
+up_registerdump: EXC_RETURN: ffffffe9
+up_taskdump: Idle Task: PID=0 Stack Used=0 of 0
+up_taskdump: hpwork: PID=1 Stack Used=408 of 1780
+up_taskdump: lpwork: PID=2 Stack Used=408 of 1780
+up_taskdump: init: PID=3 Stack Used=1080 of 2484
+Memory wiped - dump not savesercon: Registering CDC/ACM serial driver
+sercon: Successfully registered the CDC/ACM serial driver
+nsh: mount: mount failed: No such device
+nsh: mkfatfs: mkfatfs failed: No such device
+nsh: hwcmp: command not found
+
+
+6. 检查脚本sd是否挂载成功，否则设置
+set LOG_FILE /fs/microsd/bootlog.txt
+set LOG_FILE /dev/null
+
+
+mount -t procfs /proc      //启动proc机制
+sercon                     //启动虚拟串口
+set MODE autostart         //默认是自动模式
+set TUNE_ERR ML<<CP4CP4CP4CP4CP4   //意思是ML<<CP4CP4CP4CP4CP4，被定义为TUNE_ERR的变量
+set LOG_FILE /fs/microsd/bootlog.txt
+if mount -t vfat /dev/mmcsd0 /fs/microsd  //挂载SD卡
+	sh /fs/microsd/etc/rc.txt //执行客户启动脚本
+	set MODE custom    
+	
+if [ $MODE == autostart ]    //如果是自动启动
+	->uorb start             //启动uorb
+	->if rgbled start        //启动rgbled三色灯
+	   ->blinkm start
+	->if param compare SYS_AUTOCONFIG 1 //配置系统参数
+
+set FAILSAFE none            //设置系统默认参数
+	set USE_IO yes
+	
+if param compare SYS_USE_IO 1 // 配置IO参数
+        if ver hwcmp PX4FMU_V4   //-----判断是那个硬件，确定是否开启IO设备
+		then
+			set USE_IO no
+		fi
+
+		if ver hwcmp PX4FMU_V5  // 如果是V5, 那么不启动IO
+		then
+			set USE_IO no
+			set MAVLINK_COMPANION_DEVICE /dev/ttyS3
+		fi
+# End of autostart           //结束自动启动
+fi
+
+
+3. 使用低速控台的设置CONFIG_DEV_LOWCONSOLE=y
+/:
+ dev/
+ etc/
+ proc/
+发现问题： 没有出现 ps/目录

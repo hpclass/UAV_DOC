@@ -1,0 +1,12 @@
+
+		UART1    	ttyS0
+U2		UART2		ttyS1　　　数传        TTL
+U3		UART3		ttyS2　　　IMU        TTL
+U4		UART4		ttyS3　　　GPS        RS232
+		UART5		        
+U6		UART6		ttyS4   IO板通信　　 TTL
+U7		UART7		ttyS5   monitor    RS232
+U8		UART8		ttyS6　　　双目　　　　　RS232
+
+注册是按照顺序注册.   
+

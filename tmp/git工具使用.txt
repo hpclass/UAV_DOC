@@ -1,0 +1,238 @@
+1. 创建1个git的ssh账户
+命令:  git config --global user.name "xxxx"
+实例： git config --global user.name "yangang123"
+
+命令:  git config --global user.email "xxxx"
+实例： git config --global user.email "320054593@qq.com"
+
+查看git的配置信息:
+	git config -l
+	-------------------------------
+	user.name=yangang123
+	user.email=320054593@qq.com
+	core.repositoryformatversion=0
+	core.filemode=true
+	core.bare=false
+	core.logallrefupdates=true
+	remote.origin.url=https://github.com/yangang123/ygDemo4.git
+	remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+	-------------------------------
+
+2. 创建1个仓库就是1个工程
+
+2.1 点击github上的图标’+‘,根据提示创建完成
+2.2 推送README.me
+   0) git clone https://github.com/yangang123/ygDemo1.git
+      克隆1个仓库
+   1) echo "# ygDemo1" >> README.md
+      编写README.md文件, README.md是必须的文件
+   2) git init
+      初始化git
+   3) git add README.md 
+      给分支添加1个文件
+   4) git commit -m "first commit"
+      提交申请，字符串"first commit"就是提交的注释
+   5) git push -u origin master
+      发送文件到分支master中
+	  
+	git push <远程主机名> <本地分支名>  <远程分支名>	
+	
+	origin 是远程主机名，
+	第一个master是本地分支名
+	第二个master是远程分支名
+	
+   之后上传文件就需要重复3~5步骤.
+------------------------------------
+
+------------------------------------   
+3. git如何解决编译生成的信息
+   git 仅仅管理add的文件. 不会管理.o的 文件.
+   
+4.  创建步骤
+echo "# ygDemo4" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/yangang123/ygDemo4.git
+git push -u origin master
+------------------------------------
+git push -u origin master ： 提示你输入远程账号和密码
+Username for 'https://github.com': yangang123
+Password for 'https://yangang123@github.com': 
+------------------------------------
+
+5. 多目录文件实现
+1. 每个文件显示的commit是最后1个修改文件的commit
+2. 文件夹显示的是当前文件夹最后1次修改的commit
+
+6. 生成1个ssh钥匙
+
+$ ssh-keygen -t rsa -C "320054593@qq.com"
+
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/yangang/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/yangang/.ssh/id_rsa.
+Your public key has been saved in /home/yangang/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:AQ5cbsJUgVZM1Rl5HOZXNCPQsx+XGuAtpXYBxe9hKJg 320054593@qq.com
+The key's randomart image is:
++---[RSA 2048]----+
+|   .oBBo...BO+ +o|
+|   o++..  ++o*..o|
+|   .o + . +.* B .|
+|     o   E * B *.|
+|        S . + * +|
+|             . o |
+|                 |
+|                 |
+|                 |
++----[SHA256]-----+
+
+注意： 已经提示钥匙已经生成到~/.ssh/id_rsa; ~/.ssh/id_rsa.pub.
+查看是否生成：
+
+ls -l ~/.ssh/
+total 12
+-rw------- 1 yangang yangang 1679 Apr  5 21:14 id_rsa
+-rw-r--r-- 1 yangang yangang  398 Apr  5 21:14 id_rsa.pub
+-rw-r--r-- 1 yangang yangang  884 Mar  8 02:45 known_hosts
+
+
+$ vi id_rsa.pub
+复制文件的所有密码
+
+在你官网上,点击setting
+https://github.com/settings/keys
+在github上点击“setting”，找到添加SSH key的菜单，然后新增SSH key;
+如下: 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDvX0qq9zD7DLIk2xM3zUF5nwsMlaxJKdnNByvo7wNKxng4RMBxPdm4wVBAptdmZtK2K2wnXM868bJjysNI+YtDi4ftVz67qTeYxJyXHARt8qwX1EFrfIM5iXUVOk1+K8s2hSyNKjlkcP5P7BnvifDjAZbZiUy7SMq8gDUxZASyQ3Eh7+FDtoYa4HOwX/ux9tAf998BOPJrJcsidDn0H6C5fd1yaZB2/krBMQSBQC4Q/4a3wgK8BNpUIpauC4VBNmHDOrXSYc71wP7RrS7BNvSfShyIR8lXJKJxKL8+8ngG6TFQH2UuNTvVYSH4B8wJ5iIHNw1UWO1UHK6Vxzy4NmKh 320054593@qq.com
+
+测试添加钥匙是否成功
+ssh  -T git@github.com
+Hi yangang123! You've successfully authenticated, but GitHub does not provide shell access.
+
+
+---------------------------------------------------------------------------
+ssh协议
+---------------------------------------------------------------------------
+yangang@ubuntu:~/work$ git clone git@github.com:yangang123/testgit1.git
+Cloning into 'testgit1'...
+Warning: Permanently added the RSA host key for IP address '192.30.255.113' to the list of known hosts.
+remote: Counting objects: 3, done.
+remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0
+Receiving objects: 100% (3/3), done.
+Checking connectivity... done.
+
+---------------------------------------------------------------------------
+http协议
+---------------------------------------------------------------------------
+Cloning into 'testgit1'...
+remote: Counting objects: 3, done.
+remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+Checking connectivity... done.
+
+切换分支：
+$ git checkout master
+
+M	src/drivers/l3gd20/l3gd20.cpp
+M	src/drivers/lsm303d/lsm303d.cpp
+Switched to branch 'master'
+Your branch is ahead of 'origin/master' by 6 commits.
+  (use "git push" to publish your local commits)
+
+注意： 在切换分支的时候会自动提示上一个分支修改的内容.
+
+
+
+5. 在不同目录下，git add .的意思是不一样。
+git add .仅仅可以添加当前目录下修改的文件
+
+
+全部格式    ： git fetch 远程分支：本地分支
+远程分支格式： origin 分支名  例如：origin dev 
+本地分支    ： 例如：dev1
+举例子      :  git fetch origin dev:dev1
+
+1） yangang@ubuntu:~/work/testgit$ git fetch origin master:tmp
+From https://github.com/yangang123/testgit
+ * [new branch]      master     -> tmp
+yangang@ubuntu:~/work/testgit$ git branch
+* master
+  tmp
+2）yangang@ubuntu:~/work/testgit$ git diff tmp 
+diff --git a/delay.c b/delay.c
+deleted file mode 100644
+index 82b5e8e..0000000
+--- a/delay.c
++++ /dev/null
+@@ -1,9 +0,0 @@
+-#include <iostream>
+-
+-using namespace std;
+-
+-
+-int delay(int i)
+-
+-{
+-}
+3）yangang@ubuntu:~/work/testgit$ git merge tmp
+Updating 8cca9e9..6ab8823
+Fast-forward
+ delay.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+ create mode 100644 delay.c
+yangang@ubuntu:~/work/testgit$ ls
+delay.c  hello.c  memtest.c  Template_cpp.cpp
+
+git diff 是和自己比较
+git diff [branch]和其他分支比较
+
+
+git branch: 查看本地分支
+git branch -r 查看远程所以分支
+
+删除分支：
+git branch -d sensor
+error: Cannot delete the branch 'sensor' which you are currently on.
+
+注意： 不能
+
+
+安装git gui的方法
+
+$ sudo apt-get install git-core openssh-server openssh-client
+$ sudo apt-get install git-core git-gui git-doc 
+$ sudo apt-get install libcurl4-gnutls-dev libexpat1-dev gettext libz-dev git-core  
+
+
+抓取远程仓库最新的文件（其他人提交的）
+git pull
+
+
+ git add [--verbose | -v] [--dry-run | -n] [--force | -f] [--interactive | -i] [--pa
+tch | -p]
+                 [--edit | -e] [--[no-]all | --[no-]ignore-removal | [--update | -u]]
+                 [--intent-to-add | -N] [--refresh] [--ignore-errors] [--ignore-missing]
+                 [--] [<pathspec>...]
+
+
+
+            	COMMAND ${TOUCH} nuttx_copy_${CONFIG}.stamp
+ 		DEPENDS ${DEPENDS} ${nuttx_patches} ${nuttx_all_files}
+ 		COMMENT "Copying NuttX for ${CONFIG} with ${config_nuttx_config}")
++	add_custom_target(nuttx_copy_${CONFIG} DEPENDS nuttx_copy_${CONFIG}.stamp)
+ 
+ 	# patch
+ 	add_custom_target(nuttx_patch_${CONFIG})
+@@ -273,7 +274,7 @@ function(px4_nuttx_add_export)
+ 		add_custom_command(OUTPUT ${patch_stamp}
+ 			COMMAND ${PATCH} -d ${nuttx_src} -s -p1 -N < ${patch}
+ 			COMMAND ${TOUCH} ${patch_stamp}
+-			DEPENDS ${DEPENDS} nuttx_copy_${CONFIG}.stamp ${patch}
++			DEPENDS ${DEPENDS} nuttx_copy_${CONFIG} ${patch}
+ 			COMMENT "Applying ${patch}")
+ 
+ 		add_custom_target(${patch_name} DEPENDS ${patch_stamp})

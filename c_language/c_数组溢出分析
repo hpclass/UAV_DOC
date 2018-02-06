@@ -1,0 +1,65 @@
+
+1. 分析px4中的.map文件
+源程序:
+int canbuffer[100] = {0x00};
+int canbuffer_end  = 0;
+int canbuffer_i   　= 0;
+
+内存分配文件在:　　build_theone/px4fmu-v2/main.map
+
+　.bss           0x20000c40        0x0 CMakeFiles/firmware_nuttx.dir/builtin_commands.c.obj
+ .bss           0x20000c40        0x0 ../../drivers/can_drv/libdrivers__can_drv.a(can_drv.cpp.obj)
+ .bss._ZN12_GLOBAL__N_13devE
+                0x20000c40        0x4 ../../drivers/can_drv/libdrivers__can_drv.a(can_drv.cpp.obj)
+ .bss.canbuffer
+                0x20000c44      0x190 ../../drivers/can_drv/libdrivers__can_drv.a(can_drv.cpp.obj)
+                0x20000c44                canbuffer
+ .bss.canbuffer_end
+                0x20000dd4        0x4 ../../drivers/can_drv/libdrivers__can_drv.a(can_drv.cpp.obj)
+                0x20000dd4                canbuffer_end
+ .bss._ZN7can_drv3devE
+                0x20000dd8        0x4 ../../drivers/can_drv/libdrivers__can_drv.a(can_drv.cpp.obj)
+                0x20000dd8                can_drv::dev
+ .bss.canbuffer_i
+                0x20000ddc        0x4 ../../drivers/can_drv/libdrivers__can_drv.a(can_drv.cpp.obj)
+                0x20000ddc                canbuffer_i
+
+测试方法：
+1.测试空指针
+  int can_drv_main(int argc, char *argv[]) {
+      
+        int *ptr = nullptr;
+	*ptr　＝　200
+　｝
+	
+
+测试结论: 程序直接死机，没有打印堆栈信息
+
+2.测试数组溢出:
+int canbuffer[100] = {0x00};
+int canbuffer_end  = 300; 
+int canbuffer_i   = 0;
+
+[canbuffer_end] 开始的目的：　测试访问数组100,是否会访问到canbuffer_end的值
+
+程序:
+	if (!strcmp(argv[1], "start")) {
+		canbuffer_i = 100;
+		can_drv::start(device_name, 38400);
+	}
+
+	if (!strcmp(argv[1], "test")) {
+		PX4_WARN("canbuffer_i: %d", canbuffer_i);
+		PX4_WARN("canbuffer_i[1000]= %d",canbuffer[canbuffer_i]);
+	}
+
+打印信息:
+nsh> can_drv test
+WARN  canbuffer_i: 100
+WARN  canbuffer_i[100]= 537011664
+
+测试结论: 
+访问失败，线程不会死机
+
+
+

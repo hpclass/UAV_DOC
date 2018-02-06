@@ -1,0 +1,46 @@
+  struct monitor_info_s report = {};
+        _monitor_drv_topic = orb_advertise_multi(ORB_ID(monitor_info), &report,
+                                                 &_orb_class_instance, ORB_PRIO_VERY_LOW);
+
+        printf("_orb_class_instance: %d,_monitor_drv_topic:%d\r\n", _orb_class_instance, _monitor_drv_topic);
+
+        _monitor_drv_topic1 = orb_advertise_multi(ORB_ID(monitor_info), &report,
+                                                 &_orb_class_instance1, ORB_PRIO_LOW);
+        printf("_orb_class_instance1: %d,_monitor_drv_topic1:%d\r\n", _orb_class_instance1, _monitor_drv_topic1);
+
+        printf("group: %d\r\n", orb_group_count(ORB_ID(monitor_info)));
+       
+        int instance[3];
+
+        instance[0] = orb_subscribe_multi(ORB_ID(monitor_info), 0);
+        instance[1] = orb_subscribe_multi(ORB_ID(monitor_info), 1);
+        instance[2] = orb_subscribe(ORB_ID(monitor_info));
+
+
+
+        /**
+多个人发布,创建设备节点
+        */
+    
+   /* enum ORB_PRIO {
+    ORB_PRIO_MIN = 0,
+    ORB_PRIO_VERY_LOW = 25,
+    ORB_PRIO_LOW = 50,
+    ORB_PRIO_DEFAULT = 75,
+    ORB_PRIO_HIGH = 100,
+    ORB_PRIO_VERY_HIGH = 125,
+    ORB_PRIO_MAX = 255
+   };*/
+
+       int prio;
+       for (uint8_t i = 0; i < 3; i++) {
+
+          orb_priority(instance[i], &prio);
+          printf("xxxxinstance: %d, prio: %d\r\n", instance[i], prio);
+       }
+
+1. instance[2] = orb_subscribe(ORB_ID(monitor_info)); 
+订阅到的是第一个注册的设备
+
+2. orb_priority(instance[i], &prio);
+获取优先级,获取那个设备.

@@ -1,0 +1,52 @@
+1. 内核配置: 
+文件位置:nuttx-configs\px4fmu-v2\nsh\defconfig
+#
+# Device Drivers
+#
+# CONFIG_DISABLE_POLL is not set
+CONFIG_DEV_NULL=y
+# CONFIG_DEV_ZERO is not set
+# CONFIG_LOOP is not set
+# CONFIG_RAMDISK is not set
+# CONFIG_CAN is not set
+
++ CONFIG_CAN=y
++ CONFIG_CAN_EXTID=n
++ #CONFIG_CAN_FIFOSIZE
++ #CONFIG_CAN_NPENDINGRTR
++ #CONFIG_CAN_LOOPBACK=y
++ CONFIG_CAN_LOOPBACK=n
++ CONFIG_CAN1_BAUD=1000000
+
+
+2. 注册can驱动
+文件位置: src/drivers/boards/px4fmu-v2/px4fmu2_init.c
+		 __EXPORT int nsh_archinitialize(void)
+			//->drv_led_start();
+			->can_devinit();    //调用can驱动注册
+	
+3. 应用程序
+   fd = open("/dev/can0", xxx)
+   read
+   write 
+   
+4. Nsh终端启动can测试程序
+
+	发送端 ：nsh> can_drv start 
+		提示信息: WARN  init
+				  INFO   [Send] open can port ok
+
+	接收端：nsh> can_drv start 	
+		提示信息: WARN  init
+				  INFO   [Send] open can port ok
+				  
+    测试内容：
+	   主机发送循环数据从1到0xff, 每次发送的数据长度循环从1到8。
+	
+  
+  
+  
+	
+	
+	
+

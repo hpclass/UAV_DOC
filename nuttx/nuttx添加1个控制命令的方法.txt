@@ -1,0 +1,45 @@
+mpu6000多添加1个命令的方法:
+
+nsh> mpu6000 -c 100 autotest
+1. 	/* jump over start/off/etc and look at options first */
+	while ((ch = getopt(argc, argv, "XR:a:c:")) != EOF) { 
+  注意是先查询的标识，后进行的命令控制start 
+
+程序历程:
+int
+mpu6000_main(int argc, char *argv[])
+{
+	bool external_bus = false;
+	int ch;
+	enum Rotation rotation = ROTATION_NONE;
+	int accel_range = 8;
+	int test_cnt = 0;
+
+	/* jump over start/off/etc and look at options first */
+	while ((ch = getopt(argc, argv, "XR:a:c:")) != EOF) {
+		switch (ch) {
+		case 'X':
+			external_bus = true;
+			break;
+
+		case 'R':
+			rotation = (enum Rotation)atoi(optarg);
+			break;
+
+		case 'a':
+			accel_range = atoi(optarg);
+			break;
+
+		case 'c':
+			test_cnt = atoi(optarg);
+			break;
+
+		default:
+			mpu6000::usage();
+			exit(0);
+		}
+	}
+
+例如：
+正确的写法: mpu6000 -c 100 autotest 
+错误的写法: mpu6000 autotest -c 100  

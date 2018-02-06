@@ -1,0 +1,846 @@
+lsm303d ??ټƲ??:
+
+1. ???x??? ˮƽ??÷ɿ?
+
+???: x,y?ӽ?0
+
+--------------------------------------------------
+lsm303d: accel x:         0.06214       m/s^2
+lsm303d: accel y:         0.26431       m/s^2
+lsm303d: accel z:        -9.51154       m/s^2
+--------------------------------------------------
+
+
+2. ???y??? ????÷ɿ?
+
+???: x,z?ӽ?0, y??10
+
+--------------------------------------------------
+lsm303d: accel x:         0.06405       m/s^2
+lsm303d: accel y:         9.89271       m/s^2
+lsm303d: accel z:         0.32957       m/s^2
+--------------------------------------------------
+
+
+3. ???z??? ??????÷ɿ?
+
+???: y,z?ӽ?0, x??10
+
+--------------------------------------------------
+lsm303d: accel x:         9.84578       m/s^2
+lsm303d: accel y:        -0.05911       m/s^2
+lsm303d: accel z:         0.41515       m/s^2
+--------------------------------------------------
+
+
+??1????ټ???ܣ? ?ͻ?ȡ??????ټƵ??
+
+sensor???????
+
+
+
+#define GPIO_SPI4_MISO_1      (GPIO_ALT|GPIO_AF5|GPIO_PORTE|GPIO_PIN5)
+
+?????IM9
+CONFIG_STM32_TIM9=y
+
+
+
+?ײ???
+__EXPORT int nsh_archinitialize(void)
+	-> spi1 = up_spiinitialize(1);
+
+SPI::init()
+	-> _dev = up_spiinitialize(_bus);
+
+???gpioû?????
+
+
+
+
+void 
+------------------------------------------------------------------------------------------------
+                             ˵?
+
+                                                                           2017?4?14?
+
+
+_accel_range_scale = (ADXL355_ONE_G / lsb_per_g);  // == 9.8 / 64000 ???
+
+
+/** accel scaling factors; Vout = Vscale * (Vin + Voffset) */
+//??????
+
+xraw_f * _accel_range_scale ????????ֵ??
+float x_in_new = ((xraw_f * _accel_range_scale) - _accel_scale.x_offset) * _accel_scale.x_scale;
+
+
+1. ???Ĳ??
+
+xraw_f
+_accel_range_scale   
+
+_accel_scale.x_offset  
+
+_accel_scale.x_scale
+
+
+
+
+???????????? 
+warnx("accel x: \t% 9.5f\tm/s^2", (double)accel_report.x);
+warnx("accel y: \t% 9.5f\tm/s^2", (double)accel_report.y);
+warnx("accel z: \t% 9.5f\tm/s^2", (double)accel_report.z);
+
+
+
+__EXPORT int nshterm_main(int argc, char *argv[]);
+	-> /**
+		??????????ͱ?????
+	*/	  
+	close(0);
+	close(1); 
+	close(2);
+	dup2(fd, 0);
+	dup2(fd, 1);
+	dup2(fd, 2);
+
+??Է?????
+???????????? ??????
+
+-------------------------------------------------------------------------
+posix????ӿ?
+-------------------------------------------------------------------------
+
+#define px4_open 	_GLOBAL open
+#define px4_close 	_GLOBAL close
+#define px4_ioctl 	_GLOBAL ioctl
+#define px4_write 	_GLOBAL write
+#define px4_read 	_GLOBAL read
+#define px4_poll 	_GLOBAL poll
+#define px4_fsync 	_GLOBAL fsync
+#define px4_access 	_GLOBAL access
+#define px4_getpid 	_GLOBAL getpid
+
+
+//??ε?? commander.cpp???
+int commander_main(int argc, char *argv[])
+
+
+У׼???̣?
+
+??????ݣ?
+
+int do_accel_calibration(int mavlink_fd)
+	-> 
+
+
+???У׼?????:
+nsh> commander calibrate accel 
+
+
+telem> [cal] pending: back front left right up down  (6)
+
+
+//??????????.
+calibrate_from_orientation();
+
+
+//ʧ???Σ???˳?
+if (orientation_failures > 4) {
+	result = calibrate_return_error;
+	mavlink_and_console_log_critical(mavlink_fd, CAL_QGC_FAILED_MSG, "timeout: no motion");
+	break;
+}
+
+
+//???mavlink?Ϣ, ͣˮ
+#define mavlink_and_console_log_emergency(_fd, _text, ...)		do { mavlink_vasprintf(_fd, MAVLINK_IOC_SEND_TEXT_EMERGENCY, _text, ##__VA_ARGS__);
+
+
+
+
+//???????FM2501?
+param_save_default(void)
+
+?Ƚϸ??????޸ĵĶ????
+????㡿 ???Ҫ2?????
+
+b63d05d HEAD@{0}: commit: rc.sensor: (add adxl355 start)
+7703dd4 HEAD@{1}: commit: adxl335 rotation ok
+
+git diff b63d05d 7703dd4  : ??ţ?ƵĲ??
+
+----------------------------------------------------------------------------------------------------------------
+git diff b63d05d 7703dd4
+diff --git a/ROMFS/px4fmu_common/init.d/rc.sensors b/ROMFS/px4fmu_common/init.d/rc.sensors
+index 1abf3bd..3d495bb 100644
+--- a/ROMFS/px4fmu_common/init.d/rc.sensors
++++ b/ROMFS/px4fmu_common/init.d/rc.sensors
+@@ -70,10 +70,6 @@ then
+                if lsm303d start
+                then
+                fi
+-
+-               #if adxl355 -R 2 start
+-               #then
+-               #fi
+        fi
+ else
+        # FMUv1
+diff --git a/ROMFS/px4fmu_common/init.d/rcS b/ROMFS/px4fmu_common/init.d/rcS
+index 8ce727c..0e353e0 100644
+--- a/ROMFS/px4fmu_common/init.d/rcS
++++ b/ROMFS/px4fmu_common/init.d/rcS
+@@ -80,7 +80,7 @@ if [ $MODE == autostart ]
+ then
+        # Try to get an USB console
+        # REBOOTWORK this needs to start after the flight control loop
+-       nshterm /dev/ttyACM0 &
++       nshterm /dev/ttyACM0 &
+ 
+        #
+        # Start the ORB (first app to start)
+----------------------------------------------------------------------------------------------------------------
+
+????Ϣ?? ??㱻?????????ת?????
+telem> [cal] up side done, rotate to a different side
+
+
+int do_accel_calibration(int mavlink_fd)  //??????
+	-> calibrate_return cal_return = do_accel_calibration_measurements(mavlink_fd, accel_offs, accel_T,   	  &active_sensors);
+		-> for (unsigned i = 0; i < max_accel_sens; i++) {
+			-> worker_data.subs[i] = orb_subscribe_multi(ORB_ID(sensor_accel), i); /???d??
+                        -> (void)orb_copy(ORB_ID(sensor_accel), worker_data.subs[i], &arp);  // ?洢ʱ????
+                        -> for (unsigned i = 0; i < max_accel_sens; i++) {
+                            -> if (worker_data.subs[i] >= 0) {
+                           	 (void)orb_copy(ORB_ID(sensor_accel), worker_data.subs[i], &arp);  
+                                 if (arp.timestamp != 0 && timestamps[i] != arp.timestamp) {
+					(*active_sensors)++;  // ?????
+			         }
+
+
+	-> fd = px4_open(str, 0); // ??豸
+	-> res = px4_ioctl(fd, ACCELIOCSSCALE, (long unsigned int)&accel_scale);
+	                          // ???У׼ֵ
+
+        -> if (res == OK) {
+        	res = param_save_default();  // ????
+
+  
+float accel_offs[max_accel_sens][3];  // ???????׼ֵ
+float accel_T[max_accel_sens][3][3];  // ???????׼ֵ
+
+
+//??ݰ????????
+orb_advert_t orb_advertise_multi(const struct orb_metadata *meta, const void *data, int *instance,
+				 int priority)
+
+
+???????????ݰ???????
+src/modules/uORB/uORB.h
+
+
+
+--------------------------------------------------
+У׼??ԣ?
+nsh> commander calibrate accel 
+
+?????:
+nsh> commander calibrate accel
+telem> [cal] calibration started: 2 accel
+telem> bbbb
+telem> [cal] pending: back front left right up down
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] up orientation detected
+telem> [cal] Hold still, measuring up side
+telem> [cal] up side result: [ -0.3458  -0.1489   9.7781]
+telem> [cal] progress <17>
+telem> [cal] up side done, rotate to a different side
+telem> [cal] pending: back front left right down
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] right orientation detected
+telem> [cal] Hold still, measuring right side
+telem> [cal] right side result: [  0.0264  -9.9088   0.0357]
+telem> [cal] progress <34>
+telem> [cal] right side done, rotate to a different side
+telem> [cal] pending: back front left down
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] back orientation detected
+telem> [cal] Hold still, measuring back side
+telem> [cal] back side result: [  9.8290   0.0109   0.0611]
+telem> [cal] progress <51>
+telem> [cal] back side done, rotate to a different side
+telem> [cal] pending: front left down
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] front orientation detected
+telem> [cal] Hold still, measuring front side
+telem> [cal] front side result: [ -9.8735  -0.0523   0.1936]
+telem> [cal] progress <68>
+telem> [cal] front side done, rotate to a different side
+telem> [cal] pending: left down
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] left orientation detected
+telem> [cal] Hold still, measuring left side
+telem> [cal] left side result: [  0.0699   9.8144  -0.0418]
+telem> [cal] progress <85>
+telem> [cal] left side done, rotate to a different side
+telem> [cal] pending: down
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] down orientation detected
+telem> [cal] Hold still, measuring down side
+telem> [cal] down side result: [  0.0041  -0.0671  -9.9900]
+telem> [cal] progress <102>
+telem> [cal] down side done, rotate to a different side
+telem> aaaa
+telem> [cal] calibration done: accel
+
+telem> bbbb ??Թ???
+
+
+˵??? 
+????ʾ??????6?????????????ʱ????
+
+
+// ?Ƚ?
+
+src/modules/commander/calibration_routines.h:60:static const unsigned max_accel_sens = 3;
+
+
+
+//----------------------------------------------------------------------------------------------------------
+src/modules/commander/PreflightCheck.cpp:420:	param_get(param_find("CAL_ACC_PRIME"), &prime_id);
+
+
+
+device_id_primary = device_id[i] ?? 410?
+
+
+orb_priority(worker_data.subs[i], &prio);
+
+
+if (prio > device_prio_max) {
+        device_prio_max = prio;
+        device_id_primary = device_id[i];
+}
+
+
+
+for (unsigned s = 0; s < max_accel_sens; s++) {
+	device_id[s] = px4_ioctl(fd, DEVIOCGDEVICEID, 0);
+        
+
+
+
+读到ID
+telem> deviceid[0] = 1246218   // mpu6000
+telem> deviceid[1] = 1114634
+
+
+//获取ID
+Device::ioctl(unsigned operation, unsigned &arg)
+{
+	switch (operation) {
+	case DEVIOCGDEVICEID:
+		return (int)_device_id.devid;
+	}
+
+	return -ENODEV;
+}
+
+ADXL355::ioctl(struct file *filp, int cmd, unsigned long arg)
+	-> return SPI::ioctl(filp, cmd, arg);
+
+preflightcheck.cpp ??????	
+int check_calibration(int fd, const char* param_template, int &devid)
+
+//???mavlink 
+static bool accelerometerCheck(int mavlink_fd, unsigned instance, bool optional, bool dynamic, int &device_id, bool report_fail)
+
+
+bool preflightCheck(int mavlink_fd, bool checkMag, bool checkAcc, bool checkGyro,
+		    bool checkBaro, bool checkAirspeed, bool checkRC, bool checkGNSS, bool checkDynamic, bool reportFailures)
+		    ->  
+		    /* check all sensors, but fail only for mandatory ones */
+		    if (!accelerometerCheck(mavlink_fd, i, !required, checkDynamic, device_id, reportFailures) && required) {
+
+
+			if (device_id == prime_id) {
+				prime_found = true;
+			}
+
+
+
+// ?????????
+
+device_id: ???????ص?
+prime_found?? ???ǿ?????Ǹ??????
+
+	if (checkAcc) {
+		bool prime_found = false;
+		int32_t prime_id = 0;
+		param_get(param_find("CAL_ACC_PRIME"), &prime_id);   // ??????ID
+
+		/* check all sensors, but fail only for mandatory ones */
+		for (unsigned i = 0; i < max_optional_accel_count; i++) {
+			bool required = (i < max_mandatory_accel_count);
+			int device_id = -1;  
+
+			if (!accelerometerCheck(mavlink_fd, i, !required, checkDynamic, device_id, reportFailures) && required) {
+				failed = true;
+			}
+
+			if (device_id == prime_id) {
+				prime_found = true;
+			}
+		}
+
+		/* check if the primary device is present */
+		if (!prime_found && prime_id != 0) {
+			if (reportFailures) {
+				mavlink_and_console_log_critical(mavlink_fd, "[The-One] Warning: Primary accelerometer not found");
+			}
+			failed = true;
+		}
+	}
+
+prime?? ??õ?Ǹ????
+
+
+//??????ļ?ٻ??????:
+for (unsigned i = 0; i < max_accel_sens; i++) {
+		worker_data.subs[i] = orb_subscribe_multi(ORB_ID(sensor_accel), i);
+		if (worker_data.subs[i] < 0) {
+			result = calibrate_return_error;
+			break;
+		}
+		
+		/* store initial timestamp - used to infer which sensors are active */
+		struct accel_report arp = {};
+		(void)orb_copy(ORB_ID(sensor_accel), worker_data.subs[i], &arp);
+		timestamps[i] = arp.timestamp;
+
+		// Get priority
+		int32_t prio;
+		orb_priority(worker_data.subs[i], &prio);
+
+		if (prio > device_prio_max) {
+			device_prio_max = prio;
+			device_id_primary = device_id[i];
+		}
+	}
+
+//?????3??4, 5 
+telem> worker_data.subs[i] = 3 
+telem> worker_data.subs[i] = 4 
+telem> worker_data.subs[i] = 5
+
+
+//?????????
+_accel_topic = orb_advertise_multi(ORB_ID(sensor_accel), &arp,
+				   &_accel_orb_class_instance, (is_external()) ? ORB_PRIO_VERY_HIGH : ORB_PRIO_VERY_HIGH);
+
+
+检测角度:
+enum detect_orientation_return detect_orientation(int mavlink_fd, int cancel_sub, int accel_sub, bool lenient_still_position)
+
+
+// 求平均数
+accel_avg[s][orient][i] = accel_sum[s][i] / counts[s];		
+
+// 成功检测
+
+telem> [cal] calibration started: 2 accel
+telem> deviceid[0] = 1246218
+
+telem> deviceid[1] = 1114634
+
+telem> deviceid[2] = 170
+
+telem> bbbb
+telem> worker_data.subs[i] = 3 
+telem> worker_data.subs[i] = 4 
+telem> worker_data.subs[i] = 5 
+telem> [cal] pending: back front left right up down
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] down orientation detected
+telem> [cal] Hold still, measuring down side
+telem> [cal] down side result: [  0.0992   0.1805 -10.6999]
+telem> [cal] progress <17>
+telem> [cal] down side done, rotate to a different side
+telem> [cal] pending: back front left right up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] detected motion, hold still...
+telem> [cal] detected rest position, hold still...
+telem> [cal] left orientation detected
+telem> [cal] Hold still, measuring left side
+telem> [cal] left side result: [  0.0106   9.8940  -0.8909]
+telem> [cal] progress <34>
+telem> [cal] left side done, rotate to a different side
+telem> [cal] pending: back front right up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> left side already completed
+telem> rotate to a pending side
+telem> [cal] pending: back front right up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] front orientation detected
+telem> [cal] Hold still, measuring front side
+telem> [cal] front side result: [ -9.7552   0.0569  -0.6330]
+telem> [cal] progress <51>
+telem> [cal] front side done, rotate to a different side
+telem> [cal] pending: back right up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] right orientation detected
+telem> [cal] Hold still, measuring right side
+telem> [cal] right side result: [  0.2124  -9.6940  -0.9061]
+telem> [cal] progress <68>
+telem> [cal] right side done, rotate to a different side
+telem> [cal] pending: back up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] detected motion, hold still...
+telem> [cal] detected rest position, hold still...
+telem> down side already completed
+telem> rotate to a pending side
+telem> [cal] pending: back up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> down side already completed
+telem> rotate to a pending side
+telem> [cal] pending: back up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> down side already completed
+telem> rotate to a pending side
+telem> [cal] pending: back up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> front side already completed
+telem> rotate to a pending side
+telem> [cal] pending: back up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] detected motion, hold still...
+telem> [cal] detected rest position, hold still...
+telem> [cal] back orientation detected
+telem> [cal] Hold still, measuring back side
+telem> [cal] back side result: [  9.8220   0.1342  -0.7422]
+telem> [cal] progress <85>
+telem> [cal] back side done, rotate to a different side
+telem> [cal] pending: up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> down side already completed
+telem> rotate to a pending side
+telem> [cal] pending: up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> down side already completed
+telem> rotate to a pending side
+telem> [cal] pending: up
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] up orientation detected
+telem> [cal] Hold still, measuring up side
+telem> [cal] up side result: [ -0.3490  -0.1197   8.7988]
+telem> [cal] progress <102>
+telem> [cal] up side done, rotate to a different side
+telem> aaaa
+telem> [cal] calibration done: accel	
+
+
+commander check	 
+
+commander  status
+
+--- a:  表示是 b63d05d的commit中的文件
+--- b:  表示是 d1237fe的commit中的文件
+
+git diff b63d05d d1237fe    
+--- a/ROMFS/px4fmu_common/init.d/rc.sensors
++++ b/ROMFS/px4fmu_common/init.d/rc.sensors
+
+
+
+测试次数:
+nsh> adxl355 -R 2 start
+ADXL355 on SPI bus 1 at 6 (2000 KHz)
+adxl355: reset ok
+adxl355: measure ok
+adxl355: register_class ok
+adxl355: init ok
+nsh> adxl355 test
+adxl355: accel x:        -0.01572       m/s^2
+adxl355: accel y:         0.00383       m/s^2
+adxl355: accel z:         9.81015       m/s^2
+adxl355: accel x:       504     raw
+adxl355: accel y:       193     raw
+adxl355: accel z:       -1849   raw
+adxl355: accel range:  78.0000 m/s^2
+adxl355: accel antialias filter bandwidth: 30 Hz
+adxl355: reset ok
+nsh> ps 
+PID   PRI SCHD TYPE   NP STATE    NAME
+    0   0 FIFO TASK      READY    Idle Task()
+    1 192 FIFO KTHREAD   WAITSIG  hpwork()
+    2  50 FIFO KTHREAD   WAITSIG  lpwork()
+    3 100 FIFO TASK      WAITSEM  init()
+   69  50 FIFO PTHREAD   WAITSEM  commander_low_prio(0)
+    7  70 FIFO TASK      RUNNING  nshterm(10004650)
+   72 100 FIFO TASK      WAITSIG  mavlink_if0(10004360, 10006c70, 100079e0, 10006880)
+   73 175 FIFO PTHREAD   WAITSEM  mavlink_rcv_if0(2000de30)
+  110 250 FIFO TASK      WAITSEM  ekf2()
+  112 250 FIFO TASK      WAITSEM  mc_att_control()
+  114 250 FIFO TASK      WAITSEM  mc_pos_control()
+  117 105 FIFO TASK      WAITSEM  navigator()
+   54 250 FIFO TASK      WAITSEM  sensors()
+   56 220 FIFO TASK      WAITSEM  gps()
+   58 215 FIFO TASK      WAITSIG  commander(100042b0, 100077e0)
+   61 240 FIFO TASK      WAITSEM  px4io()
+nsh> 
+nsh> commander calibrate accel
+telem> [cal] calibration started: 2 accel
+telem> [cal] pending: back front left right up down
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] up orientation detected
+telem> [cal] Hold still, measuring up side
+telem> [cal] up side result: [ -0.0853   0.1141   8.8001]
+telem> [cal] progress <17>
+telem> [cal] up side done, rotate to a different side
+telem> [cal] pending: back front left right down
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] right orientation detected
+telem> [cal] Hold still, measuring right side
+telem> [cal] right side result: [  0.1499  -9.7118  -1.0110]
+telem> [cal] progress <34>
+telem> [cal] right side done, rotate to a different side
+telem> [cal] pending: back front left down
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> right side already completed
+telem> rotate to a pending side
+telem> [cal] pending: back front left down
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] down orientation detected
+telem> [cal] Hold still, measuring down side
+telem> [cal] down side result: [  0.1318   0.1472 -10.7182]
+telem> [cal] progress <51>
+telem> [cal] down side done, rotate to a different side
+telem> [cal] pending: back front left
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> down side already completed
+telem> rotate to a pending side
+telem> [cal] pending: back front left
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> down side already completed
+telem> rotate to a pending side
+telem> [cal] pending: back front left
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] left orientation detected
+telem> [cal] Hold still, measuring left side
+telem> [cal] left side result: [ -0.0494   9.8642  -1.5578]
+telem> [cal] progress <68>
+telem> [cal] left side done, rotate to a different side
+telem> [cal] pending: back front
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] back orientation detected
+telem> [cal] Hold still, measuring back side
+telem> [cal] back side result: [  9.8323   0.1062  -0.8735]
+telem> [cal] progress <85>
+telem> [cal] back side done, rotate to a different side
+telem> [cal] pending: front
+telem> [cal] hold vehicle still on a pending side
+telem> [cal] detected rest position, hold still...
+telem> [cal] front orientation detected
+telem> [cal] Hold still, measuring front side
+telem> [cal] front side result: [ -9.7503  -0.1028  -0.8866]
+telem> [cal] progress <102>
+telem> [cal] front side done, rotate to a different side
+telem> [cal] calibration done: accel
+
+成功一次。
+
+
+/*sensor初始化*/
+
+int
+Sensors::accel_init()
+{
+	int	fd;
+
+	fd = px4_open(ACCEL0_DEVICE_PATH, 0);
+
+	if (fd < 0) {
+		warnx("FATAL: no accelerometer found: %s", ACCEL0_DEVICE_PATH);
+		return ERROR;
+
+	} else {
+
+		/* set the accel internal sampling rate to default rate */
+		px4_ioctl(fd, ACCELIOCSSAMPLERATE, ACCEL_SAMPLERATE_DEFAULT);
+
+		/* set the driver to poll at default rate */
+		px4_ioctl(fd, SENSORIOCSPOLLRATE, SENSOR_POLLRATE_DEFAULT);
+
+		px4_close(fd);
+	}
+
+	return OK;
+}
+
+Sensors::accel_init()
+	-> 	fd = px4_open(ACCEL0_DEVICE_PATH, 0);
+
+
+
+传感器测试
+-> fd = px4_open(path, O_RDONLY);
+-> usleep(100000); //延时
+-> ret = px4_read(fd, &buf, sizeof(buf));
+-> float len = sqrtf(buf.x * buf.x + buf.y * buf.y + buf.z * buf.z);
+-> if (len < 8.0f || len > 12.0f) {
+		warnx("ACCEL scale error!");
+		return ERROR;
+   }
+-> px4_close(fd);
+
+sqrtf是平方根，9.8ms
+
+
+IOCTL的方式是不一样的：
+#define MAVLINK_IOC_SEND_TEXT_INFO		_PX4_IOC(0x1100, 1)
+#define MAVLINK_IOC_SEND_TEXT_CRITICAL		_PX4_IOC(0x1100, 2)
+#define MAVLINK_IOC_SEND_TEXT_EMERGENCY		_PX4_IOC(0x1100, 3)
+
+
+MAVLINK_IOC_SEND_TEXT_CRITICAL
+阻塞模式：
+
+
+ 
+
+param show CAL_ACC0_ID
+
+3个传感器：
+adxl355> device_id[0] = 1246218
+adxl355> device_id[1] = 1114634
+adxl355> device_id[2] = 1115658
+
+查看adxl355的校准制
+param show CAL_ACC2_XOFF
+param show CAL_ACC_PRIME
+
+
+case SENSORIOCSPOLLRATE: {
+	switch (arg) {
+	case SENSOR_POLLRATE_DEFAULT:
+		return ioctl(filp, SENSORIOCSPOLLRATE, ADXL355_ACCEL_DEFAULT_RATE);  // 设置为默认速率
+
+Sensor进程初始化
+1. 设置采样频率 ： 默认值
+2. 设置查询频率 ： 默认值 
+Sensors::accel_init()  
+	-> fd = px4_open(ACCEL0_DEVICE_PATH, 0);
+	px4_ioctl(fd, ACCELIOCSSAMPLERATE, ACCEL_SAMPLERATE_DEFAULT);
+	px4_ioctl(fd, SENSORIOCSPOLLRATE, SENSOR_POLLRATE_DEFAULT);
+        px4_close(fd);
+
+
+
+水平位置：必须是水平放置飞机. 正面朝上.和飞机飞行的姿态一致
+
+
+LSM303D::modify_reg(unsigned reg, uint8_t clearbits, uint8_t setbits)
+        /**
+         * 获取某个值
+         * @ 处理获取1个位，修改1个位置
+         */
+	val = read_reg(reg);
+	val &= ~clearbits;
+	val |= setbits; 
+        
+        /*
+           写入1个寄存器，并且check
+         */
+	write_checked_reg(reg, val);
+		/*		
+			检测当前寄存器
+		*/
+		for (uint8_t i = 0; i < LSM303D_NUM_CHECKED_REGISTERS; i++) {
+		if (reg == _checked_registers[i]) {  
+
+
+perf内存的管理：
+------------------------------------------------------------------
+perf_counter_t	perf_alloc(enum perf_counter_type type, const char *name)
+void perf_free(perf_counter_t handle)
+
+perf对event加1：
+------------------------------------------------------------------
+void	perf_count(perf_counter_t handle)
+	-> pci->event_count++;
+
+
+perf对event的启动和关闭：仅仅对记录时间的事件有效
+------------------------------------------------------------------
+void		perf_begin(perf_counter_t handle)
+	-> switch (handle->type) {
+	case PC_ELAPSED:
+
+void		perf_end(perf_counter_t handle)
+        -> switch (handle->type) {
+	case PC_ELAPSED:
+
+
+
+文件perf_counter.cpp定义了所有的功能函数 
+if (!_got_duplicate && memcmp(&mpu_report.accel_x[0], &_last_accel[0], 6) == 0) {
+	-> _got_duplicate = true;  
+        -> return ;
+
+_got_duplicate 没有复制，
+memcmp(&mpu_report.accel_x[0], &_last_accel[0], 6) == 0) 数据没有改变
+
+就进行复制
+-> _got_duplicate = true;  
+
+中间有一次是不发送同1个数据的，
+下一次直接发送新数据，即使数据不更新
+
+////////////////////////////////////////////////
+数组最好不定义为1，导致程序不可预知的错误
+////////////////////////////////////////////////
+
+
+static bool create_file_once=false;
+static char namestr[64];
+if(create_file_once==false)
+{
+	snprintf(namestr, sizeof(namestr), "%s%d%s" ,"/fs/microsd/msgs_adxl355",
+		(int)(	hrt_absolute_time()/1e5),".txt");
+	create_file_once=true;
+}
+int perf_fd = open(namestr, O_CREAT | O_WRONLY |O_APPEND,0666);
+char istr[10];
+snprintf(istr, sizeof(istr), "%d,%d\r\n",buf[i],msg.msgid);
+dprintf(perf_fd,istr);
+close(perf_fd);
+

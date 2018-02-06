@@ -1,0 +1,43 @@
+接线方式：
+1. 白色接飞控的RX：6PIN
+2. 
+
+1. 数据结构
+class GPS : public device::CDev
+
+
+class GPS_Helper{
+	-> class UBX : public GPS_Helper //子类
+
+
+_Helper = new UBX(_serial_fd, &_report_gps_pos, _p_report_sat_info);
+	-> if (_Helper->configure(_baudrate) == 0) { //配置1个波特率
+		-> receive(20); //等待20ms
+			-> int ret = poll(fds, sizeof(fds) / sizeof(fds[0]), ready_to_return ? UBX_PACKET_TIMEOUT : timeout);
+		-> send_message(UBX_MSG_CFG_PRT, _buf.raw, 		sizeof(_buf.payload_tx_cfg_prt));
+
+		-> if (wait_for_ack(UBX_MSG_CFG_PRT, UBX_CONFIG_TIMEOUT, false) < 0) 
+
+
+发送1个数据包：包头+数据+校验和
+write(_fd, (const void *)&header, sizeof(header));
+write(_fd, (const void *)payload, length);
+write(_fd, (const void *)&checksum, sizeof(checksum));
+		
+
+
+
+UBX::configure(unsigned &baudrate)
+4. 为减轻界面卡顿的情况，接收区的刷新采用单独的线程进行定时刷新，增大刷新时间可减少卡顿情况
+
+MEMORY
+{
+    /* disabled due to silicon errata flash (rx)   : ORIGIN = 0x08004000, LENGTH = 2032K */
+    flash (rx)   : ORIGIN = 0x08004000, LENGTH = 1008K
+
+
+
+
+
+
+

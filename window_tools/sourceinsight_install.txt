@@ -1,0 +1,22 @@
+sourceinsight打开工程：
+1. 出现的问题：
+    提示无法启动
+
+2. 解决方法
+   在新建的工程中打开，
+   
+3.sourceinsght4的安装方法
+
+3.1. 下载安装包
+3.2. 
+
+1，下载如下的sourceinsight4.exe文件,替换安装文件夹下的sourceinsight4.exe。
+
+链接：http://pan.baidu.com/s/1qYazb9i 密码：x62o
+2，下载下面的lic文件
+
+链接：http://pan.baidu.com/s/1jIwpSzG 密码：nnvz
+
+破解说明: 
+ http://www.cnblogs.com/Napoleon-Wang/p/6706773.htm
+ 

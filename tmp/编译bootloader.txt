@@ -1,0 +1,7 @@
+
+1. ±‡“Îbootloader
+arm-none-eabi-gcc -o 
+px4fmuv2_bl.elf 
+bl.c cdcacm.c  usart.c main_f4.c -std=gnu99 -Os -g -Wundef -Wall -fno-builtin -Ilibopencm3/include -ffunction-sections -nostartfiles -lnosys -Wl,-gc-sections -Wl,-g -Werror -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DTARGET_HW_PX4_FMU_V2 -DSTM32F4 -Tstm32f4.ld -Llibopencm3/lib -lopencm3_stm32f4 
+
+arm-none-eabi-objcopy -O binary px4fmuv2_bl.elf px4fmuv2_bl.bin

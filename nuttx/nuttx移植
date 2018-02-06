@@ -1,0 +1,20 @@
+px4_os_add_flags(
+	BOARD ${config_io_board}
+	C_FLAGS c_flags
+	CXX_FLAGS cxx_flags
+	EXE_LINKER_FLAGS exe_linker_flags
+	INCLUDE_DIRS include_dirs
+	LINK_DIRS link_dirs
+	DEFINITIONS definitions)
+
+增加了新的属性，必须添加，否则就报错
+
+	px4_os_add_flags(
+	BOARD ${config_io_board}
+	C_FLAGS c_flags
+	CXX_FLAGS cxx_flags
+	OPTIMIZATION_FLAGS optimization_flags
+	EXE_LINKER_FLAGS exe_linker_flags
+	INCLUDE_DIRS include_dirs
+	LINK_DIRS link_dirs
+	DEFINITIONS definitions)

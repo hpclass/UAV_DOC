@@ -1,0 +1,55 @@
+commit 0baab8263b4c5e05e2bcf1b3f6f8b1ec95ee594b
+Author: David Sidrane <david_s5@nscdg.com>
+Date:   Tue Dec 13 12:14:38 2016 -1000
+
+    Fix the LED PWM support for non shared timers
+    
+      This is the fixes https://github.com/PX4/Firmware/issues/5710
+      by adding 2 concepts.
+    
+      1) Allowing a board to define BOARD_HAS_SHARED_PWM_TIMERS
+         in this case the io_timeris will be initalized as the
+         led_pwm_timers  - there is an assumptionm that the
+         number of io_timers == the number of led_pwm timers
+    
+      2) Allowing a board to define BOARD_LED_PWM_RATE
+         To set an alternate frequency
+    
+      Future expansion will require:
+      1) The ability to have a config with both the I2C RGB LED and
+         PWM RGB LED drivers loaded.
+      2) The higher level driver to create  multiple instances of the
+         /dev/rgbld, to support internal and  external User facing
+         RGB LED as supported in FMUv5
+
+commit 4712ed1889e486b691315450ad8d407ebda0dd0c
+Author: David Sidrane <david_s5@nscdg.com>
+Date:   Tue Dec 13 08:13:01 2016 -1000
+
+    Complete px4fmu-v5 Led configuration
+
+
+
+1. 更新nuttx到7.18
+commit 07923a86c7d83bb2c91bcc2a529b67445e52b97c
+Author: David Sidrane <david_s5@nscdg.com>
+Date:   Mon Dec 12 13:19:49 2016 -1000
+
+    Upgrade to Nuttx 7.18+ ==upstream
+
+3. Nuttx
+commit bca8767981833b24f37f9e494e786e14092af03c
+Author: David Sidrane <david_s5@nscdg.com>
+Date:   Mon Dec 12 12:21:03 2016 -1000
+
+    Adding px4fmu-v5
+
+2. Nuttx  10.8
+The 118th release of NuttX, Version 7.18, was made on October 8, 2016,
+
+
+SAM V71 Xplained Ultra搭载的SAMV71Q21微控制器是AtmelSAM V71系列中规格配置最高的一款产品，
+基于ARM超强性能的Cortex-M7处理器，最高能达300MHz主频，如下图所示。
+
+Changes to px4fmu-v1 for upstream Nuttx
+

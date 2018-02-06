@@ -1,0 +1,416 @@
+1. 每次提交的时候，需要重新add文件
+git add .
+yangang@yangang-virtual-machine:~/work/github_proj/testgit1$ git commit -m "add 44"
+[master 159c51d] add 44
+1 file changed, 1 insertion(+), 1 deletion(-)
+
+2. git diff是必须当前修改的和最后1次提交的差别
+git diff hello.c  
+
+3.这个是告诉我们需要提交，文件已经修改
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#       modified:   hello.c
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+
+4. 告诉我们无法提交，原因是什么也没发生变化
+git commit -m "add 66"
+# On branch master
+nothing to commit (working directory clean)
+
+
+5. 发生冲突如何解决
+git checkout master 
+error: Your local changes to the following files would be overwritten by checkout:
+        hello.c
+Please, commit your changes or stash them before you can switch branches.
+Aborting
+
+1. 查找所有commit
+git reflog
+2cd60d4 HEAD@{0}: commit: merger dev branch
+928d684 HEAD@{1}: checkout: moving from master to dev
+928d684 HEAD@{2}: checkout: moving from dev to master
+928d684 HEAD@{3}: checkout: moving from master to dev
+928d684 HEAD@{4}: commit: add 55
+159c51d HEAD@{5}: reset: moving to 159c51d
+d1e2260 HEAD@{6}: reset: moving to HEAD^
+159c51d HEAD@{7}: commit: add 44
+d1e2260 HEAD@{8}: commit: add 33
+60b1d3b HEAD@{9}: commit (initial): add 11
+
+2. 跳到最后1个不冲突的commit提交中
+git reset --hard 928d684
+HEAD is now at 928d684 add 55cat hello.c 
+11
+33
+44
+55
+
+3. 修改分支
+git checkout master 
+Switched to branch 'master'
+
+
+4. 合并
+4.1 切换到主分支
+git checkout  master
+Switched to branch 'master'
+
+4.2 合并分支
+git merge dev
+Updating 928d684..64c65b2
+Fast-forward
+ hello.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+
+4.3 发现commit的log也发生了改变
+64c65b23dad786871e510b3fd74e0e2f5336520c merge 55
+928d68455495f8f00f80617044928be083f25391 add 55
+
+4.5 添加1个本地仓库到远程仓库
+$ git remote add origin git@github.com:yangang123/testgit.git
+fatal: remote origin already exists.
+
+$git push -u origin master
+Username for 'https://github.com': yangang123
+Password for 'https://yangang123@github.com': 
+To https://github.com/yangang123/testgit.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+
+
+5. 
+EXAMPLES
+       git push
+           Works like git push <remote>, where <remote> is the current brancha�?s remote (or origin, if no remote is
+           configured for the current branch).
+
+       git push origin
+           Without additional configuration, works like git push origin :.
+
+           The default behavior of this command when no <refspec> is given can be configured by setting the push
+           option of the remote.
+
+           For example, to default to pushing only the current branch to origin use git config remote.origin.push
+           HEAD. Any valid <refspec> (like the ones in the examples below) can be configured as the default for git
+           push origin.
+6. 
+那么一般情况下，那些分支要推送呢？
+    master分支是主分支，因此要时刻与远程同步。
+    一些修复bug分支不需要推送到远程去，可以先合并到主分支上，然后把主分支master推送到远程去
+	
+7. 远程仓库是origin 本地仓库: master
+git push origin dev
+
+8. 推送某个分支下的分支，都是一起发送推送，仅仅推送本目录已经修改的文件
+
+注意：
+  推送本地master分支到远程origin
+	git push origin master
+	
+  推送其他本地dev分支到远程origin
+    git push origin dev
+
+10. 
+有一个仓库，叫Repo A。你如果要往里贡献代码，首先要Fork这个Repo，
+于是在你的Github账号下有了一个Repo A2,。然后你在这个A2下工作，Commit，push等。
+然后你希望原始仓库Repo A合并你的工作，你可以在Github上发起一个Pull Request，
+意思是请求Repo A的所有者从你的A2合并分支。如果被审核通过并正式合并，这样你就为项目A做贡献了
+
+fork和git clone的区别
+
+git clone仅仅是复制1个仓库到本地仓库，但是无法到主人的仓库
+fork         ：实现了gitclone的内容，允许自己提交的内容到自己的fork的仓库
+pull request : 发出请求到主人的仓库，请求贡献.
+
+11. 第一次分支的处理： 
+Username for 'https://github.com': yangang123
+Password for 'https://yangang123@github.com': 
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 217 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/yangang123/testgit1.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+
+master分支建立去跟踪远程分支master从origin
+
+origin：其实表示的是origin/master分支
+
+1. 网络设置
+   1.1. NAT设置。   
+		使用nat可能可以上网，但是和主机不是一个网段。
+		注意： 重装系统后第一次启动虚拟机可能没有网络，需要重启
+   1.2. ping www.github.com
+		PING github.com (192.30.253.112) 56(84) bytes of data.
+		64 bytes from 192.30.253.112: icmp_req=1 ttl=128 time=342 ms
+		64 bytes from 192.30.253.112: icmp_req=2 ttl=128 time=341 ms
+
+2. sudo apt-get update 
+    必须在有网的过程中才能用，否则会更新失败。
+	成功的log信息： 
+	命中 http://security.ubuntu.com precise-security/main TranslationIndex         
+	命中 http://security.ubuntu.com precise-security/multiverse TranslationIndex   
+	命中 http://security.ubuntu.com precise-security/restricted TranslationIndex   
+	命中 http://security.ubuntu.com precise-security/universe TranslationIndex     
+	命中 http://security.ubuntu.com precise-security/main Translation-en           
+	命中 http://security.ubuntu.com precise-security/multiverse Translation-en     
+	命中 http://security.ubuntu.com precise-security/restricted Translation-en     
+	命中 http://security.ubuntu.com precise-security/universe Translation-en       
+	下载 5,685 kB，耗时 47秒 (120 kB/s)                                            
+	正在读取软件包列表... 完成
+
+3. 安装vmware-tools工具
+	注意： vmware-tools是1个CD-ROM形式，必须保证你虚拟机中没有识别其他的CD盘,
+	       之前识别了vmware的镜像.
+	windows和linux之间的鼠标复制可能不行。
+  
+4. app start & 
+	后台运行的app，不能使用shell杀死，必须通过kill杀死，在nuttx中不知道怎么杀死
+
+5. top 可以查看free 的内存
+   Mem:   1521272k total,  1400432k used,   120840k free,    50380k buffers
+
+6. 安装ssh服务器
+	sudo apt-get install openssh-server
+	查看是运行使用
+	ps -e|grep ‘sshd’
+
+------------------下载cmake
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+注意，选取 libpython2.7-stdlib 而非 python-argparse
+build-essential 已经是最新的版本。
+build-essential 已设置为手动安装。
+libpython2.7-stdlib 已经是最新的版本。
+libpython2.7-stdlib 已设置为手动安装。
+zip 已经是最新的版本。
+zip 已设置为手动安装。
+将会安装下列额外的软件包：
+  cmake-data libbotan-1.10-1 libjsoncpp0v5 libqbscore1 libqbsqtprofilesetup1
+  libqt5clucene5 libqt5concurrent5 libqt5designer5 libqt5designercomponents5
+  libqt5help5 libqt5quicktest5 libqt5script5 libqt5xmlpatterns5
+  qml-module-qtquick-controls qmlscene qt5-qmake qtbase5-dev-tools
+  qtcreator-data qtcreator-doc qtdeclarative5-dev-tools qttools5-dev-tools
+  qtxmlpatterns5-dev-tools
+建议安装的软件包：
+
+cmake --version
+cmake version 3.4.1
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+
+
+7. 添加环境变量export 
+export PATH=/usr/local/...:${PATH} 
+
+/home/yangang/ninja:/home/yangang/gcc-arm-none-eabi-5_4-2016q2/bin:/usr/lib/lightdm/lightdm:
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+
+/home/yangang/ninja:/home/yangang/gcc-arm-none-eabi-5_4-2016q2/bin:$PATH
+
+export PATH=/home/yangang/ninja:/home/yangang/gcc-arm-none-eabi-5_4-2016q2/bin:$PATH
+
+方法2： 修改环境变量
+cat /etc/environment  
+注意: environment 环境变量的权限. -rw-r--r-- 1 root root 79  4??? 26  2012 environme
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games"
+修改:
+sudo gedit /etc/environment  
+
+8. ubuntu安装下载程序:
+   apt-get 
+   wget 工具 
+  
+9. 安装
+   9.1  wget
+   9.2  apt-get
+   9.3  
+
+10. cmake 4.3.1安装方法
+   $ ./bootstrap && make && sudo make install
+
+
+grep -Fxq ???
+
+   
+移除工具链的方式
+====================
+To remove installed toolchain, just input "sudo apt-get remove gnu-arm-embedded".
+To update the toolchain, just repeat above step2 and step3.
+
+If it reports error message of conflict to gcc-arm-none-eabi, which is likely if upgrading from 4.x to 5+, please uninstall it first with:
+       "sudo apt-get remove gcc-arm-none-eabi"
+
+Questions should be asked at https://answers.launchpad.net/gcc-arm-embedded
+
+Bug can be filed at https://bugs.launchpad.net/gcc-arm-embedded/+filebug. It is highly encouraged to ask question first before filing a bug.
+ More info: https://launchpad.net/~team-gcc-arm-embedded/+archive/ubuntu/ppa
+Press [ENTER] to continue or ctrl-c to cancel removing it
+
+if grep -Fxq "$exportline" ~/.profile; then echo nothing to do ; else echo $exportline >> ~/.profile; fi . ~/.profile
+
+在.profile中2个语句
+export PATH=/home/yangang/gcc-arm-none-eabi-5_4-2016q2/bin:$PATH
+export PATH=/home/yangang/ninja:$PATH
+
+
+
+if grep -Fxq "$exportline" ~/.profile; 
+then echo nothing to do ; 
+else echo $exportline >> ~/.profile; 
+fi
+. ~/.profile
+
+//----------------------------------------------------------
+# cat a.txt
+nihao 
+nihaooo
+hello
+ 
+#  if  grep -q hello a.txt ; then echo yes;else echo no; fi 
+yes
+# if grep -q word a.txt; then echo yes; else echo no; fi
+
+
+//一直没解决问题:
+
+- nuttx-px4fmu-v2-default
+-- could not find gdbtui
+-- could not find ddd
+-- could not find gdbtui
+-- could not find ddd
+-- The ASM compiler identification is GNU
+-- Found assembler: /home/yangang/gcc-arm-none-eabi-5_4-2016q2/bin/arm-none-eabi-gcc
+-- Found PythonInterp: /usr/bin/python (found version "2.7.10") 
+-- CMAKE_BUILD_TYPE	: RelWithDebInfo : Build type.
+-- CMAKE_CXX_FLAGS	: -g -fno-exceptions -fno-rtti -std=gnu++0x -fno-threadsafe-statics -DCONFIG_WCHAR_BUILTIN -D__CUSTOM_FILE_IO__ -Wall -Werror -Wno-sign-compare -Wextra -Wfloat-equal -Wpointer-arith -Wmissing-declarations -Wno-unused-parameter -Werror=format-security -Werror=array-bounds -Wfatal-errors -Werror=unused-variable -Werror=reorder -Werror=uninitialized -Werror=init-self -Wframe-larger-than=1024 -Werror=unused-but-set-variable -Wformat=1 -Wdouble-promotion -Werror=double-promotion -Wno-missing-field-initializers -Os -fno-strict-aliasing -fomit-frame-pointer -funsafe-math-optimizations -ffunction-sections -fdata-sections -fno-strength-reduce -fno-builtin-printf -fvisibility=hidden -include visibility.h -mcpu=cortex-m4 -mthumb -march=armv7e-m -mfpu=fpv4-sp-d16 -mfloat-abi=hard -nodefaultlibs -nostdlib : C++ flags.
+-- CMAKE_C_FLAGS	: -g -std=gnu99 -fno-common -Wall -Werror -Wno-sign-compare -Wextra -Wfloat-equal -Wpointer-arith -Wmissing-declarations -Wno-unused-parameter -Werror=format-security -Werror=array-bounds -Wfatal-errors -Werror=unused-variable -Werror=reorder -Werror=uninitialized -Werror=init-self -Wframe-larger-than=1024 -Werror=unused-but-set-variable -Wformat=1 -Wdouble-promotion -Werror=double-promotion -Wbad-function-cast -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wold-style-declaration -Wmissing-parameter-type -Os -fno-strict-aliasing -fomit-frame-pointer -funsafe-math-optimizations -ffunction-sections -fdata-sections -fno-strength-reduce -fno-builtin-printf -fvisibility=hidden -include visibility.h -mcpu=cortex-m4 -mthumb -march=armv7e-m -mfpu=fpv4-sp-d16 -mfloat-abi=hard -nodefaultlibs -nostdlib : C flags.
+-- UAVCAN_USE_CPP03	: ON : Use C++03 standard.
+-- UAVCAN_PLATFORM	: stm32 : Platform.
+-- Debug build: 0
+-- Using C++03
+-- Release build type: RelWithDebInfo
+-- Adding STM32 platform driver
+-- Configuring done
+CMake Warning (dev) at cmake/common/px4_base.cmake:279 (add_dependencies):
+  Policy CMP0046 is not set: Error on non-existent dependency in
+  add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+  Use the cmake_policy command to set the policy and suppress this warning.
+
+  The dependency target "git_ecl" of target "modules__ekf2" does not exist.
+Call Stack (most recent call first):
+  src/modules/ekf2/CMakeLists.txt:37 (px4_add_module)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Generating done
+-- Build files have been written to: /home/yangang/work/px4/theone-mc/build_px4fmu-v2_default
+ninja -C /home/yangang/work/px4/theone-mc/build_px4fmu-v2_default  
+ninja: Entering directory `/home/yangang/work/px4/theone-mc/build_px4fmu-v2_default'
+[2/369] Generating airframes.xml
+Scanning source path /home/yangang/work/px4/theone-mc/ROMFS/px4fmu_common/init.d
+Creating XML file airframes.xml
+All done!
+[4/369] Generating px4fmu-v2.export
+
+
+
+// 编译的补丁文件
+
+diff ./fpu/bits/error_constants.h  ./fpu/bits/old_error_constants.h >> ./fpu/bits/error_constants_theone_pathc
+
+patch 
+
+
+Linux终端仅仅可以手动换行，为什么，字符不能换行]
+
+
+-- nuttx-px4fmu-v2-default
+CMake Error at cmake/toolchains/Toolchain-arm-none-eabi.cmake:29 (message):
+  could not find arm-none-eabi-gcc compiler
+Call Stack (most recent call first):
+  /usr/share/cmake-3.4/Modules/CMakeDetermineSystem.cmake:98 (include)
+  CMakeLists.txt:185 (project)
+
+
+CMake Error: CMAKE_CXX_COMPILER not set, after EnableLanguage
+CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage
+CMake Error: CMAKE_ASM_COMPILER not set, after EnableLanguage
+-- Configuring incomplete, errors occurred!
+make -C /home/yangang/work/px4/theone-mc/build_theone -j4 --no-print-directory 
+make[1]: *** /home/yangang/work/px4/theone-mc/build_theone: No such file or directory.  Stop.
+Makefile:132: recipe for target 'theone' failed
+make: *** [theone] Error 2
+
+工具链丢失： 不知道为什么
+ echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+
+
+/home/yangang/gcc-arm-none-eabi-5_4-2016q2/arm-none-eabi/include/c++/5.4.1/arm-none-eabi/armv7e-m/fpu/bits/error_constants.h
+
+
+echo "11" >> hello1.c 
+yangang@linux:~$ echo "22" >> hello2.c 
+yangang@linux:~$ diff -u hello1.c hello2.c > hello.patch
+yangang@linux:~$ cat hello.patch 
+--- hello1.c	2017-04-15 21:26:56.817394382 +0800
++++ hello2.c	2017-04-15 21:27:28.073663326 +0800
+@@ -1 +1 @@
+-11
++22
+yangang@linux:~$ patch < hello.patch 
+patching file hello1.c
+yangang@linux:~$ cat hello1.c 
+22
+
+
+diff -u hello1.c hello2.c
+
+
+虚拟机中出现的信息：
+yangang@yangang-virtual-machine:~/work/px4/theone_1/theone-mc$ sudo apt-get update
+[sudo] password for yangang: 
+Err http://security.ubuntu.com precise-security InRelease
+  
+Err http://cn.archive.ubuntu.com precise InRelease                                           
+  
+Err http://cn.archive.ubuntu.com precise-updates InRelease                                   
+  
+Err http://cn.archive.ubuntu.com precise-backports InRelease                                 
+  
+Err http://extras.ubuntu.com precise InRelease                                               
+  
+Err http://ppa.launchpad.net precise InRelease                                               
+  
+Err http://ppa.launchpad.net precise InRelease                                               
+  
+Err http://security.ubuntu.com precise-security Release.gpg
+
+ssh配置文件介绍：
+vi /etc/ssh/ssh_config
+
+apt-get下载会提示文件的大小
+0 upgraded, 2 newly installed, 0 to remove and 222 not upgraded.
+Need to get 6,011 kB of archives.
+After this operation, 29.3 MB of additional disk space will be used.
+
+
+   b529d66..a992bf2  master -> master
+
+a992bf2 HEAD@{0}: commit: add hello.c
+b529d66 HEAD@{1}: clone: from https://github.com/yangang123/cpp_test.git 
+
+
+在修改千，先进行git full抓取最新文件，否则自己添加了新文件
+git push的时候会发现冲突
+
+每个文件都可以找到在修改的地方。
+每个文件修改几次都知道.
+一共发布几次都知道.
