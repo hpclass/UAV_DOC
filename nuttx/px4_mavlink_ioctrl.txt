@@ -1,0 +1,68 @@
+
+__EXPORT void mavlink_vasprintf(int _fd, int severity, const char *fmt, ...)
+{
+	va_list ap;
+	va_start(ap, fmt);
+	char text[MAVLINK_LOG_MAXLEN + 1];
+	vsnprintf(text, sizeof(text), fmt, ap);
+	va_end(ap);
+//进入ioctl 
+	px4_ioctl(_fd, severity, (unsigned long)&text[0]);
+}
+
+//找到使用者
+src/include/mavlink/mavlink_log.h:85:#define mavlink_log_emergency(_fd, _text, ...)		mavlink_vasprintf(_fd, MAVLINK_IOC_SEND_TEXT_EMERGENCY, _text, ##__VA_ARGS__);
+src/include/mavlink/mavlink_log.h:93:#define mavlink_log_critical(_fd, _text, ...)		mavlink_vasprintf(_fd, MAVLINK_IOC_SEND_TEXT_CRITICAL, _text, ##__VA_ARGS__);
+src/include/mavlink/mavlink_log.h:101:#define mavlink_log_info(_fd, _text, ...)		mavlink_vasprintf(_fd, MAVLINK_IOC_SEND_TEXT_INFO, _text, ##__VA_ARGS__);
+src/include/mavlink/mavlink_log.h:109:#define mavlink_and_console_log_emergency(_fd, _text, ...)		do { mavlink_vasprintf(_fd, MAVLINK_IOC_SEND_TEXT_EMERGENCY, _text, ##__VA_ARGS__); \
+src/include/mavlink/mavlink_log.h:120:#define mavlink_and_console_log_critical(_fd, _text, ...)		do { mavlink_vasprintf(_fd, MAVLINK_IOC_SEND_TEXT_CRITICAL, _text, ##__VA_ARGS__); \
+src/include/mavlink/mavlink_log.h:131:#define mavlink_and_console_log_info(_fd, _text, ...)			do { mavlink_vasprintf(_fd, MAVLINK_IOC_SEND_TEXT_INFO, _text, ##__VA_ARGS__); \
+
+
+//mavlink_fd,
+/**
+ * The mavlink log device node; must be opened before messages
+ * can be logged.
+ */
+#define MAVLINK_LOG_DEVICE			"/dev/mavlink"
+
+
+//找到打开设备节点的地方
+src/drivers/px4io/px4io.cpp:1017:				_mavlink_fd = ::open(MAVLINK_LOG_DEVICE, 0);
+
+
+//找到注册的设备驱动
+src/modules/mavlink/mavlink_main.cpp:1696:	register_driver(MAVLINK_LOG_DEVICE, &fops, 0666, NULL);
+
+
+//查找这个文件
+fops
+
+
+//重载这个ioctl函数
+#ifdef __PX4_NUTTX
+	fops.ioctl = (int (*)(file *, int, long unsigned int))&mavlink_dev_ioctl;
+#endif
+
+
+//找到mavlink_dev_ioctl的实现
+int
+#ifdef __PX4_NUTTX
+Mavlink::mavlink_dev_ioctl(struct file *filp, int cmd, unsigned long arg)
+#else
+Mavlink::ioctl(device::file_t *filp, int cmd, unsigned long arg)
+#endif
+{
+	switch (cmd) {
+	case (int)MAVLINK_IOC_SEND_TEXT_INFO:
+	case (int)MAVLINK_IOC_SEND_TEXT_CRITICAL:
+	case (int)MAVLINK_IOC_SEND_TEXT_EMERGENCY: {
+
+			const char *txt = (const char *)arg;
+			struct mavlink_logmessage msg;
+			strncpy(msg.text, txt, sizeof(msg.text));
+
+			switch (cmd) {
+			case MAVLINK_IOC_SEND_TEXT_INFO:
+				msg.severity = MAV_SEVERITY_INFO;
+				break;
