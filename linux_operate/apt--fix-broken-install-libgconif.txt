@@ -1,0 +1,32 @@
+//修复依赖关系:
+
+sudo apt --fix-broken install 
+
+
+正确的输出信息:
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+Correcting dependencies... Done
+The following additional packages will be installed:
+  gconf-service gconf-service-backend gconf2-common libgconf-2-4 libgconf2-4
+The following NEW packages will be installed:
+  gconf-service gconf-service-backend gconf2-common libgconf-2-4
+The following packages will be upgraded:
+  libgconf2-4
+1 upgraded, 4 newly installed, 0 to remove and 228 not upgraded.
+2 not fully installed or removed.
+
+安装失败的提示:
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+You might want to run 'apt --fix-broken install' to correct these.
+The following packages have unmet dependencies:
+ code : Depends: libgconf-2-4 but it is not going to be installed
+ libgconf2-4 : Depends: libgconf-2-4 (= 3.2.5-0ubuntu2) but it is not going to be installed
+               Depends: gconf-service
+E: Unmet dependencies. Try 'apt --fix-broken install' with no packages (or specify a solution).
+
+
+

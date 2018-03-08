@@ -1,0 +1,22 @@
+vsftpd -version
+
+sudo apt-get install vsftpd
+
+
+//确保这些设置正常
+设置属性值
+anonymous_enable=NO #禁止匿名访问
+local_enable=YES
+write_enable =YES 
+
+
+service vsftpd start
+
+# ftp server config file 
+/etc/vsftpd.conf
+
+# Uncomment this to enable any form of FTP write command.
+write_enable=YES
+#
+# Default umask for local users is 077. You may wish to change this to 022,
+# if your users expect that (02
