@@ -1,0 +1,22 @@
+
+调试信息中
+message("start:enter board type agri file")
+include(common/board_type_config)
+message(${board_type})
+
+if(${board_type} STREQUAL "triltrotor")
+set(SCA3300_DIR drivers/sca3300)
+else()
+set(SCA3300_DIR "")
+endif()
+
+message(${SCA3300_DIR})
+
+//文件board_type_config.cmake
+
+message("enter board type agri file")
+#set(board_type triltrotor)
+set(board_type agri)
+
+message不能打印空的字符串
+#message(${SCA3300_DIR})
