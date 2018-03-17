@@ -1,0 +1,13 @@
+1. 错误提示 
+fatal: unable to access 'https://github.com/yangang123/UAV_DOC.git/': Failed to connect to 127.0.0.1 port 36656: Connection refused
+
+
+2. 查看占用的端口, 
+
+3. 取消下面和代理服务器相关的网址和端口
+
+1121  env | grep -i proxy
+ 1122  unset http_proxy 
+ 1124  unset http_proxy
+ 1126  unset https_proxy 
+ 1129  unset HTTP_PROXY 
