@@ -1,2 +1,12 @@
  find ./　-name "*config.h" -type f | xargs grep "px4"
 在当前目录下查找文件是config.h的文件，在文件中查找文件路径是有px4的字符
+
+
+查看当前文件下文件各个文件的大小 
+yangang@ubuntu:~/work/github_proj/driver_tar$ du -h * 
+16K	adxl355_20170513.tar.bz2
+16K	adxl355_all_cali_register_check_perfom.tar.bz2
+16K	imu_ext_20170531.tar.bz2
+8.0K	monitor_20170531.tar.bz2
+20K	new_sca3300_adrs450.tar.gz
+
