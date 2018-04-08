@@ -11,11 +11,14 @@ yangang@ubuntu:~/work/github_proj/driver_tar$ du -h *
 20K	new_sca3300_adrs450.tar.gz
 
 git删除远程分支
-  方法1:(不成功)
+  方法1:
   $sudo git branch -r -d origin/tmp1 
   
 [sudo] password for yangang: 
 Deleted remote-tracking branch origin/tmp1 (was 7eadb53)
+
+ 方法2：
+ $git push origin :branch_name (：号前面有一个空格 ，后面没有空格)
 
 注意下面说明:
 	$ git clone git://git.kernel.org/.../git.git my.git
@@ -24,7 +27,4 @@ Deleted remote-tracking branch origin/tmp1 (was 7eadb53)
 		   $ git branch -D test                                    (2)
 
 	   1. Delete the remote-tracking branches "todo", "html" and "man". The next fetch or pull will create them again unless you configure them not to. See git-fetch(1).
-
- 方法2：
- $git push origin :branch_name (：号前面有一个空格 ，后面没有空格)
 
