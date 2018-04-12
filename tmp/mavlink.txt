@@ -1,11 +1,7 @@
 class MavlinkFTP : public MavlinkStream
 
 
-
-
 class Mavlink : public device::VDev
-
-
 
 //创建实例
 
@@ -25,7 +21,6 @@ for (unsigned int i = 0; streams_list[i] != nullptr; i++) {
 MavlinkStream *stream;
 
 
-//
 perf_print_counter(_sample_perf);
 perf_free(_txerr_perf);
 
@@ -40,7 +35,54 @@ perf_print_counter_fd(int fd, perf_counter_t handle)
 	case PC_COUNT:
 
 
-	
 dprintf(fd, "%s: %llu events\n",
 	_txerr_perf->name,
 	(unsigned long long)((struct perf_ctr_count *)_txerr_perf)->event_count);
+
+mavlink消息定义
+　　MAVLink数据包的结构在mavlink_types.h中用mavlink_message_t结构体定义：
+复制代码
+
+ 1 typedef struct __mavlink_message {  
+ 2 uint16_t checksum; /// CRC
+ 3 uint8_t magic;   /// STX
+ 4 uint8_t len;     /// LEN
+ 5 uint8_t seq;     /// SEQ
+ 6 uint8_t sysid;   /// SYS
+ 7 uint8_t compid;  /// COMP
+ 8 uint8_t msgid;   /// MSG
+ 9 uint64_t payload64[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+7)/8];  
+10 } mavlink_message_t;  
+
+//数据段
+typedef struct __mavlink_mission_item_t
+{
+ float param1; ///< PARAM1, see MAV_CMD enum
+ float param2; ///< PARAM2, see MAV_CMD enum
+ float param3; ///< PARAM3, see MAV_CMD enum
+ float param4; ///< PARAM4, see MAV_CMD enum
+ float x; ///< PARAM5 / local: x position, global: latitude
+ float y; ///< PARAM6 / y position: global: longitude
+ float z; ///< PARAM7 / z position: global: altitude (relative or absolute, depending on frame.
+ uint16_t seq; ///< Sequence
+ uint16_t command; ///< The scheduled action for the MISSION. see MAV_CMD in common.xml MAVLink specs
+ uint8_t target_system; ///< System ID
+ uint8_t target_component; ///< Component ID
+ uint8_t frame; ///< The coordinate system of the MISSION. see MAV_FRAME in mavlink_types.h
+ uint8_t current; ///< false:0, true:1
+ uint8_t autocontinue; ///< autocontinue to next wp
+} mavlink_mission_item_t;
+
+
+//这里面使用了所有的的定义所有的mavlink消息包
+mavlink/include/mavlink/v1.0/common$
+
+//定义1个heartbeat文件
+<message id="0" name="HEARTBEAT">
+   <description>The heartbeat message shows that a system is present and responding. The type of the MAV and Autopilot hardware allow the receiving system to treat further messages from this system appropriate (e.g. by laying out the user interface based on the autopilot).</description>
+   <field type="uint8_t" name="type">Type of the MAV (quadrotor, helicopter, etc., up to 15 types, defined in MAV_TYPE ENUM)</field>
+   <field type="uint8_t" name="autopilot">Autopilot type / class. defined in MAV_AUTOPILOT ENUM</field>
+   <field type="uint8_t" name="base_mode">System mode bitfield, see MAV_MODE_FLAG ENUM in mavlink/include/mavlink_types.h</field>
+   <field type="uint32_t" name="custom_mode">A bitfield for use for autopilot-specific flags.</field>
+   <field type="uint8_t" name="system_status">System status flag, see MAV_STATE ENUM</field>
+   <field type="uint8_t_mavlink_version" name="mavlink_version">MAVLink version, not writable by user, gets added by protocol because of magic data type: uint8_t_mavlink_version</field>

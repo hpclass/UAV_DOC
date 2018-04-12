@@ -1,0 +1,24 @@
+git tag使用
+
+发行版本，很方便。
+---------------------------------------------------------------
+  570  git checkout cct_mode_board_v2_new
+
+创建tag
+  571  git tag -a cct_v1.1.0_beta -m "新硬件V2, 色温模式"
+  574  git branch
+  575  git tag
+
+推送tag到远程分支
+  576  git push origin cct_v1.1.0_beta
+
+
+删除分支
+
+	删除本地分支
+  565  git tag -d cct_v1.1.0_beta
+	删除远程分支
+  566  git push origin :cct_v1.1.0_beta
+
+
+
