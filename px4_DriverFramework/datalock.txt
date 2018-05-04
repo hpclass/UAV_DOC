@@ -1,0 +1,43 @@
+namespace DriverFramework
+{
+
+int initMutex(pthread_mutex_t &mutex);
+int initCond(pthread_cond_t &cond);
+
+class SyncObj
+{
+public:
+        SyncObj(bool trace = false);
+	~SyncObj();
+
+        void lock();
+        void unlock();
+
+	// Returns 0 on success, ETIMEDOUT on timeout
+	// Use timeout_us = 0 for blocking wait
+        int waitOnSignal(unsigned long timeout_us);
+
+        void signal(void);
+
+        void signalAll(void);
+
+private:
+        pthread_mutex_t _lock;
+        pthread_cond_t	_new_data_cond;
+        bool _trace;
+};
+
+}
+
+查看私用成员：
+１．　pthread_mutex_t _lock;　互斥锁
+２.  pthread_cond_t	_new_data_cond; 条件变量
+３．　bool _trace;　是否调试
+
+
+使用方法：
+
+    data_lock.lock();
+    memset(&sensor_data, 0x0, sizeof(sensor_data));
+    data_lock.unlock();
+　
