@@ -56,27 +56,4 @@ class PX4IO_serial : public device::Device
 return new PX4IO_serial();
 }
 
-//bootloader启动说明
-static void
-calculate_fw_crc(void)
-{
-#define APP_SIZE_MAX 0xf000
-#define APP_LOAD_ADDRESS 0x08001000
-        // compute CRC of the current firmware
-        uint32_t sum = 0;
-
-        for (unsigned p = 0; p < APP_SIZE_MAX; p += 4) {
-                uint32_t bytes = *(uint32_t *)(p + APP_LOAD_ADDRESS);
-                sum = crc32part((uint8_t *)&bytes, sizeof(bytes), sum);
-        }
-
-        r_page_setup[PX4IO_P_SETUP_CRC]   = sum & 0xFFFF;
-        r_page_setup[PX4IO_P_SETUP_CRC + 1] = sum >> 16;
-}
-
-user_start(int argc, char *argv[])
-{
-
- -》calculate_fw_crc(); 
-先算出来》
-
+->
