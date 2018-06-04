@@ -1,6 +1,62 @@
+这里使用的外部全局变量进行通信的。
+px4io.h
+extern volatile uint16_t	r_page_status[];	/* PX4IO_PAGE_STATUS */
+extern uint16_t			r_page_actuators[];	/* PX4IO_PAGE_ACTUATORS */
+extern uint16_t			r_page_servos[];	/* PX4IO_PAGE_SERVOS */
+extern uint16_t			r_page_direct_pwm[];	/* PX4IO_PAGE_DIRECT_PWM */
+extern uint16_t			r_page_raw_rc_input[];	/* PX4IO_PAGE_RAW_RC_INPUT */
+extern uint16_t			r_page_rc_input[];	/* PX4IO_PAGE_RC_INPUT */
+extern uint16_t			r_page_adc[];		/* PX4IO_PAGE_RAW_ADC_INPUT */
+
+extern volatile uint16_t	r_page_setup[];		/* PX4IO_PAGE_SETUP */
+extern uint16_t			r_page_controls[];	/* PX4IO_PAGE_CONTROLS */
+extern uint16_t			r_page_rc_input_config[]; /* PX4IO_PAGE_RC_INPUT_CONFIG */
+extern uint16_t			r_page_servo_failsafe[]; /* PX4IO_PAGE_FAILSAFE_PWM */
+extern uint16_t			r_page_servo_control_min[]; /* PX4IO_PAGE_CONTROL_MIN_PWM */
+extern uint16_t			r_page_servo_control_max[]; /* PX4IO_PAGE_CONTROL_MAX_PWM */
+extern int16_t			r_page_servo_control_trim[]; /* PX4IO_PAGE_CONTROL_TRIM_PWM */
+extern uint16_t			r_page_servo_disarmed[];	/* PX4IO_PAGE_DISARMED_PWM */
 
 if (safety_button_pressed && !(r_status_flags & PX4IO_P_STATUS_FLAGS_SAFETY_OFF) &&
 　　　->PX4_ATOMIC_MODIFY_OR(r_status_flags, PX4IO_P_STATUS_FLAGS_SAFETY_OFF);//安全开关关闭，已经解锁
 } else if (safety_button_pressed && (r_status_flags & PX4IO_P_STATUS_FLAGS_SAFETY_OFF)) {
 	->PX4_ATOMIC_MODIFY_CLEAR(r_status_flags, PX4IO_P_STATUS_FLAGS_SAFETY_OFF); //安全开关关闭，已经上锁
-   
+ 
+
+//这个是进行进行锁定
+		case PX4IO_P_SETUP_FORCE_SAFETY_ON:
+			if (value == PX4IO_FORCE_SAFETY_MAGIC) {
+				r_status_flags &= ~PX4IO_P_STATUS_FLAGS_SAFETY_OFF;
+
+			} else {
+				return -1;
+			}
+
+//复位bootloader
+case PX4IO_P_SETUP_REBOOT_BL:
+			if (r_status_flags & PX4IO_P_STATUS_FLAGS_SAFETY_OFF) {
+				// don't allow reboot while armed
+				break;　//必须等待安全开关触发锁定状态
+			}
+
+			// check the magic value
+			if (value != PX4IO_REBOOT_BL_MAGIC) {
+				break;
+			}
+
+			// we schedule a reboot rather than rebooting
+			// immediately to allow the IO board to ACK
+			// the reboot command
+			schedule_reboot(100000);
+			break;
+
+
+/**
+   check for a scheduled reboot
+ */
+static void check_reboot(void)
+{
+	if (reboot_time != 0 && hrt_absolute_time() > reboot_time) {
+		up_systemreset();//进入复位命令操作
+	}
+}

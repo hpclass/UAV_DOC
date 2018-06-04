@@ -1,0 +1,13 @@
+
+远程分支有wz_origin/rtk_onboard
+
+
+建立本地分支rtk_onboard， 可以使用--track命令进行操作
+git checkout --track wz_origin/rtk_onboard
+
+
+基于本地分支abc创建分支ss
+git checkout -b ss abc
+
+
+

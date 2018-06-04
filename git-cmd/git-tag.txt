@@ -19,6 +19,3 @@ git tag使用
   565  git tag -d cct_v1.1.0_beta
 	删除远程分支
   566  git push origin :cct_v1.1.0_beta
-
-
-
