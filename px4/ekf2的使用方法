@@ -1,0 +1,18 @@
+
+//创建几个data
+DataValidatorGroup _voter_gyro;
+DataValidatorGroup _voter_accel;
+DataValidatorGroup _voter_mag;
+DataValidatorGroup _voter_baro;
+
+class __EXPORT DataValidatorGroup { //组
+		DataValidator *_first;	//有个datavalid的指针
+
+
+外部调用
+_voter_gyro.put(i, sensors.gyro_timestamp[i], &sensors.gyro_rad_s[i * 3],
+						sensors.gyro_errcount[i], sensors.gyro_priority[i]); //调用put函数
+	   ->DataValidatorGroup::put(unsigned index, uint64_t timestamp, float val[3], uint64_t error_count, int priority) 
+	   	 ->next->put(timestamp, val, error_count, priority);//下一个put 
+	   	 	->DataValidator::put(uint64_t timestamp, float val[3], uint64_t error_count_in, int priority_in) 
+	   	 	   -> _priority = priority_in; //保存优先级

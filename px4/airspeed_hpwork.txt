@@ -1,0 +1,23 @@
+ Airspeed::start() 
+ 	->work_queue(HPWORK, &_work, (worker_t)&Airspeed::cycle_trampoline, this, 1);
+ 		->dev->cycle(); // MEASAirspeed::cycle()
+ 		   -> if (_collect_phase) {
+ 		   		ret = collect(); //重新 启动
+ 		   				-> ret = transfer(nullptr, 0, &val[0], 4);
+ 		   				-> orb_publish(ORB_ID(differential_pressure), _airspeed_pub, &report); //发送数据	
+ 		   			work_queu	e(HPWORK,
+				   &_work,
+				   (worker_t)&Airspeed::cycle_trampoline,
+				   this,
+				   _measure_ticks - USEC2TICK(CONVERSION_INTERVAL));
+
+ 		   } 
+
+ 		   ret = measure();
+ 		   		->  uint8_t cmd = 0;
+					ret = transfer(&cmd, 1, nullptr, 0);  //发送采集命令
+
+
+1. case机制转换成 _collect_phase 和 measure
+		_collect_phase ： 触发
+		measure： 周期性采集

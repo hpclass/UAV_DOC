@@ -1,0 +1,59 @@
+if px4io checkcrc ${IO_FILE}
+else　
+	if px4io start
+	then
+		# try to safe px4 io so motor outputs dont go crazy
+		#检查px4io是否可以通信成功，通信成功，就直接认为已经解锁，
+		#int ret = g_dev->ioctl(NULL, PWM_SERVO_SET_FORCE_SAFETY_ON, 0);//强制安全开关解锁
+		＃	
+		if px4io safety_on
+		then
+			# success! no-op
+		else
+			# px4io did not respond to the safety command
+			px4io stop
+		fi
+	fi
+
+	if px4io forceupdate 14662 ${IO_FILE}
+	then
+		usleep 500000
+		if px4io checkcrc $IO_FILE
+		then
+			set IO_PRESENT yes
+
+＃io现成已经打开，输出io，就进行打开
+if [ $IO_PRESENT == yes ]
+then
+	if [ $OUTPUT_MODE != io ]
+	then
+		if px4io start
+
+
+
+//490行
+if [ $OUTPUT_MODE == io -o $OUTPUT_MODE == uavcan_esc ]
+then
+	if px4io start
+	then
+		sh /etc/init.d/rc.io
+	else
+		echo "ERROR: WOOZOOM start map start failed" >> $LOG_FILE
+		tone_alarm $TUNE_ERR
+	fi
+fi
+
+固件升级，安全策略是：　杀死px4io线程
+
+如果传递的32位数据，就占用２页的地址
+
+if px4io safety_on:
+//写入安全开关，页PX4IO_PAGE_SETUP，offset: PX4IO_P_SETUP_FORCE_SAFETY_ON, 值.PX4IO_FORCE_SAFETY_MAGIC
+case PWM_SERVO_SET_FORCE_SAFETY_ON:
+		/* force safety switch on */
+		ret = io_reg_set(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_FORCE_SAFETY_ON, PX4IO_FORCE_SAFETY_MAGIC);
+		break;
+
+
+//发送重启命令
+int ret = g_dev->ioctl(nullptr, PX4IO_REBOOT_BOOTLOADER, arg);
