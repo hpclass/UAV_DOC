@@ -1,0 +1,16 @@
+文件属性  
+	 -> 文件的创建者的权限，一般有读写全权限
+	 -> 文件的组的权限 (sudo chown -R 创建者.组名 文件夹)
+	 	-> 组内 (创建方式： groupadd group1)
+		 	-> 用户A  (sudo usermod -a -G group1 $USER_A_NAME)
+			-> 用户B  (sudo usermod -a -G group1 $USER_A_NAME) 
+			
+  注意：
+	1. 文件的属性会绑定到文件系统中，例如U盘中的文件
+	2. 文件的组是1个号码，如果当前文件在的系统没有这个组，那么会显示组号
+ 
+ 相关：
+    1. cat /etc/group
+	    可以查看系统中所有的组
+	2. groups 可以查看当前用户在存在那些组内
+	
