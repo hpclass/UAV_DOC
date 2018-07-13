@@ -28,3 +28,6 @@ Deleted remote-tracking branch origin/tmp1 (was 7eadb53)
  方法2：
  $git push origin :branch_name (：号前面有一个空格 ，后面没有空格)
 
+// cancel proxy server
+unset https_proxy 
+unset HTTPS_PROXY
