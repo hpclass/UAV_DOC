@@ -1,3 +1,4 @@
+
 //mag校准
 if (!strcmp(argv[2], "mag")) {  //commander/cpp
 	 calib_ret = do_mag_calibration(mavlink_fd,param_cal_mag_sides); //进入mag_calibration.cpp
