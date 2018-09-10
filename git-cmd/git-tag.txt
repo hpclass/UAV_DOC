@@ -15,7 +15,7 @@ git tag使用
 
 删除分支
 
-	删除本地分支
+	删除本地分支： 和branch是不一样的： 如果branch没有合并，使用-D 
   565  git tag -d cct_v1.1.0_beta
 	删除远程分支
   566  git push origin :cct_v1.1.0_beta

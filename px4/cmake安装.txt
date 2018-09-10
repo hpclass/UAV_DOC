@@ -1,0 +1,25 @@
+方法1：
+通过wget下载
+1. 安装cmake 
+ cmake --version
+ wget https://cmake.org/files/v3.3/cmake-3.3.2-Linux-x86_64.sh
+ chmod +x cmake-3.3.2-Linux-x86_64.sh
+ sudo mkdir /opt/cmake-3.3.2
+ sudo ./cmake-3.3.2-Linux-x86_64.sh --prefix=/opt/cmake-3.3.2 --exclude-subdir
+ export PATH=/opt/cmake-3.3.2/bin:$PATH
+  
+ 2. 把cmake的环境变量添加到.profile或者.bashrc中
+
+
+方法2： 
+从camke的仓库进行下载
+git clone https://gitlab.kitware.com/cmake/cmake.git
+
+#执行配置脚本
+$ sudo ./bootstrap
+
+#执行make编译命令 
+$ sudo make 
+
+#执行库安装命令
+$ sudo make install
