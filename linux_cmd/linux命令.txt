@@ -1,33 +1,8 @@
- find ./　-name "*config.h" -type f | xargs grep "px4"
-在当前目录下查找文件是config.h的文件，在文件中查找文件路径是有px4的字符
-
-
-查看当前文件下文件各个文件的大小 
-yangang@ubuntu:~/work/github_proj/driver_tar$ du -h * 
-16K	adxl355_20170513.tar.bz2
-16K	adxl355_all_cali_register_check_perfom.tar.bz2
-16K	imu_ext_20170531.tar.bz2
-8.0K	monitor_20170531.tar.bz2
-20K	new_sca3300_adrs450.tar.gz
-
-git删除远程分支
-  方法1:(不成功)
-  $sudo git branch -r -d origin/tmp1 
-  
-[sudo] password for yangang: 
-Deleted remote-tracking branch origin/tmp1 (was 7eadb53)
-
-注意下面说明:
-	$ git clone git://git.kernel.org/.../git.git my.git
-		   $ cd my.git
-		   $ git branch -d -r origin/todo origin/html origin/man   (1)
-		   $ git branch -D test                                    (2)
-
-	   1. Delete the remote-tracking branches "todo", "html" and "man". The next fetch or pull will create them again unless you configure them not to. See git-fetch(1).
-
- 方法2：
- $git push origin :branch_name (：号前面有一个空格 ，后面没有空格)
-
-// cancel proxy server
-unset https_proxy 
-unset HTTPS_PROXY
+1. touch test.txt
+2. 输入字符121212
+3. 输入命令h后， 文件test.txt中的内容就会被改变
+命令 : 
+	sed -i 's/2/1/g' test.txt 
+命令说明:  
+	's/原来字符串/新字符串/' 用法
+	-i 表示，直接覆盖输入文件，而不是输出到stdout
