@@ -1,0 +1,10 @@
+stm32f427定时器
+==============================
+TIM1 : 16位   0xFFFF
+TIM2 : 32位   0xFFFF FFFF 
+TIM3 : 16位
+TIM4 : 16位
+TIM5 : 32位   0xFFFF FFFF
+TIM6 : 16位
+TIM7 : 16位
+TIM8 : 16位
