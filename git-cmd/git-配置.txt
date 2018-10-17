@@ -1,0 +1,10 @@
+git 需要进行配置
+
+配置邮箱
+git config --global user.mail 320054593@qq.com
+
+配置用户名
+git config --global user.name yg0103
+
+关闭quotepath的使能，否则会出现中文乱码
+git config --global core.quotepath false
