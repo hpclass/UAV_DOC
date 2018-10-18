@@ -1,0 +1,49 @@
+/****************************************************************************
+ * Name: up_prioritize_irq
+ *
+ * Description:
+ *   Set the priority of an IRQ.
+ *
+ *   Since this API is not supported on all architectures, it should be
+ *   avoided in common implementations where possible.
+ *
+ ****************************************************************************/
+
+#ifdef CONFIG_ARCH_IRQPRIO
+int up_prioritize_irq(int irq, int priority)
+{
+  uint32_t regaddr;
+  uint32_t regval;
+  int shift;
+
+arch/arm/src/stm32/stm32_irq.c
+
+int printf(const char *fmt, ...) //printf的使用
+
+#if CONFIG_NFILE_STREAMS > 0
+  ret = vfprintf(stdout, fmt, ap);
+#elif CONFIG_NFILE_DESCRIPTORS > 0
+  ret = vsyslog(fmt, ap);
+#elif defined(CONFIG_ARCH_LOWPUTC)
+  ret = lowvsyslog(fmt, ap);
+
+
+void up_initialize(void) //NuttX/nuttx/arch/arm/src/common/up_initialize.c
+   —》up_irqinitialize(); 
+
+
+http://docs.huihoo.com/nuttx/NuttxPortingGuide.html
+
+
+
+void up_timerinit(void)
+
+int up_timerisr(int irq, uint32_t *regs)
+   sched_process_timer();
+
+
+
+//使能当前irq
+  up_enable_irq(STM32_IRQ_SYSTICK);
+
+  (void)irq_attach(STM32_IRQ_SYSTICK, (xcpt_t)up_timerisr);

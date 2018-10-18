@@ -1,0 +1,36 @@
+AT指令：
+
+AT+NETOPEN=1 1:多路socket 0：单路socket
+
+设置链路1： 
+AT+CIPOPEN=0,"TCP",xxxxx
+
+设置链路2
+AT+CIPOPEN=1,"TCP"xxxxx
+
+返回Connet ok ,但是当前版本的命令是返回
+CONNECT 115200
+
+AT+CIPSEND=0,5 
+第一路发送5个字节
+>hello
+返回
++CIPSEND:5,5
+
+OK
+SEND OK
+
+
+AT+CIPOPEN? 查询当前连接状态
+
+
+
+返回一些数据的有时候, 原路返回, AT\r
+有时候，不返回AT+CIPOPEN,返回的是+CIPOPEN
+多1个+号
+
+
+AT+CIPCLOSE=1 关闭第1路连接
+AT+NETCLOSE=1 关闭网络连接，关闭网络连接前提是
+	关闭所有线路连接.
+

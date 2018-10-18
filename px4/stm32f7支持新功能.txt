@@ -1,0 +1,300 @@
+void __start(void)
+  ->stm32_clockconfig();
+	stm32_fpuconfig();
+	stm32_lowsetup();
+	
+	stm32_boardinitialize(void)
+	   -> board_autoled_initialize();
+			-> 
+	   -> /* configure ADC pins */
+	   -> /* configure power supply control/sense pins */
+	   ->  stm32_configgpio(GPIO_GPIO0_OUTPUT);  //输出GPIO为低电平
+	   -> __EXPORT void stm32_spiinitialize(void)
+   ->os_start(void)  //debug.h中定义了所有调试的信息
+     ->  up_initialize();
+	
+#if defined(HAVE_CONSOLE) && !defined(CONFIG_SUPPRESS_UART_CONFIG)
+
+CONFIG_ARCH_HAVE_LEDS=y
+CONFIG_ARCH_LEDS=y  //已经定义了LED
+
+//定义led的配置
+src/drivers/boards/px4nucleoF767ZI-v1/px4nucleo_led.c
+
+// src/drivers/boards/px4nucleoF767ZI-v1/px4nucleo_init.c
+调用的是stm32_boardinitialize(void) 函数
+
+定义了nucleo所有
+├── board_config.h  
+├── CMakeLists.txt   
+├── px4nucleo_can.c  
+├── px4nucleo_init.c    
+├── px4nucleo_led.c
+├── px4nucleo_sdio.c
+├── px4nucleo_spi.c  ： __EXPORT void stm32_spiinitialize(void)
+
+├── px4nucleo_timer_config.c
+└── px4nucleo_usb.c
+
+
+二、关于可变参数
+
+PX4源码中的CONFIG_CPP_HAVE_VARARGS
+
+Linux的可变参函数在头文件stdarg.h中定义
+
+ #include <stdarg.h>
+ 
+ void va_start(va_list ap, last);
+ type va_arg(va_list ap, type);
+ void va_end(va_list ap);
+ void va_copy(va_list dest, va_list src);
+
+ 
+
+Man手册中说明它们均是宏，在这里取形式上的，用函数一次来说吧。
+
+1 在调用这几个函数之前，需要先声明一个变量，类型为va_list。
+
+2 va_start函数初始化声明或的va，last参数为形参中最后一个类型已知的参数，目前来看也就是const char* fmt这个参数(fmt是一个形参名)，是一个(格式)字符串。
+va_arg函数就是用来详细解释可变参数的，遍历格式字符串，返回对应类型的值
+Va_end函数与va_start函数呼应，end之后va_list的值就是未定义的了。
+Va_copy函数将src复制给dest，所以dest也需要va_end函数，这个函数时C99添加的，添加原因与不同的系统实现有关，man手册中有例子，可以查看。
+
+注：这些宏与旧版的varargs.h中的不兼容
+
+8. 调试LED
+#ifdef CONFIG_ARCH_LEDS
+#######
+证实确实已经被编译
+
+
+9. stm32f7在底层完全独立于stm32f1和stm32f4
+例如： 
+	1. stm32f1和stm32f4文件
+		stm32_lowsetup(): stm32/stm32_lowputc.c  
+	2. stm32f7文件		
+		stm32_lowsetup(): stm32f7/stm32_lowputc.c 
+10 串口波特率		
+Attempting reboot on /dev/serial/by-id/pci-3D_Robotics_PX4_FMU_v5.x_0-if00 with baudrate=57600...	
+
+10. 发现uploader.h 
+class PX4IO_Uploader
+{
+public:
+	PX4IO_Uploader();
+	virtual ~PX4IO_Uploader();
+
+	int			upload(const char *filenames[]);
+
+private:
+	enum {
+
+		PROTO_NOP				= 0x00,
+		PROTO_OK				= 0x10,
+		PROTO_FAILED			= 0x11,
+		PROTO_INSYNC			= 0x12,
+		PROTO_INVALID			= 0x13,
+		PROTO_BAD_SILICON_REV  	= 0x14,
+		PROTO_EOC				= 0x20,
+		PROTO_GET_SYNC			= 0x21,
+		PROTO_GET_DEVICE		= 0x22,
+		PROTO_CHIP_ERASE		= 0x23,
+		PROTO_CHIP_VERIFY		= 0x24,
+		PROTO_PROG_MULTI		= 0x27,
+		PROTO_READ_MULTI		= 0x28,
+		PROTO_GET_CRC			= 0x29,
+		PROTO_GET_OTP			= 0x2a,
+		PROTO_GET_SN			= 0x2b,
+		PROTO_GET_CHIP			= 0x2c,
+		PROTO_SET_DELAY			= 0x2d,
+		PROTO_GET_CHIP_DES		= 0x2e,
+		PROTO_REBOOT			= 0x30,
+
+		INFO_BL_REV			= 1,		/**< bootloader protocol revision */
+		BL_REV			= 5,		/**< supported bootloader protocol  */
+		INFO_BOARD_ID		= 2,		/**< board type */
+		INFO_BOARD_REV		= 3,		/**< board revision */
+		INFO_FLASH_SIZE		= 4,		/**< max firmware size in bytes */
+
+		PROG_MULTI_MAX		= 248,		/**< protocol max is 255, must be multiple of 4 */
+
+	};
+	
+	
+    
+ void up_initialize(void) 
+    void up_serialinit(void)
+    ->串口初始化  
+		#if CONSOLE_UART > 0
+		(void)uart_register("/dev/console", &uart_devs[CONSOLE_UART - 1]->dev); //注册控制台
+ 
+     -> // 注册3个控制台	 
+	/* Initialize the console device driver (if it is other than the standard
+	   * serial driver).
+	   */
+	#if defined(CONFIG_DEV_LOWCONSOLE)     # CONFIG_DEV_LOWCONSOLE is not set
+	  lowconsole_init();
+	#elif defined(CONFIG_CONSOLE_SYSLOG)   CONFIG_SYSLOG_CONSOLE=y
+	  syslog_console_init();
+	    -> void)register_driver("/dev/console", &g_consoleops, 0666, NULL);
+	#elif defined(CONFIG_RAMLOG_CONSOLE)
+	  ramlog_consoleinit();
+	    -> return register_driver("/dev/console", &g_ramlogfops, 0666, priv);
+	#endif
+
+注册低速控制台：	
+void lowconsole_init(void)
+{
+  (void)register_driver("/dev/console", &g_consoleops, 0666, NULL);
+}	
+static const struct file_operations g_consoleops =
+{
+  NULL,             /* open */
+  NULL,             /* close */
+  lowconsole_read,  /* read */
+  lowconsole_write, /* write */
+  NULL,             /* seek */
+  lowconsole_ioctl  /* ioctl */
+#ifndef CONFIG_DISABLE_POLL
+  , NULL            /* poll */
+#endif
+#ifndef CONFIG_DISABLE_PSEUDOFS_OPERATIONS
+  , NULL            /* unlink */
+#endif
+};
+
+log输出方式:
+#if defined(CONFIG_RAMLOG_SYSLOG)
+const struct syslog_channel_s g_default_channel =
+{
+  ramlog_putc,
+  ramlog_putc,
+  syslog_default_flush
+};
+#elif defined(HAVE_LOWPUTC)
+const struct syslog_channel_s g_default_channel =
+{
+  up_putc,
+  up_putc,
+  syslog_default_flush
+};
+#else
+const struct syslog_channel_s g_default_channel =
+{
+  syslog_default_putc,
+  syslog_default_putc,
+  syslog_default_flush
+};
+#endif
+
+系统log的输出控制
+#if defined(CONFIG_SYSLOG_SERIAL_CONSOLE) && defined(CONFIG_ARCH_LOWPUTC)
+#  define HAVE_LOWPUTC
+#elif !defined(CONFIG_RAMLOG_SYSLOG)
+#  define NEED_LOWPUTC
+#endif
+
+1. 定义CONFIG_SYSLOG_SERIAL_CONSOLE和CONFIG_ARCH_LOWPUTC那么从串口控制台输出
+2. 定义CONFIG_RAMLOG_SYSLOG就从ramlog_putc输出
+
+#if defined(CONFIG_RAMLOG_SYSLOG)
+const struct syslog_channel_s g_default_channel =
+{
+  ramlog_putc,
+  ramlog_putc,
+  syslog_default_flush
+};
+#elif defined(HAVE_LOWPUTC)
+const struct syslog_channel_s g_default_channel =
+{
+  up_putc,
+  up_putc,
+  syslog_default_flush
+};
+#else
+const struct syslog_channel_s g_default_channel =
+{
+  syslog_default_putc,
+  syslog_default_putc,
+  syslog_default_flush
+};
+#endif
+
+
+printconsole(format, ##__VA_ARGS__)
+  -> vfprintf
+  
+  
+#define putc(c,s)  fputc((c),(s))
+#define putchar(c) fputc(c, stdout)
+
+#if CONFIG_NFILE_DESCRIPTORS > 0 && defined(CONFIG_DEV_CONSOLE) //定义DEV控制台和CONFIG_NFILE_DESCRIPTORS
+  fd = open("/dev/console", O_RDWR);
+  ->
+	int group_setupstreams(FAR struct task_tcb_s *tcb)
+	  -> (void)fs_fdopen(0, O_RDONLY,         (FAR struct tcb_s *)tcb);
+	  (void)fs_fdopen(1, O_WROK | O_CREAT, (FAR struct tcb_s *)tcb);
+	  (void)fs_fdopen(2, O_WROK | O_CREAT, (FAR struct tcb_s *)tcb);
+	  
+void os_start(void)
+  -> DEBUGVERIFY(group_setuptaskfiles(&g_idletcb[cpu]));  //OS启动之前才能使用printf函数等等
+
+只要定义了这个：   
+HAVE_CONSOLE： 定义了有控制台：就可以使用up_lowputc();
+#elif defined(CONFIG_UART8_SERIAL_CONSOLE) && defined(CONFIG_STM32F7_UART8)
+#  undef CONFIG_USART1_SERIAL_CONSOLE
+#  undef CONFIG_USART2_SERIAL_CONSOLE
+#  undef CONFIG_USART3_SERIAL_CONSOLE
+#  undef CONFIG_UART4_SERIAL_CONSOLE
+#  undef CONFIG_UART6_SERIAL_CONSOLE
+#  undef CONFIG_USART6_SERIAL_CONSOLE
+#  undef CONFIG_UART7_SERIAL_CONSOLE
+#  define CONSOLE_UART 8
+#  define HAVE_CONSOLE 1
+#else  
+
+10. 调试信息在
+在nsh_main()中可以使用printf函数
+
+int nsh_main(int argc, char *argv[])
+-> up_cxxinitialize(); //c++启动完成
+->  ret = builtin_initialize();
+
+
+12. 下载方式增加
+ 添加直接下载固件的方式是下载
+ stm32f7: 0x0008000
+
+11. 下载的镜像文件：
+    proto = {}
+	proto['magic']		= "PX4FWv1"
+	proto['board_id']	= 0
+	proto['board_revision']	= 0
+	proto['version']	= ""
+	proto['summary']	= ""
+	proto['description']	= ""
+	proto['git_identity']	= ""
+	proto['build_time']	= 0
+	proto['image']		= bytes()
+	proto['image_size']	= 0
+
+12. cmake/nuttx/px4_impl_nuttx.cmake
+
+14. 
+   
+
+13. 
+src/firmware/nuttx/firmware_nuttx
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/yangang/work/stm32f7/Firmware/build_px4fmu-v5_default/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating px4fmu-v5_default.px4, firmware_nuttx.bin"
+	cd /home/yangang/work/stm32f7/Firmware/build_px4fmu-v5_default/src/firmware/nuttx && /home/yangang/gcc-arm-none-eabi-5_4-2016q2/bin/arm-none-eabi-objcopy -O binary /home/yangang/work/stm32f7/Firmware/build_px4fmu-v5_default/src/firmware/nuttx/firmware_nuttx /home/yangang/work/stm32f7/Firmware/build_px4fmu-v5_default/src/firmware/nuttx/firmware_nuttx.bin
+	cd /home/yangang/work/stm32f7/Firmware/build_px4fmu-v5_default/src/firmware/nuttx && /usr/bin/python /home/yangang/work/stm32f7/Firmware/Tools/px_mkfw.py --prototype /home/yangang/work/stm32f7/Firmware/Images/px4fmu-v5.prototype --git_identity /home/yangang/work/stm32f7/Firmware --parameter_xml /home/yangang/work/stm32f7/Firmware/build_px4fmu-v5_default/parameters.xml --airframe_xml /home/yangang/work/stm32f7/Firmware/build_px4fmu-v5_default/airframes.xml --image /home/yangang/work/stm32f7/Firmware/build_px4fmu-v5_default/src/firmware/nuttx/firmware_nuttx.bin > /home/yangang/work/stm32f7/Firmware/build_px4fmu-v5_default/src/firmware/nuttx/px4fmu-v5_default.px4
+
+15. 发现1个重要的信息的字符串：
+#if !defined(USBMFGSTRING)
+# define USBMFGSTRING "3D Robotics"
+#endif
+
+# define USBDEVICESTRING                "PX4 BL AUAV X2.1"
+
+这2个参数是一起配合的,

@@ -1,0 +1,32 @@
+/*************************************************
+  任务创建
+ 
+  参数1:  名字            name    
+  参数2： 调度者          scheduler
+  参数3： 优先级          priority
+  参数4： 堆栈            stack_size
+  参数5:  任务运行入口    entry
+  参数6:  任务传入的参数  argv[]
+
+***********************************************/
+任务创建函数： 
+int px4_task_spawn_cmd(const char *name, int scheduler, int priority,
+                       int stack_size, main_t entry, char *const argv[])
+	-> sched_lock();
+	-> pid = task_create(name, priority, stack_size, entry, argv);
+	-> sched_unlock(); 
+
+
+任务创建实例:	
+_task = px4_task_spawn_cmd("monitor",
+	SCHED_DEFAULT,
+	SCHED_PRIORITY_SLOW_DRIVER - 5, 
+	2000, 
+	(px4_main_t)&MONITOR_DRV::task_main_trampoline,
+	NULL);
+		
+调度者: 
+#define SCHED_FIFO     1  /* FIFO per priority scheduling policy */
+#define SCHED_RR       2  /* Round robin scheduling policy */
+#define SCHED_SPORADIC 3  /* Not supported */
+#define SCHED_OTHER    4  /* Not supported */

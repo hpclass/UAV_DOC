@@ -1,0 +1,237 @@
+1. 所有GPIO的配置
+nuttx-configs/px4nucleoF767ZI-v1/include/board.h
+
+nuttx-configs/px4fmu-v5/include/board.h
+
+2. 硬件LED配置
+/* LED index values for use with board_userled() */
+
+#define BOARD_LED1        0
+#define BOARD_LED2        1
+#define BOARD_LED3        2
+#define BOARD_NLEDS       3
+
+#define BOARD_LED_GREEN   BOARD_LED1
+#define BOARD_LED_BLUE    BOARD_LED2
+#define BOARD_LED_RED     BOARD_LED3
+
+
+硬件是:
+
+LD1: 是运算放大 蓝色
+LD2: PB7        绿色
+LD3: PB14       红色
+
+
+
+3. 使用PE8作为串口的发送
+#define GPIO_UART7_TX    GPIO_UART7_TX_1    /* PE8[CN12-40]  */
+
+
+
+4. 串口1输出
+串口8 ：
+/* USART8: has no remap
+ *
+ *      GPIO_UART7_RX                          PE0[CN12-64]
+ *      GPIO_UART7_TX                          PE1[CN11-61]
+ */
+
+
+5. 输出控台
+#
+# Console Configuration
+#
+
+CONFIG_NSH_CONSOLE=y
+CONFIG_NSH_ARCHINIT=y
+
+MORPHO接口
+CONFIG_NUCLEO_CONSOLE_MORPHO=y
+设置DEV控台
+CONFIG_DEV_CONSOLE=y
+
+CONFIG_SERIAL=y
+CONFIG_SERIAL_CONSOLE=y //串口8作为控台
+CONFIG_SYSLOG_CONSOLE=y
+
+文件: 
+NuttX/nuttx/configs/nucleo-144/README.txt
+描述了开发板和相关宏的问题.
+
+串口8定义： 
+
+#
+# UART8 Configuration
+#
+CONFIG_UART8_RXBUFSIZE=300
+CONFIG_UART8_TXBUFSIZE=300
+CONFIG_UART8_BAUD=57600
+CONFIG_UART8_BITS=8
+CONFIG_UART8_PARITY=0
+CONFIG_UART8_2STOP=0
+# CONFIG_UART8_IFLOWCONTROL is not set
+# CONFIG_UART8_OFLOWCONTROL is not set
+# CONFIG_UART8_DMA is not set
+# CONFIG_PSEUDOTERM is not set
+CONFIG_USBDEV=y
+
+发现启动文件
+/home/yangang/work/stm32f7/Firmware/NuttX/nuttx/arch/arm/src/stm32f7/stm32_serial.c
+
+发送链接脚本： 
+./NuttX/nuttx/configs/nucleo-144/scripts/f767-flash.ld
+
+内存架构
+MEMORY
+{
+    itcm  (rwx) : ORIGIN = 0x00200000, LENGTH = 2048K
+    flash (rx)  : ORIGIN = 0x08000000, LENGTH = 2048K
+    dtcm  (rwx) : ORIGIN = 0x20000000, LENGTH = 128K
+    sram1 (rwx) : ORIGIN = 0x20020000, LENGTH = 368K
+    sram2 (rwx) : ORIGIN = 0x2007c000, LENGTH = 16K
+}
+
+文本区
+SECTIONS
+{
+    .text : {
+        _stext = ABSOLUTE(.);
+        *(.vectors)
+        *(.text .text.*)
+        *(.fixup)
+        *(.gnu.warning)
+        *(.rodata .rodata.*)
+        *(.gnu.linkonce.t.*)
+        *(.glue_7)
+        *(.glue_7t)
+        *(.got)
+        *(.gcc_except_table)
+        *(.gnu.linkonce.r.*)
+        _etext = ABSOLUTE(.);
+    } > flash
+	
+	
+看到时钟的配置： 没有M7
+CONFIG_STM32F7_CUSTOM_CLOCKCONFIG
+
+# CONFIG_STM32F7_CUSTOM_CLOCKCONFIG is not set
+
+./drivers/bootloaders/include/board.h
+//固件
+
+3. 裁剪文件
+Loaded firmware for 32,0, size: 1164080 bytes, waiting for the bootloader...
+编译后1.16MHz
+Loaded firmware for 32,0, size: 1164080 bytes, waiting for the bootloader...
+
+
+
+4. usb成功后，会点亮硬件的LED
+
+int stm32_bbsram_int(void)
+-> syslog(LOG_INFO, "Fault Log info File No %d Length %d flags:0x%02x "
+          "state:%d\n",(unsigned int)desc.fileno, (unsigned int) desc.len,
+          (unsigned int)desc.flags, state);
+
+int syslog_initialize(enum syslog_init_e phase)
+   -> ret = syslog_console_channel();  // 启动
+
+
+pwm的配置
+/* PWM
+ *
+ * Six PWM outputs are configured.
+ *
+ * Pins:
+ *
+ * CH1 : PE14 : TIM1_CH4
+ * CH2 : PE13 : TIM1_CH3
+ * CH3 : PE11 : TIM1_CH2
+ * CH4 : PE9  : TIM1_CH1
+ * CH5 : PD13 : TIM4_CH2
+ * CH6 : PD14 : TIM4_CH3
+ */
+#define GPIO_TIM1_CH1OUT    GPIO_TIM1_CH1OUT_2
+#define GPIO_TIM1_CH2OUT    GPIO_TIM1_CH2OUT_2
+#define GPIO_TIM1_CH3OUT    GPIO_TIM1_CH3OUT_2
+#define GPIO_TIM1_CH4OUT    GPIO_TIM1_CH4OUT_2
+#define GPIO_TIM4_CH2OUT    GPIO_TIM4_CH2OUT_2
+#define GPIO_TIM4_CH3OUT    GPIO_TIM4_CH3OUT_2
+
+6路pwm
+
+仅仅PPM_IN输入就可以， RC输入
+
+飞机：
+舵机和电调
+
+
+# Start system state indicator
+#
+if rgbled start
+then
+else
+        if blinkm start
+        then
+                blinkm systemstate
+        fi
+fi
+
+
+src/driver/px4io.cpp
+
+#ifdef PX4IO_SERIAL_BASE
+    interface = PX4IO_serial_interface();
+#endif
+
+device::Device
+*PX4IO_serial_interface()
+{
+    return new PX4IO_serial();
+}
+
+int ret =  _interface->write((page << 8) | offset, (void *)values, num_values);
+
+解锁完成，才开启， 失败则关闭
+if px4io start
+then
+        # try to safe px4 io so motor outputs dont go crazy
+        if px4io safety_on
+        then
+                # success! no-op
+        else
+                # px4io did not respond to the safety command
+                px4io stop
+        fi
+fi
+
+提供相同板子的接口
+/**
+ * @file board_common.h
+ *
+ * Provide the the common board interfaces
+ */
+
+
+GPIO_ADC_VSERVO ： IO板测量电压
+GPIO_SBUS_INPUT:   
+GPIO_SBUS_OUTPUT:
+GPIO_SBUS_OENABLE：ti'b's
+GPIO_PPM:
+GPIO_TIM_RSSI:  同时测量
+GPIO_ADC_RSSI:  同时测量
+
+================
+PA13, PC15没有
+================
+#define GPIO_SPEKTRUM_PWR_EN (GPIO_OUTPUT|GPIO_CNF_OUTPP|GPIO_MODE_50MHz|GPIO_OUTPUT_SET|GPIO_PORTC|GPIO_PIN13)
+#define GPIO_SERVO_FAULT_DETECT (GPIO_INPUT|GPIO_CNF_INPULLUP|GPIO_MODE_INPUT|GPIO_PORTA|GPIO_PIN15)
+
+电压测试FMU
+VDD_5V_SENS:
+PRESSURE_SENS:
+BATT_VOLTAGE_SENS
+
+电压测试IO
+VDD_SERVO_SENS：

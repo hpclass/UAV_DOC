@@ -1,0 +1,85 @@
+px4_base.cmake:101:function(px4_parse_function_args)
+px4_base.cmake:137:function(px4_add_git_submodule)
+px4_base.cmake:180:function(px4_prepend_string)
+px4_base.cmake:216:function(px4_join)
+px4_base.cmake:270:function(px4_add_module)
+px4_base.cmake:378:function(px4_generate_messages)
+px4_base.cmake:504:function(px4_add_upload)
+px4_base.cmake:543:function(px4_add_adb_push)
+px4_base.cmake:561:function(px4_add_adb_push_to_bebop)
+px4_base.cmake:579:function(px4_add_scp_push)
+px4_base.cmake:597:function(px4_add_upload_aero)
+px4_base.cmake:653:function(px4_add_common_flags)
+px4_base.cmake:964:function(px4_mangle_name dirname newname)
+px4_base.cmake:982:function(px4_create_git_hash_header)
+px4_base.cmake:1018:function(px4_generate_parameters_xml)
+px4_base.cmake:1061:function(px4_generate_parameters_source)
+px4_base.cmake:1101:function(px4_generate_airframes_xml)
+px4_base.cmake:1136:function(px4_copy_tracked)
+px4_base.cmake:1184:function(px4_share_subdirectory)
+px4_base.cmake:1197:function(px4_strip_optimization name)
+px4_base.cmake:1214:function(px4_add_optimization_flags_for_target target)
+px4_base.cmake:1244:function(px4_add_executable target)
+px4_base.cmake:1255:function(px4_add_library target)
+
+
+添加theone
+
+list(APPEND serial_ports
+			/dev/serial/by-id/*_PX4_*
+			/dev/serial/by-id/usb-3D_Robotics*
+			/dev/serial/by-id/usb-The_Autopilot*
+			/dev/serial/by-id/usb-Bitcraze*
+			/dev/serial/by-id/pci-3D_Robotics*
+			/dev/serial/by-id/pci-Bitcraze*
+			)
+			
+			
+Use the add_custom_command() command to generate a file with dependencies.
+去创建1个依赖的文件:
+
+add_custom_target(
+Adds a target with the given name that executes the given commands.]
+去创建自定义文件
+
+//定义1个文件列表
+file(GLOB nuttx_patches ${PX4_SOURCE_DIR}/nuttx-patches/*.patch)
+
+//去递归的定义文件
+file(GLOB_RECURSE nuttx_all_files ${PX4_SOURCE_DIR}/NuttX/*)
+
+
+
+add_custom_command(OUTPUT ${PX4_BINARY_DIR}/nuttx_copy_${CONFIG}.stamp
+  -》COMMENT "Copying NuttX for ${CONFIG} with ${config_nuttx_config}" 
+可以输出调试信息： 相当于函数的参数
+
+可以直接输出调试信息
+message(STATUS "${CONFIG} NuttX patch: nuttx-patches/${patch_file_name}")
+ 
+# 打补丁命令
+COMMAND ${PATCH} -d ${nuttx_src} -s -p1 -N < ${patch}
+
+//设置cpu_flag
+if (${config_nuttx_hw} STREQUAL "m7")
+		set(cpu_flags
+			-mcpu=cortex-m7
+			-mthumb
+			-mfpu=fpv5-sp-d16
+			-mfloat-abi=hard
+			)
+	elseif (${config_nuttx_hw} STREQUAL "m4")
+		set(cpu_flags
+			-mcpu=cortex-m4
+			-mthumb
+			-march=armv7e-m
+			-mfpu=fpv4-sp-d16
+			-mfloat-abi=hard
+			)
+	elseif (${config_nuttx_hw} STREQUAL "m3")
+		set(cpu_flags
+			-mcpu=cortex-m3
+			-mthumb
+			-march=armv7-m
+			)
+	endif()

@@ -1,0 +1,112 @@
+rc.sensors:10:if adc start
+
+adc_main(int argc, char *argv[])
+	-> 	g_adc = new ADC(ADC_CHANNELS);
+		-> CDev("adc", ADC0_DEVICE_PATH),
+		-> 	_sample_perf(perf_alloc(PC_ELAPSED, "adc_samples")),
+		->  channels |= 1 << 16; /* always enable the temperature sensor */
+		
+			struct adc_msg_s
+			{
+			  uint8_t      am_channel;               /* The 8-bit ADC Channel */
+			  int32_t      am_data;                  /* ADC convert result (4 bytes) */
+			} packed_struct;
+			
+			_samples = new adc_msg_s[_channel_count]; //分配空间
+	-> ADC::_tick()
+		-> update_adc_report(now);	//最多有8个通道
+			-> if (max_num > (sizeof(adc.channel_id) / sizeof(adc.channel_id[0]))) {
+		-> update_system_power(now);
+			#  define px4_enter_critical_section()       enter_critical_section()
+			/**
+				关闭开启中断，防止任务调度，中断打乱
+			**/
+			#  define px4_leave_critical_section(flags) 	leave_critical_section(flags)
+			
+irqstate_t enter_critical_section(void)
+	->   ret = up_irq_save(); /* Disable interrupts */
+		->  sched_note_csection(rtcb, true); //关闭任务调度
+
+cdev如何打开呢	
+	CDev::open(file_t *filp)
+		-> ret = open_first(filp); //
+		-> Device::init()
+			-> ret = register_interrupt(_irq, this);
+
+//得到信号量
+void		lock()
+{
+	do {} while (sem_wait(&_lock) != 0);
+}
+
+//释放信号量
+void		unlock()
+{
+	sem_post(&_lock);
+}	
+	
+静态变量初始化方式：
+1. 在class内部初始化
+2. 在class外部初始化
+static const hrt_abstime _tickrate = 10000;	/**< 100Hz base rate */
+
+
+orb_publish(ORB_ID(system_power), _to_system_power, &system_power);
+orb_publish_auto(ORB_ID(adc_report), &_to_adc_report, &adc, &instance, 		ORB_PRIO_HIGH);
+
+3个参数
+timestamp
+channel_value: 通道值
+channel_id： 通道号
+
+
+#ifdef __cplusplus
+struct __EXPORT adc_report_s {
+#else
+struct adc_report_s {
+#endif
+	uint64_t timestamp; // required for logger
+	float channel_value[8];
+	int16_t channel_id[8];
+
+#ifdef __cplusplus
+
+#endif
+};
+
+中间层封装
+src/platforms
+这里px4重新定义了stm32,stm32f7
+	
+drv_led_start(void) //系统启动
+
+最多注册4个同一种设备是4个设备节点：都是绑定同1个对象(void *)this
+所以无论打开那个设备节点，都是一样的。
+如l3gd20:有2个设备节点: "/dev/l3gd20" 	"/dev/gyro0"
+CDev::register_class_devname(const char *class_devname)
+	while (class_instance < 4) {
+		char name[32];
+		snprintf(name, sizeof(name), "%s%d", class_devname, class_instance);
+		ret = register_driver(name, &fops, 0666, (void *)this);
+
+		if (ret == OK) { break; }
+
+		class_instance++;
+	}
+
+//打开adc节点的位置是在sensor中。	
+void
+Sensors::task_main()
+{
+	ret = accel_init();	
+	ret = gyro_init();
+	ret = gyro_init();
+	ret = mag_init();
+	ret = baro_init();
+	ret = adc_init();
+		-> _fd_adc = px4_open(ADC0_DEVICE_PATH, O_RDONLY | O_NONBLOCK); 
+			#define ADC0_DEVICE_PATH	"/dev/adc0"
+		相当于： _fd_adc = px4_open(/dev/adc0, O_RDONLY | O_NONBLOCK); 
+
+	
+

@@ -1,0 +1,17 @@
+
+l3gd20::start(external_bus, rotation);
+	-> 	g_dev = new L3GD20(PX4_SPI_BUS_SENSORS, L3GD20_DEVICE_PATH, (spi_dev_e)PX4_SPIDEV_GYRO, rotation);
+	-> if (OK != g_dev->init()) {
+		-> 	if (SPI::init() != OK) {
+		->  _class_instance = register_class_devname(GYRO_BASE_DEVICE_PATH);
+		-> reset();
+			-> 	int fd = open(L3GD20_DEVICE_PATH, O_RDONLY);
+			->  if (ioctl(fd, SENSORIOCSPOLLRATE, SENSOR_POLLRATE_DEFAULT) < 0) {
+						start();
+					/* 启动定时器采集 adc 数据 */
+					->   hrt_call_every(&_call,
+							   1000,
+							   _call_interval - L3GD20_TIMER_REDUCTION,
+							   (hrt_callout)&L3GD20::measure_trampoline, this);
+
+                  

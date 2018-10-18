@@ -1,0 +1,18 @@
+
+//初始化SPI1的模式可能不能生效. 修改px4fmuv2_init2.
+SPI_SETMODE(spi1, SPIDEV_MODE3);
+
+ // 关闭spi,重启spi,让新的模式生效
+ spi_modifycr1(priv, 0, SPI_CR1_SPE);
+ spi_modifycr1(priv, setbits, clrbits);
+ spi_modifycr1(priv, SPI_CR1_SPE, 0);
+
+//设置那个位，清除那个位
+static void spi_modifycr1(FAR struct stm32_spidev_s *priv, uint16_t setbits,
+
+spi_modifycr1(priv, 0, SPI_CR1_SPE);
+表示不设置位，清除SPI_CR1_SPE)位，表示关闭spi
+
+
+//CPOH =1 ,或者CPOH = 0;
+会影响时钟来来了，第一次会不会翻转电平,都是在中间采集数据.

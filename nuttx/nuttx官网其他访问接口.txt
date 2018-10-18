@@ -1,0 +1,1 @@
+http://www.zilogic.com/releases/bsp-1.3.1/doc/nuttx-user-manual/NuttXConfigVariables.html#menu_1

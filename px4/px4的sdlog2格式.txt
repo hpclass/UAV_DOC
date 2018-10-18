@@ -1,0 +1,38 @@
+1. struct log_format_s {
+	uint8_t type;
+	uint8_t length;		// full packet length including header
+	char name[4];
+	char format[16];
+	char labels[64];
+};
+
+//格式
+LOG_FORMAT_S(IMU, IMU, "ffffffffffff",		"AccX,AccY,AccZ,GyroX,GyroY,GyroZ,MagX,MagY,MagZ,tA,tG,tM"),
+
+
+
+//后期的数据包格式: 
+
+
+#define LOG_PACKET_SIZE(_name)	LOG_PACKET_HEADER_LEN + sizeof(struct log_##_name##_s)
+
+#define LOG_PACKET_HEADER_INIT(id) .head1 = HEAD_BYTE1, .head2 = HEAD_BYTE2, .msg_type = id
+//头和ID
+//数据格式就这个
+struct log_IMU_s {
+	float acc_x;
+	float acc_y;
+	float acc_z;
+	float gyro_x;
+	float gyro_y;
+	float gyro_z;
+	float mag_x;
+	float mag_y;
+	float mag_z;
+	float temp_acc;
+	float temp_gyro;
+	float temp_mag;
+};
+
+//1.填充数据格式
+//2.id仅仅每个包都有唯一的id

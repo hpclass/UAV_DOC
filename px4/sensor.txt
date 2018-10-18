@@ -1,0 +1,56 @@
+if (0 != pthread_create(&logwriter_pthread, &logwriter_attr, logwriter_thread, &lb)) {
+		warnx("error creating logwriter thread");
+	}
+
+//创建写线程
+
+
+//至少开启1个传感器
+accel_poll(raw);
+	gyro_poll(raw);
+	mag_poll(raw);
+	baro_poll(raw);
+	diff_pres_poll(raw);
+	
+	
+		_gyro_count = init_sensor_class(ORB_ID(sensor_gyro), &_gyro_sub[0],
+					&raw.gyro_priority[0], &raw.gyro_errcount[0]);
+
+	_mag_count = init_sensor_class(ORB_ID(sensor_mag), &_mag_sub[0],
+				       &raw.magnetometer_priority[0], &raw.magnetometer_errcount[0]);
+
+	_accel_count = init_sensor_class(ORB_ID(sensor_accel), &_accel_sub[0],
+					 &raw.accelerometer_priority[0], &raw.accelerometer_errcount[0]);
+
+	_baro_count = init_sensor_class(ORB_ID(sensor_baro), &_baro_sub[0],
+					&raw.baro_priority[0], &raw.baro_errcount[0]);
+					
+	//获取数量				
+	for (unsigned i = 0; i < group_count; i++) {
+		if (subs[i] < 0) {
+			subs[i] = orb_subscribe_multi(meta, i);
+			orb_priority(subs[i], (int32_t *)&priorities[i]);
+		}
+	}
+	
+//orb优先级	
+enum ORB_PRIO {
+	ORB_PRIO_MIN = 0,
+	ORB_PRIO_VERY_LOW = 25,
+	ORB_PRIO_LOW = 50,
+	ORB_PRIO_DEFAULT = 75,
+	ORB_PRIO_HIGH = 100,
+	ORB_PRIO_VERY_HIGH = 125,
+	ORB_PRIO_MAX = 255
+};
+
+
+//最多是3个传感器
+#define SENSOR_COUNT_MAX		3
+
+
+//更新校准数据
+res = px4_ioctl(fd, ACCELIOCSSCALE, (long unsigned int)&gscale);
+
+
+//但是至少有1个传感器才能启动

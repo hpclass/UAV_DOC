@@ -1,0 +1,37 @@
+if [ $GPS == yes ]
+then
+  if [ $GPS_FAKE == yes ]
+  then
+    echo "[i] Faking GPS"
+    gps start -f
+  else
+    gps start
+  fi
+fi
+unset GPS
+unset GPS_FAKE
+
+FAKE: 假的
+1. 启动GPS的方法是脚本中执行
+  gps start
+
+2. 启动command的
+  commander start
+
+3.
+
+测试接口：bian'l
+1. 在程序提示接口查看当前线程的所有bian'lai'n
+gps的架构
+├── ashtech.cpp
+├── ashtech.h
+├── CMakeLists.txt
+├── gps.cpp
+├── gps_helper.cpp
+├── gps_helper.h
+├── mtk.cpp
+├── mtk.h
+├── ubx.cpp
+└── ubx.h
+
+在px4中有很多的simlate设备

@@ -1,0 +1,26 @@
+hrt_call_every调用分析过程:
+/*
+* Poll at 1ms intervals for received bytes that have not triggered
+* a DMA event.
+*/
+ts.tv_sec = 0;
+ts.tv_nsec = 1000000;
+
+src/drivers/boards/px4fmu-v2/px4fmu2_init.c
+	hrt_call_every(&serial_dma_call,
+	                       ts_to_abstime(&ts),
+	                       ts_to_abstime(&ts),
+	                       (hrt_callout)stm32_serial_dma_poll,
+	                       NULL);
+
+
+
+void stm32_serial_dma_poll(void)
+	—> flags = irqsave();
+	-> up_dma_rxcallback(g_usart1priv.rxdma, 0, &g_usart1priv);  //遍历所有DMA节点
+	up_dma_rxcallback(g_usart2priv.rxdma, 0, &g_usart2priv);
+	up_dma_rxcallback(g_usart3priv.rxdma, 0, &g_usart3priv);
+	up_dma_rxcallback(g_usart4priv.rxdma, 0, &g_usart4priv);
+	up_dma_rxcallback(g_usart5priv.rxdma, 0, &g_usart5priv);
+
+

@@ -1,0 +1,62 @@
+./libuavcan/libuavcan_drivers/stm32/driver/include/uavcan_stm32/can.hpp 驱动
+
+//新文件
+struct CanRxItem
+{
+    uavcan::uint64_t utc_usec;
+    uavcan::CanFrame frame;
+    uavcan::CanIOFlags flags;
+    CanRxItem()
+        : utc_usec(0)
+        , flags(0)
+    { }
+};
+
+uc_stm32_clock实现.
+有中断触发.
+
+没有在nsh/defconfig中配置，不表示没在应用程序中启动.如uavcan
+
+//创建uavcan线程·
+	_instance->_task = px4_task_spawn_cmd("uavcan", SCHED_DEFAULT, SCHED_PRIORITY_ACTUATOR_OUTPUTS, StackSize,
+					      static_cast<main_t>(run_trampoline), nullptr);
+					      
+动态数组	      
+ template <unsigned RxQueueCapacity = 128>
+
+//init函数重载
+    int init(uavcan::uint32_t bitrate)
+
+//函数重载
+int init(DelayCallable delay_callable, uavcan::uint32_t& inout_bitrate = BitRateAutoDetect)
+
+//uavcannode
+class UavcanNode : public device::CDev
+
+CDev("uavcan", UAVCAN_DEVICE_PATH),
+
+//每个uavcan的设备main函数的
+class UavcanNode : public device::CDev
+
+return uavcannode_start(argc, argv);
+
+int bootloader_app_shared_read(bootloader_aapp_shared_t *shared,
+
+//bootloader和app都共享寄存器
+
+return uavcannode_start(argc, argv);
+   -》 int rv = UavcanNode::start(node_id, bitrate);
+     -》 	_instance = new UavcanNode(can.driver, uavcan_stm32::SystemClock::instance());
+      -》 const int node_init_res = _instance->init(node_id);
+         -》 const int srv_start_res = _fw_update_listner.start(BeginFirmwareUpdateCallBack(this,
+				  &UavcanNode::cb_beginfirmware_update));
+				  
+	/home/yangang/work/px4_proj/Firmware/src/drivers/bootloaders/src/uavcan/main.c
+	
+	//超时退出
+	do {
+		uint8_t payload[CanPayloadLength];
+		size_t rx_length;
+
+./src/modules/uavcan/libuavcan/libuavcan/include/dsdlc_generated/uavcan/equipment/indication/LightsCommand.hpp
+

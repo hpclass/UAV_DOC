@@ -1,0 +1,174 @@
+class MavlinkFTP : public MavlinkStream
+
+
+class Mavlink : public device::VDev
+
+//创建实例
+
+/* search for stream with specified name in supported streams list */
+for (unsigned int i = 0; streams_list[i] != nullptr; i++) {
+
+	if (strcmp(stream_name, streams_list[i]->get_name()) == 0) {
+		/* create new instance */
+		stream = streams_list[i]->new_instance(this);  //创建实例 MavlinkFTP，但是父类指向了子类。
+		stream->set_interval(interval);
+		LL_APPEND(_streams, stream);
+
+		return OK;
+	}
+}
+
+MavlinkStream *stream;
+
+
+perf_print_counter(_sample_perf);
+perf_free(_txerr_perf);
+
+
+perf_print_counter_fd(int fd, perf_counter_t handle)
+{
+	if (handle == NULL) {
+		return;
+	}
+
+	switch (handle->type) {
+	case PC_COUNT:
+
+
+dprintf(fd, "%s: %llu events\n",
+	_txerr_perf->name,
+	(unsigned long long)((struct perf_ctr_count *)_txerr_perf)->event_count);
+
+mavlink消息定义
+　　MAVLink数据包的结构在mavlink_types.h中用mavlink_message_t结构体定义：
+复制代码
+
+ 1 typedef struct __mavlink_message {  
+ 2 uint16_t checksum; /// CRC
+ 3 uint8_t magic;   /// STX
+ 4 uint8_t len;     /// LEN
+ 5 uint8_t seq;     /// SEQ
+ 6 uint8_t sysid;   /// SYS
+ 7 uint8_t compid;  /// COMP
+ 8 uint8_t msgid;   /// MSG
+ 9 uint64_t payload64[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+7)/8];  
+10 } mavlink_message_t;  
+
+//数据段
+typedef struct __mavlink_mission_item_t
+{
+ float param1; ///< PARAM1, see MAV_CMD enum
+ float param2; ///< PARAM2, see MAV_CMD enum
+ float param3; ///< PARAM3, see MAV_CMD enum
+ float param4; ///< PARAM4, see MAV_CMD enum
+ float x; ///< PARAM5 / local: x position, global: latitude
+ float y; ///< PARAM6 / y position: global: longitude
+ float z; ///< PARAM7 / z position: global: altitude (relative or absolute, depending on frame.
+ uint16_t seq; ///< Sequence
+ uint16_t command; ///< The scheduled action for the MISSION. see MAV_CMD in common.xml MAVLink specs
+ uint8_t target_system; ///< System ID
+ uint8_t target_component; ///< Component ID
+ uint8_t frame; ///< The coordinate system of the MISSION. see MAV_FRAME in mavlink_types.h
+ uint8_t current; ///< false:0, true:1
+ uint8_t autocontinue; ///< autocontinue to next wp
+} mavlink_mission_item_t;
+
+
+//这里面使用了所有的的定义所有的mavlink消息包
+mavlink/include/mavlink/v1.0/common$
+
+//定义1个heartbeat文件
+<message id="0" name="HEARTBEAT">
+   <description>The heartbeat message shows that a system is present and responding. The type of the MAV and Autopilot hardware allow the receiving system to treat further messages from this system appropriate (e.g. by laying out the user interface based on the autopilot).</description>
+   <field type="uint8_t" name="type">Type of the MAV (quadrotor, helicopter, etc., up to 15 types, defined in MAV_TYPE ENUM)</field>
+   <field type="uint8_t" name="autopilot">Autopilot type / class. defined in MAV_AUTOPILOT ENUM</field>
+   <field type="uint8_t" name="base_mode">System mode bitfield, see MAV_MODE_FLAG ENUM in mavlink/include/mavlink_types.h</field>
+   <field type="uint32_t" name="custom_mode">A bitfield for use for autopilot-specific flags.</field>
+   <field type="uint8_t" name="system_status">System status flag, see MAV_STATE ENUM</field>
+   <field type="uint8_t_mavlink_version" name="mavlink_version">MAVLink version, not writable by user, gets added by protocol because of magic data type: uint8_t_mavlink_version</field>
+
+
+发送函数
+=================================
+#if MAVLINK_CRC_EXTRA
+MAVLINK_HELPER void _mav_finalize_message_chan_send(mavlink_channel_t chan, uint8_t msgid, const char *packet, 
+						    uint8_t length, uint8_t crc_extra)
+#else
+MAVLINK_HELPER void _mav_finalize_message_chan_send(mavlink_channel_t chan, uint8_t msgid, const char *packet, uint8_t length)
+#endif
+{
+	uint16_t checksum;
+	uint8_t buf[MAVLINK_NUM_HEADER_BYTES];
+	uint8_t ck[2];
+	mavlink_status_t *status = mavlink_get_channel_status(chan);
+	buf[0] = MAVLINK_STX;
+	buf[1] = length;
+	buf[2] = status->current_tx_seq;
+	buf[3] = mavlink_system.sysid;
+	buf[4] = mavlink_system.compid;
+	buf[5] = msgid;
+	status->current_tx_seq++;
+	checksum = crc_calculate((uint8_t*)&buf[1], MAVLINK_CORE_HEADER_LEN);
+	crc_accumulate_buffer(&checksum, packet, length);
+#if MAVLINK_CRC_EXTRA
+	crc_accumulate(crc_extra, &checksum);
+#endif
+	ck[0] = (uint8_t)(checksum & 0xFF);
+	ck[1] = (uint8_t)(checksum >> 8);
+
+	MAVLINK_START_UART_SEND(chan, MAVLINK_NUM_NON_PAYLOAD_BYTES + (uint16_t)length);
+	_mavlink_send_uart(chan, (const char *)buf, MAVLINK_NUM_HEADER_BYTES);
+	_mavlink_send_uart(chan, packet, length);
+	_mavlink_send_uart(chan, (const char *)ck, 2);
+	MAVLINK_END_UART_SEND(chan, MAVLINK_NUM_NON_PAYLOAD_BYTES + (uint16_t)length);
+}
+#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
+最后的发送函数
+
+//mavlink最后的函数： flow的项目，没有判断返回值，直接放弃
+void mavlink_send_uart_bytes(mavlink_channel_t chan, const uint8_t * ch, uint16_t length)
+{
+	if (chan == MAVLINK_COMM_0)
+	{
+		/* send to UART3 */
+		usart3_tx_ringbuffer_push(ch, length);
+	}
+	if (chan == MAVLINK_COMM_1)
+	{
+		/* send to UART2 */
+		usart2_tx_ringbuffer_push(ch, length);
+	}
+	if (chan == MAVLINK_COMM_2)
+	{
+		/* send to USB serial port */
+		for (int i = 0; i < length; i++)
+		{
+			VCP_put_char(ch[i]);
+		}
+	}
+}
+
+//串口中断的高级应用
+static void up_txint(struct uart_dev_s *dev, bool enable)
+{
+  struct up_dev_s *priv = (struct up_dev_s *)dev->priv;
+  irqstate_t flags;
+
+  /* USART transmit interrupts:
+   *
+   * Enable             Status          Meaning                      Usage
+   * ------------------ --------------- ---------------------------- ----------
+   * USART_CR1_TCIE     USART_SR_TC     Transmission Complete        (used only for RS-485)
+   * USART_CR1_TXEIE    USART_SR_TXE    Transmit Data Register Empty
+   * USART_CR3_CTSIE    USART_SR_CTS    CTS flag                     (not used)
+   */
+
+  flags = enter_critical_section();
+  if (enable)
+    {
+      /* Set to receive an interrupt when the TX data register is empty */
+
+#ifndef CONFIG_SUPPRESS_SERIAL_INTS
+      uint16_t ie = priv->ie | USART_CR1_TXEIE;
+
+

@@ -1,0 +1,68 @@
+
+struct timespec
+{
+  time_t tv_sec;                   /* Seconds */
+  long   tv_nsec;                  /* Nanoseconds */
+};
+tv_sec:  
+tv_nsec: 
+
+
+sigset_t set;
+struct timespec ts;
+struct siginfo value;
+
+1.数据结构说明
+
+信号变量
+等待时间
+信号信息
+sigset_t set：        
+struct timespec ts：  
+struct siginfo value： 
+
+2. 调用关系
+  
+int usleep(useconds_t usec)
+	->  (void)sigemptyset(&set); //创建1个signal的变量set
+	->  ret = sigtimedwait(&set, &value, &ts); //信号等待
+	         /**
+				时间换算:  ns /1000 000 = ms 
+				例如: 500ns  / 1000 000 = 0ms			
+					1+10-1 / 10 = 1: 
+				总结： 加上	MSEC_PER_TICK - 1，主要是为了使结果等待时间是
+					大于等于1的，定时器时间间隔不能是0。
+			 */
+			-> waitmsec = timeout->tv_sec * MSEC_PER_SEC +
+			      (timeout->tv_nsec + NSEC_PER_MSEC - 1) / NSEC_PER_MSEC;
+			-> waitticks = (waitmsec + MSEC_PER_TICK - 1) / MSEC_PER_TICK;
+
+
+3. 分析得到：
+    1. 使用了signal的资源
+	2. 基于系统时钟tick做的. 
+
+4. 心得
+	usleep：其实没有多大用，主要是为了承接msleep，然而没有msleep，也没有多大意思。
+个人觉得是msleep的就可以了，主要是系统滴答决定的.		
+
+
+5. 新建1个hpwork的线程.
+g_work[HPWORK].pid = KERNEL_THREAD(HPWORKNAME, CONFIG_SCHED_WORKPRIORITY,
+								 CONFIG_SCHED_WORKSTACKSIZE,
+								 (main_t)work_hpthread, (FAR char * const *)NULL);
+	
+
+	
+static void work_process(FAR struct wqueue_s *wqueue)								 
+usleep(next * USEC_PER_TICK);
+
+struct dq_entry_s
+{
+  FAR struct dq_entry_s *flink;  //之后1个
+  FAR struct dq_entry_s *blink;  //之前1个
+  
+work_s			_work; //定义1个work
+
+从这2个文件看到相同的.
+diff ./NuttX/nuttx/libc/wqueue/work_thread.c ./NuttX/nuttx/libc/wqueue/work_thread.c

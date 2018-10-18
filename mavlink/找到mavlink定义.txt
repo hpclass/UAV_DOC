@@ -1,0 +1,31 @@
+/*
+  entry in table of information about each message type
+ */
+typedef struct __mavlink_msg_entry {
+        uint32_t msgid;
+        uint8_t crc_extra;
+        uint8_t msg_len;
+        uint8_t flags;             // MAV_MSG_ENTRY_FLAG_*
+        uint8_t target_system_ofs; // payload offset to target_system, or 0
+        uint8_t target_component_ofs; // payload offset to target_component, or 0
+} mavlink_msg_entry_t;
+
+v1.0/mavlink_helpers.h:254:	static const uint8_t mavlink_message_crcs[256] = MAVLINK_MESSAGE_CRCS;
+v1.0/mavlink_helpers.h:255:#define MAVLINK_MESSAGE_CRC(msgid) mavlink_message_crcs[msgid]
+v2.0/mavlink_helpers.h:475:	static const mavlink_msg_entry_t mavlink_message_crcs[] = MAVLINK_MESSAGE_CRCS;
+v2.0/mavlink_helpers.h:480:        uint32_t low=0, high=sizeof(mavlink_message_crcs)/sizeof(mavlink_message_crcs[0]);
+v2.0/mavlink_helpers.h:483:            if (msgid < mavlink_message_crcs[mid].msgid) {
+v2.0/mavlink_helpers.h:487:            if (msgid > mavlink_message_crcs[mid].msgid) {
+v2.0/mavlink_helpers.h:494:        if (mavlink_message_crcs[low].msgid != msgid) {
+v2.0/mavlink_helpers.h:498:        return &mavlink_message_crcs[low];
+yangang@linux:~/work/px4_proj/Firmware/mavlink/include/mavlink$ grep -rn "mavlink_msg_entry_t"
+v2.0/mavlink_types.h:284:} mavlink_msg_entry_t;
+v2.0/mavlink_helpers.h:473:MAVLINK_HELPER const mavlink_msg_entry_t *mavlink_get_msg_entry(uint32_t msgid)
+v2.0/mavlink_helpers.h:475:	static const mavlink_msg_entry_t mavlink_message_crcs[] = MAVLINK_MESSAGE_CRCS;
+v2.0/mavlink_helpers.h:506:	const mavlink_msg_entry_t *e = mavlink_get_msg_entry(msg->msgid);
+v2.0/mavlink_helpers.h:516:	const mavlink_msg_entry_t *e = mavlink_get_msg_entry(msg->msgid);
+v2.0/mavlink_helpers.h:713:		const mavlink_msg_entry_t *e = mavlink_get_msg_entry(rxmsg->msgid);
+v2.0/protocol.h:66:    MAVLINK_HELPER const mavlink_msg_entry_t *mavlink_get_msg_entry(uint32_t msgid);
+yangang@linux:~/work/px4_proj/Firmware/mavlink/include/mavlink$ cat head -n 285 v2.0/mavlink_types.h 
+
+不是二位数组是结构体数组

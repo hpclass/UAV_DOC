@@ -1,0 +1,81 @@
+if (logbuffer_count(&lb) > MIN_BYTES_TO_WRITE) {
+			/* only request write if several packets can be written at once */
+			pthread_cond_signal(&logbuffer_cond);
+		}
+
+
+//异步等待
+
+先查数据。有数据就写。
+
+没数据，就等待通知，查询效率太低.
+
+if (create_log_dir() != 0) {
+
+void sdlog2_start_log()
+
+//创建这个目录
+	sprintf(log_dir, "%s/sess%03u", log_root, dir_number);
+			mkdir_ret = mkdir(log_dir, S_IRWXU | S_IRWXG | S_IRWXO);
+
+//创建这个目录
+mkdir_ret = mkdir(log_dir, S_IRWXU | S_IRWXG | S_IRWXO);
+
+
+//文件查看用stat
+目录查看使用
+
+
+//目录权限
+S_IRWXU | S_IRWXG | S_IRWXO
+
+
+//root_dir ： 是否存在
+
+//log_dir  ： 是否存在, 重新启动，重新创建
+
+//***.log  ： 是否存在.
+
+
+FRESULT scan_files (
+    char* path        /* Start node to be scanned (***also used as work area***) */
+)
+{
+    FRESULT res;
+    DIR dir;
+    UINT i;
+    static FILINFO fno;
+
+
+    res = f_opendir(&dir, path);                       /* Open the directory */
+    if (res == FR_OK) {
+        for (;;) {
+            res = f_readdir(&dir, &fno);                   /* Read a directory item */
+            if (res != FR_OK || fno.fname[0] == 0) break;  /* Break on error or end of dir */
+            if (fno.fattrib & AM_DIR) {                    /* It is a directory */
+                i = strlen(path);
+                sprintf(&path[i], "/%s", fno.fname);
+                res = scan_files(path);                    /* Enter the directory */
+                if (res != FR_OK) break;
+                path[i] = 0;
+            } else {                                       /* It is a file. */
+                printf("%s/%s\n", path, fno.fname);
+            }
+        }
+        f_closedir(&dir)
+    }
+
+    return res;
+}
+
+自己调用自己
+
+
+This is a wrapper function of f_opendir and f_readdir 
+
+
+//读取内存空间
+
+
+mkdir -p c/2
+//查看目录是否存在
