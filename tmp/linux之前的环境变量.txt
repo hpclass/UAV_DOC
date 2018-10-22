@@ -1,8 +1,0 @@
-最重要的文件：运行nuttx-px4nucleoF767ZI-v1-default固件
-https://github.com/PX4/Firmware/pull/5618
-
-原因：当前固件不要booloader文件: 直接把bin文件下载到0x80000000地址
-
-
-
-

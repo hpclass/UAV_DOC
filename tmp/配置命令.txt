@@ -1,1 +1,0 @@
-Configuring NuttX for px4io-v2

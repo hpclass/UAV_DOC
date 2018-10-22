@@ -1,5 +1,0 @@
-#define PX4_PANIC(...)	ROS_WARN(__VA_ARGS__)
-#define PX4_ERR(...)	ROS_WARN(__VA_ARGS__)
-#define PX4_WARN(...) 	ROS_WARN(__VA_ARGS__)
-#define PX4_INFO(...) 	ROS_WARN(__VA_ARGS__)
-#define PX4_DEBUG(...)

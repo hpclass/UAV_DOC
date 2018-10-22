@@ -1,2 +1,0 @@
-1。 NSH是nuttx的shell解析器。
-2.  bin/sh是linux的1个sheel解析器

@@ -1,3 +1,0 @@
-stm32¿â
-----------------------------------------------------
-https://github.com/libopencm3/libopencm3-examples
