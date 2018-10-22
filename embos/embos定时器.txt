@@ -1,0 +1,27 @@
+void OS_WD_Add    (为线程添加看门狗操作： OS_WD_Add(&WatchdogHP, 50);
+OS_WD* pWD, OS_TIME Timeout)  
+
+周期性检测的函数:  OS_TICK_AddHook(&Hook, OS_WD_Check);                                 
+void OS_WD_Check  (void)       
+
+配置触发硬件看门狗复位函数                                                  
+void OS_WD_Config (voidRoutine* pfTriggerFunc, OS_WD_RESET_CALLBACK* pfResetFunc)  
+
+为线程删除看门狗操作： OS_WD_Add(&WatchdogHP);
+void OS_WD_Remove (OS_CONST_PTR OS_WD* pWD)   
+    
+主动为线程喂狗, 每一个tick都进行喂狗一次                                 
+void OS_WD_Trigger(OS_WD* pWD)
+
+//硬件喂狗
+void _TriggerWatchDog(void) 
+{
+  //
+  // Trigger the hardware watchdog
+  //
+}
+
+//某个线程已经死机，不能继续喂狗调用这个函数
+static void _Reset(OS_CONST_PTR OS_WD* pWD) {
+
+死机
