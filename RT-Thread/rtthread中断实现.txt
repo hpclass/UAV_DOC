@@ -1,0 +1,133 @@
+//查询中断和发送中断最大的区别
+rt_inline int _serial_poll_tx(struct rt_serial_device *serial, const rt_uint8_t *data, int length)
+{
+    int size;
+    RT_ASSERT(serial != RT_NULL);
+
+    size = length;
+    while (length)
+    {
+        /*
+         * to be polite with serial console add a line feed
+         * to the carriage return character
+         */
+        if (*data == '\n' && (serial->parent.open_flag & RT_DEVICE_FLAG_STREAM))
+        {
+            serial->ops->putc(serial, '\r');
+        }
+
+        serial->ops->putc(serial, *data);
+
+        ++ data;
+        -- length;
+    }
+
+    return size - length;
+}
+
+rt_inline int _serial_int_tx(struct rt_serial_device *serial, const rt_uint8_t *data, int length)
+{
+    int size;
+    struct rt_serial_tx_fifo *tx;
+
+    RT_ASSERT(serial != RT_NULL);
+
+    size = length;
+    tx = (struct rt_serial_tx_fifo*) serial->serial_tx;
+    RT_ASSERT(tx != RT_NULL);
+
+    while (length)
+    {
+        if (serial->ops->putc(serial, *(char*)data) == -1)
+        {   
+            //这里是发送中断最重要的区别
+            rt_completion_wait(&(tx->completion), RT_WAITING_FOREVER);
+            continue; //直接跳出来，进行判断，先进行调度一端时间.
+        }
+
+        data ++; length --;
+    }
+
+    return size - length;
+}
+
+// 发送中断调用
+rt_err_t rt_completion_wait(struct rt_completion *completion,
+                            rt_int32_t            timeout)
+{
+    rt_err_t result;
+    rt_base_t level;
+    rt_thread_t thread;
+    RT_ASSERT(completion != RT_NULL);
+
+    result = RT_EOK;
+    thread = rt_thread_self();
+
+    level = rt_hw_interrupt_disable();
+    if (completion->flag != RT_COMPLETED)
+    {
+        /* only one thread can suspend on complete */
+        RT_ASSERT(rt_list_isempty(&(completion->suspended_list)));
+
+        if (timeout == 0)
+        {
+            result = -RT_ETIMEOUT;
+            goto __exit;
+        }
+        else
+        {
+            /* reset thread error number */
+            thread->error = RT_EOK;
+
+            /* suspend thread */
+            rt_thread_suspend(thread);
+            /* add to suspended list */
+            rt_list_insert_before(&(completion->suspended_list),
+                                  &(thread->tlist));
+
+
+            /* current context checking */
+            RT_DEBUG_NOT_IN_INTERRUPT;
+             
+            //设置中断时间
+            /* start timer */
+            if (timeout > 0)
+            {
+                /* reset the timeout of thread timer and start it */
+                rt_timer_control(&(thread->thread_timer),
+                                 RT_TIMER_CTRL_SET_TIME,
+                                 &timeout);
+                rt_timer_start(&(thread->thread_timer));
+            }
+            /* enable interrupt */
+            rt_hw_interrupt_enable(level);
+             
+            //重新调度到其他线程, 时间到，重新调用 
+            /* do schedule */
+            rt_schedule();
+
+            /* thread is waked up */
+            result = thread->error;
+
+            level = rt_hw_interrupt_disable();
+        }
+
+
+        void rt_completion_done(struct rt_completion *completion)
+         ->  completion->flag = RT_COMPLETED;
+
+//发送完成的事件处理.通过事件查询，没有任何地方调用
+E:\yangang\Software\rt-thread\components\drivers\serial\serial.c(1167) :         case RT_SERIAL_EVENT_TX_DONE:
+E:\yangang\Software\rt-thread\components\drivers\include\drivers\serial.h(76) : #define RT_SERIAL_EVENT_TX_DONE         0x02    /* Tx complete   */
+Lines matched: 2      Files matched: 2      Total files searched: 287
+
+//当前事件的处理
+void rt_hw_serial_isr(struct rt_serial_device *serial, int event)
+{  
+          case RT_SERIAL_EVENT_TX_DONE:
+        {
+            struct rt_serial_tx_fifo* tx_fifo;
+
+            tx_fifo = (struct rt_serial_tx_fifo*)serial->serial_tx;
+            //发送完成字符
+            rt_completion_done(&(tx_fifo->completion));

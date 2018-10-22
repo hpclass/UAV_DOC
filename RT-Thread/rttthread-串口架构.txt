@@ -1,0 +1,57 @@
+//rtthread的串口架构，写的不错，使用c++的思想
+struct rt_serial_device
+{
+    struct rt_device          parent;
+
+    const struct rt_uart_ops *ops;
+    struct serial_configure   config;
+
+    void *serial_rx;
+    void *serial_tx;
+};
+typedef struct rt_serial_device rt_serial_t;
+
+rt_serial_t 
+  ->   struct rt_device          parent;
+        //-> typedef struct rt_device *rt_device_t;
+        ->  struct rt_object          parent;                   /**< inherit from rt_object */
+            -> char       name[RT_NAME_MAX]; 
+            ->  rt_list_t  list;  
+                -> struct rt_list_node *next;                          /**< point to next node. */
+                -> struct rt_list_node *prev;                          /**< point to prev node. */
+
+        -> const struct dfs_file_ops *fops; //ops
+        -> read 
+        -> write 
+  ->   const struct rt_uart_ops *ops; //
+
+//父类的rt_device
+rt_size_t rt_device_write(rt_device_t dev,
+                          rt_off_t    pos,
+                          const void *buffer,
+                          rt_size_t   size)
+  rt_device_write(_console_device, 0, rt_log_buf, length);
+
+串口write和read公用1个
+ */
+rt_err_t rt_hw_serial_register(rt_device_t device, const char* name, rt_uint32_t flag, struct serial_device *serial)
+{
+    RT_ASSERT(device != RT_NULL);
+
+    device->type        = RT_Device_Class_Char;
+    device->rx_indicate = RT_NULL;
+    device->tx_complete = RT_NULL;
+    device->init        = rt_serial_init;
+    device->open        = rt_serial_open;
+    device->close       = rt_serial_close;
+    device->read        = rt_serial_read;
+    device->write       = rt_serial_write;
+    device->control     = rt_serial_control;
+
+static rt_device_t _console_device = RT_NULL;
+
+void rt_kprintf(const char *fmt, ...)
+    -> rt_device_write(_console_device, 0, rt_log_buf, length); 
+          ->   return dev->write(dev, pos, buffer, size);
+                ->     serial = (struct rt_serial_device *)dev; //中间做强制转换
+                    -> if (serial->ops->putc(serial, *(char*)data) == -1 //通过ops，进行putc 
