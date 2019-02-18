@@ -1,0 +1,54 @@
+飞控bootloader升级协议:
+
+  升级主机发出sync信号(io板升级，发出15次，每次延时10ms)
+   -> ret = get_info(INFO_BL_REV, bl_rev);
+     -> ret = erase();
+        -> ret = program(fw_size);
+          -> ret = reboot();  //发出复位信号
+ 
+升级过程：主机发出复位信号，可以立即启动被升级的设备
+升级超时是5s
+
+//不执行bootloader，相当于不进行超时的处理(5s), 
+bool try_boot = true;          /* try booting before we drop to the bootloader */
+ 
+//从应用程序中，直接跳转到bootloader，没有设置任何处理需要升级的东西，是不进行
+//超时等待处理的.
+
+
+//px4的升级，如果升级，直接发送mavlink复位信号，和nsh的reboot命令等，等待回应idety.
+
+
+//给备份寄存器写一编码.  0xdeaddead 关机处理
+int board_shutdown()
+{
+    stm32_pwr_enablebkp(true);
+    /* XXX wow, this is evil - write a magic number into backup register zero */
+    *(uint32_t *)0x40002850 = 0xdeaddead;
+    stm32_pwr_enablebkp(false);
+    up_mdelay(50);
+    up_systemreset();
+
+    while (1);
+
+增加功能： 
+  延时启动。 	
+  
+  
+
+booloader处理： //如果写入信号，那么就直接启动
+if (board_get_rtc_signature() == BOOT_RTC_SIGNATURE) {
+   try_boot = false;
+
+
+//升级失败就是
+#define POWER_DOWN_RTC_SIGNATURE 0xdeaddead // Written by app fw to not re-power on.
+
+//bootloader是直接打开电源
+#if defined(BOARD_POWER_PIN_OUT)
+    /* Configure the Power pins */
+    rcc_peripheral_enable_clock(&BOARD_POWER_CLOCK_REGISTER, BOARD_POWER_CLOCK_BIT);
+    gpio_mode_setup(BOARD_POWER_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, BOARD_POWER_PIN_OUT);
+    gpio_set_output_options(BOARD_POWER_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_2MHZ, BOARD_POWER_PIN_OUT);
+    BOARD_POWER_ON(BOARD_POWER_PORT, BOARD_POWER_PIN_OUT);
+#endif

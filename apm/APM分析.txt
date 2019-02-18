@@ -1,0 +1,443 @@
+#define HAL_BOARD_SITL     3
+#define HAL_BOARD_SMACCM   4  // unused
+#define HAL_BOARD_PX4      5
+#define HAL_BOARD_LINUX    7
+#define HAL_BOARD_VRBRAIN  8
+#define HAL_BOARD_CHIBIOS  10
+#define HAL_BOARD_F4LIGHT  11
+#define HAL_BOARD_EMPTY    99
+
+HAL抽象，给其他os在HA
+
+
+高度抽象
+
+//公用模块，不传递参数
+ibraries/AP_Baro/examples/ICM20789/ICM20789.cpp:303:AP_HAL_MAIN();
+libraries/AP_Baro/examples/BARO_generic/BARO_generic.cpp:78:AP_HAL_MAIN();
+libraries/AP_FlashStorage/examples/FlashTest/FlashTest.cpp:169:AP_HAL_MAIN_CALLBACKS(&flashtest);
+libraries/AP_Motors/examples/AP_Motors_test/AP_Motors_test.cpp:221:AP_HAL_MAIN();
+libraries/AP_Notify/examples/AP_Notify_test/AP_Notify_test.cpp:37:AP_HAL_MAIN();
+libraries/AP_Notify/examples/ToshibaLED_test/ToshibaLED_test.cpp:87:AP_HAL_MAIN();
+libraries/AP_UAVCAN/examples/UAVCAN_sniffer/UAVCAN_sniffer.cpp:300:AP_HAL_MAIN();
+libraries/AP_UAVCAN/examples/UAVCAN_sniffer/UAVCAN_sniffer.cpp:314:AP_HAL_MAIN();
+libraries/AP_Declination/examples/AP_Declination_test/AP_Declination_test.cpp:112:AP_HAL_MAIN();
+libraries/AP_OpticalFlow/examples/AP_OpticalFlow_test/AP_OpticalFlow_test.cpp:61:AP_HAL_MAIN();
+libraries/GCS_MAVLink/examples/routing/routing.cpp:136:AP_HAL_MAIN();
+libraries/AP_RPM/examples/RPM_generic/RPM_generic.cpp:76:AP_HAL_MAIN();
+libraries/AP_SmartRTL/examples/SmartRTL_test/SmartRTL_test.cpp:135:AP_HAL_MAIN();
+libraries/DataFlash/examples/DataFlash_test/DataFlash_test.cpp:125:AP_HAL_MAIN();
+libraries/DataFlash/examples/DataFlash_AllTypes/DataFlash_AllTypes.cpp:238:AP_HAL_MAIN_CALLBACKS(&dataflashtest);
+libraries/StorageManager/examples/StorageTest/StorageTest.cpp:102:AP_HAL_MAIN();
+libraries/AP_HAL_PX4/examples/simple/simple.cpp:23:AP_HAL_MAIN();
+libraries/AP_RCProtocol/examples/RCProtocolTest/RCProtocolTest.cpp:215:AP_HAL_MAIN();
+libraries/AP_Common/examples/AP_Common/AP_Common.cpp:47:AP_HAL_MAIN();
+libraries/AP_InertialSensor/examples/INS_generic/INS_generic.cpp:175:AP_HAL_MAIN();
+libraries/AP_InertialSensor/examples/VibTest/VibTest.cpp:206:AP_HAL_MAIN();
+libraries/AP_Scheduler/examples/Scheduler_test/Scheduler_test.cpp:107:AP_HAL_MAIN();
+libraries/AP_Beacon/examples/AP_Marvelmind_test/AP_Marvelmind_test.cpp:55:AP_HAL_MAIN();
+libraries/AC_PID/examples/AC_PID_test/AC_PID_test.cpp:108:AP_HAL_MAIN();
+
+
+//一种飞机一个入口
+ArduCopter/ArduCopter.cpp:598:AP_HAL_MAIN_CALLBACKS(&copter);
+ArduSub/ArduSub.cpp:359:AP_HAL_MAIN_CALLBACKS(&sub);
+libraries/AP_FlashStorage/examples/FlashTest/FlashTest.cpp:169:AP_HAL_MAIN_CALLBACKS(&flashtest);
+libraries/DataFlash/examples/DataFlash_AllTypes/DataFlash_AllTypes.cpp:238:AP_HAL_MAIN_CALLBACKS(&dataflashtest);
+libraries/AP_HAL/AP_HAL_Main.h:39:#define AP_HAL_MAIN_CALLBACKS(CALLBACKS) extern "C" { \
+libraries/RC_Channel/examples/RC_UART/RC_UART.cpp:122:AP_HAL_MAIN_CALLBACKS(&rc_uart);
+APMrover2/APMrover2.cpp:333:AP_HAL_MAIN_CALLBACKS(&rover);
+Tools/Replay/Replay.cpp:969:AP_HAL_MAIN_CALLBACKS(&replay);
+AntennaTracker/AntennaTracker.cpp:151:AP_HAL_MAIN_CALLBACKS(&tracker);
+ArduPlane/ArduPlane.cpp:951:AP_HAL_MAIN_CALLBACKS(&plane);
+
+
+
+void Copter::loop()
+{
+    scheduler.loop();
+    G_Dt = scheduler.get_last_loop_time_s();
+}
+
+
+class Copter : public AP_HAL::HAL::Callbacks {
+
+
+//实现这个hal变量
+libraries/AP_HAL_ChibiOS/HAL_ChibiOS_Class.cpp:253:const AP_HAL::HAL& AP_HAL::get_HAL() {
+libraries/AP_HAL_PX4/HAL_PX4_Class.cpp:362:const AP_HAL::HAL& AP_HAL::get_HAL() {
+libraries/AP_HAL_Empty/HAL_Empty_Class.cpp:66:const AP_HAL::HAL& AP_HAL::get_HAL() {
+libraries/AP_HAL_VRBRAIN/HAL_VRBRAIN_Class.cpp:384:const AP_HAL::HAL& AP_HAL::get_HAL() {
+libraries/AP_HAL_SITL/HAL_SITL_Class.cpp:110:const AP_HAL::HAL& AP_HAL::get_HAL() {
+libraries/AP_HAL_F4Light/HAL_F4Light_Class.cpp:477:const AP_HAL::HAL& AP_HAL::get_HAL() {
+
+//一个静态的变量
+const AP_HAL::HAL& AP_HAL::get_HAL() {
+    static const HAL_PX4 hal_px4;
+    return hal_px4;
+}
+
+//是子类的实现
+class HAL_PX4 : public AP_HAL::HAL {
+public:
+    HAL_PX4();
+    void run(int argc, char* const argv[], Callbacks* callbacks) const override;
+};
+
+
+class PX4::PX4UARTDriver : public AP_HAL::UARTDriver {
+
+class SPIBus : public DeviceBus {
+
+class PX4::PX4Scheduler : public AP_HAL::Scheduler 
+
+//使用多
+
+
+HAL.h
+
+//初始化代码的实现：通过构造函数进行实现
+class AP_HAL::HAL {
+public:
+    HAL(AP_HAL::UARTDriver* _uartA, // console
+        AP_HAL::UARTDriver* _uartB, // 1st GPS
+        AP_HAL::UARTDriver* _uartC, // telem1
+        AP_HAL::UARTDriver* _uartD, // telem2
+        AP_HAL::UARTDriver* _uartE, // 2nd GPS
+        AP_HAL::UARTDriver* _uartF, // extra1
+        AP_HAL::UARTDriver* _uartG, // extra2
+        AP_HAL::I2CDeviceManager* _i2c_mgr,
+        AP_HAL::SPIDeviceManager* _spi,
+        AP_HAL::AnalogIn*   _analogin,
+        AP_HAL::Storage*    _storage,
+        AP_HAL::UARTDriver* _console,
+        AP_HAL::GPIO*       _gpio,
+        AP_HAL::RCInput*    _rcin,
+        AP_HAL::RCOutput*   _rcout,
+        AP_HAL::Scheduler*  _scheduler,
+        AP_HAL::Util*       _util,
+        AP_HAL::OpticalFlow *_opticalflow,
+#if HAL_WITH_UAVCAN
+        AP_HAL::CANManager* _can_mgr[MAX_NUMBER_OF_CAN_DRIVERS])
+#else
+        AP_HAL::CANManager** _can_mgr)
+#endif
+        :
+        uartA(_uartA),
+        uartB(_uartB),
+        uartC(_uartC),
+        uartD(_uartD),
+        uartE(_uartE),
+        uartF(_uartF),
+        uartG(_uartG),
+        i2c_mgr(_i2c_mgr),
+        spi(_spi),
+        analogin(_analogin),
+        storage(_storage),
+        console(_console),
+        gpio(_gpio),
+        rcin(_rcin),
+        rcout(_rcout),
+        scheduler(_scheduler),
+        util(_util),
+        opticalflow(_opticalflow)
+    {
+#if HAL_WITH_UAVCAN
+        if (_can_mgr == nullptr) {
+            for (uint8_t i = 0; i < MAX_NUMBER_OF_CAN_DRIVERS; i++)
+                can_mgr[i] = nullptr;
+        } else {
+            for (uint8_t i = 0; i < MAX_NUMBER_OF_CAN_DRIVERS; i++)
+                can_mgr[i] = _can_mgr[i];
+        }
+#endif
+
+        AP_HAL::init();
+    }
+
+    //定义多个私有成员变量
+    AP_HAL::UARTDriver* uartA;
+    AP_HAL::UARTDriver* uartB;
+    AP_HAL::UARTDriver* uartC;
+    AP_HAL::UARTDriver* uartD;
+    AP_HAL::UARTDriver* uartE;
+    AP_HAL::UARTDriver* uartF;
+    AP_HAL::UARTDriver* uartG;
+    AP_HAL::I2CDeviceManager* i2c_mgr;
+    AP_HAL::SPIDeviceManager* spi;
+    AP_HAL::AnalogIn*   analogin;
+    AP_HAL::Storage*    storage;
+    AP_HAL::UARTDriver* console;
+    AP_HAL::GPIO*       gpio;
+    AP_HAL::RCInput*    rcin;
+    AP_HAL::RCOutput*   rcout;
+    AP_HAL::Scheduler*  scheduler;
+    AP_HAL::Util        *util;
+    AP_HAL::OpticalFlow *opticalflow;
+#if HAL_WITH_UAVCAN
+    AP_HAL::CANManager* can_mgr[MAX_NUMBER_OF_CAN_DRIVERS];
+#else
+    AP_HAL::CANManager** can_mgr;
+
+//执行函数就是callback
+
+virtual void run(int argc, char * const argv[], Callbacks* callbacks) const = 0;
+
+//callback是数组思想
+    struct Callbacks {
+        virtual void setup() = 0;
+        virtual void loop() = 0;
+    };
+
+//这里已经是一个main的入口函数了，
+//hal去调用run函数，执行注册的callback
+#define AP_HAL_MAIN_CALLBACKS(CALLBACKS) extern "C" { \
+    int AP_MAIN(int argc, char* const argv[]); \
+    int AP_MAIN(int argc, char* const argv[]) { \
+        hal.run(argc, argv, CALLBACKS); \
+        return 0; \
+    } \
+    }
+
+//copter在copter.cpp中
+AP_HAL_MAIN_CALLBACKS(&copter);
+
+
+extern "C" { \
+    int AP_MAIN(int argc, char* const argv[]); 
+
+    int AP_MAIN(int argc, char* const argv[]) { 
+
+//HAL中有个callbak的指针
+
+//调度器中先有run, 子类有loop函数， HAL跑run
+class Copter : public AP_HAL::HAL::Callbacks {
+         
+        hal.run(argc, argv, CALLBACKS); 
+        return 0; 
+    } 
+
+    }
+
+
+const AP_HAL::HAL& hal = AP_HAL::get_HAL();
+
+/*
+  constructor for main Copter class
+ */
+Copter::Copter(void)
+    : DataFlash(g.log_bitmask),
+    flight_modes(&g.flight_mode1),
+    control_mode(STABILIZE),
+    scaleLongDown(1),
+    simple_cos_yaw(1.0f),
+    super_simple_cos_yaw(1.0),
+    land_accel_ef_filter(LAND_DETECTOR_ACCEL_LPF_CUTOFF),
+    rc_throttle_control_in_filter(1.0f),
+    inertial_nav(ahrs),
+    param_loader(var_info),
+    flightmode(&mode_stabilize)
+{
+    // init sensor error logging flags
+    sensor_health.baro = true;
+    sensor_health.compass = true;
+}
+
+Copter copter;
+
+//继承了callback
+class Copter : public AP_HAL::HAL::Callbacks {
+
+//内部实现了callbacks, 但是这个callback是数据结构
+
+//实现这2个函数
+    // HAL::Callbacks implementation.
+    void setup() override;
+    void loop() override;
+
+//Arducopter.cpp中实现这个代码
+void Copter::setup()
+{
+    // Load the default values of variables listed in var_info[]s
+    AP_Param::setup_sketch_defaults();
+
+    // setup storage layout for copter
+    StorageManager::set_layout_copter();
+
+    init_ardupilot();
+
+    // initialise the main loop scheduler
+    scheduler.init(&scheduler_tasks[0], ARRAY_SIZE(scheduler_tasks), MASK_LOG_PM);
+}
+
+//实现
+    void fast_loop();
+
+//loop()
+  ->调用AP_Scheduler::loop()
+void AP_Scheduler::loop()
+{
+    // wait for an INS sample
+    AP::ins().wait_for_sample();
+
+    const uint32_t sample_time_us = AP_HAL::micros();
+    
+    if (_loop_timer_start_us == 0) {
+        _loop_timer_start_us = sample_time_us;
+        _last_loop_time_s = get_loop_period_s();
+    } else {
+        _last_loop_time_s = (sample_time_us - _loop_timer_start_us) * 1.0e-6;
+    }
+
+    // Execute the fast loop
+    // ---------------------
+    if (_fastloop_fn) {
+        _fastloop_fn();
+    }
+
+    // tell the scheduler one tick has passed
+    tick();
+
+    // run all the tasks that are due to run. Note that we only
+    // have to call this once per loop, as the tasks are scheduled
+    // in multiples of the main loop tick. So if they don't run on
+    // the first call to the scheduler they won't run on a later
+    // call until scheduler.tick() is called again
+    const uint32_t loop_us = get_loop_period_us();
+    const uint32_t time_available = (sample_time_us + loop_us) - AP_HAL::micros();
+    run(time_available > loop_us ? 0u : time_available);
+
+#if CONFIG_HAL_BOARD == HAL_BOARD_SITL
+    // move result of AP_HAL::micros() forward:
+    hal.scheduler->delay_microseconds(1);
+#endif
+
+    // check loop time
+    perf_info.check_loop_time(sample_time_us - _loop_timer_start_us);
+        
+    _loop_timer_start_us = sample_time_us;
+}
+
+//获取us时间
+uint64_t micros64()
+{
+    return hrt_absolute_time();
+}
+
+//获取us时间
+const uint32_t sample_time_us = AP_HAL::micros();
+
+
+//调度器run啥时候调用，不知道？？？
+
+//计算器当前时间，上一次时间，以及花费的时间
+ if (_loop_timer_start_us == 0) {
+        _loop_timer_start_us = sample_time_us;
+        _last_loop_time_s = get_loop_period_s();
+    } else {
+        _last_loop_time_s = (sample_time_us - _loop_timer_start_us) * 1.0e-6;
+    }
+
+
+
+//定义的局部变量
+amespace AP_HAL {
+
+    /* Toplevel pure virtual class Hal.*/
+    class HAL;
+
+    /* Toplevel class names for drivers: */
+    class UARTDriver;
+    class I2CDevice;
+    class I2CDeviceManager;
+    class Device;
+
+    class SPIDevice;
+    class SPIDeviceDriver;
+    class SPIDeviceManager;
+
+    class AnalogSource;
+    class AnalogIn;
+    class Storage;
+    class DigitalSource;
+    class GPIO;
+    class RCInput;
+    class RCOutput;
+    class Scheduler;
+    class Semaphore;
+    class OpticalFlow;
+
+    class CANProtocol;
+    class CANManager;
+    class CAN;
+
+    class Util;
+//调度器中有函数指针
+ibraries/AP_Scheduler/AP_Scheduler.h:153:    scheduler_fastloop_fn_t _fastloop_fn;
+
+
+//通过构造函数进行给回调函数进行赋值
+
+AP_Scheduler::AP_Scheduler(scheduler_fastloop_fn_t fastloop_fn) :
+    _fastloop_fn(fastloop_fn)
+
+
+//跑任务的函数
+      _tasks[i].function();
+
+//rc.APM启动这个任务，再也退出了
+#if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
+#define AP_MAIN __EXPORT ArduPilot_main
+#endif
+
+//先调用到子类，然后调用父类的loop
+void Copter::loop()
+{
+    scheduler.loop();
+    G_Dt = scheduler.get_last_loop_time_s();
+}
+
+//跑任务
+const AP_Scheduler::Task Copter::scheduler_tasks[] = {
+
+
+//每个对象都是调度器
+const AP_Scheduler::Task Copter::scheduler_tasks[] = {
+
+//每个任务都是调度器件，都有run函数
+const AP_Scheduler::Task Copter::scheduler_tasks[] = {
+    SCHED_TASK(rc_loop,              100,    130),
+    SCHED_TASK(throttle_loop,         50,     75),
+    SCHED_TASK(update_GPS,            50,    200),
+#if OPTFLOW == ENABLED
+    SCHED_TASK_CLASS(OpticalFlow,          &copter.optflow,
+
+//先跑这个setup来，来初始化其他人任务，注册自己调度器
+void Copter::setup()
+{
+    // Load the default values of variables listed in var_info[]s
+    AP_Param::setup_sketch_defaults();
+
+    // setup storage layout for copter
+    StorageManager::set_layout_copter();
+
+    init_ardupilot();
+
+    // initialise the main loop scheduler
+    scheduler.init(&scheduler_tasks[0], ARRAY_SIZE(scheduler_tasks), MASK_LOG_PM);
+}
+
+//注册这个调度器
+ struct Task {
+        task_fn_t function;
+        const char *name;
+        float rate_hz;
+        uint16_t max_time_micros;
+    };
+
+//执行每个任务的函数
+   _tasks[i].function();
+   
+//遍历所有任务的函数，就找到了loop函数
+  for (uint8_t i=0; i<_num_tasks; i++) {
+        uint16_t dt = _tick_counter - _last_run[i];
